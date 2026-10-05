@@ -110,11 +110,12 @@ HELPERS = SimpleNamespace(Finding=Finding, line_of=line_of, balanced=balanced, s
 
 # ── loading ──────────────────────────────────────────────────────────────────
 def rule_dirs():
-    dirs = sorted(d for d in BUILTIN.iterdir() if (d / "rule.py").exists())
+    """Built-in rules, then the user's. A user rule with a built-in's name replaces it (a refined rule)."""
+    found = {d.name: d for d in sorted(BUILTIN.iterdir()) if (d / "rule.py").exists()}
     user = paths.user_rules()
     if user.exists():
-        dirs += sorted(d for d in user.iterdir() if (d / "rule.py").exists())
-    return dirs
+        found.update({d.name: d for d in sorted(user.iterdir()) if (d / "rule.py").exists()})
+    return [found[k] for k in sorted(found)]
 
 
 def load_rule(d):

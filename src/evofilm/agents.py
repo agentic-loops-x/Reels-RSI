@@ -9,12 +9,45 @@ Verified: claude. The others follow each CLI's documented non-interactive mode. 
 """
 
 import json
+import os
+import re
 import shutil
 import subprocess
 import time
 from pathlib import Path
 
 from evofilm import paths
+
+# Variables a running Claude Code / desktop-app session sets for its own children. A nested `claude`
+# that inherits them tries to borrow the host's login and fails ("OAuth session expired") even when
+# the user's own CLI login is fine — so they are removed before any agent CLI is spawned.
+# User settings such as CLAUDE_CODE_OAUTH_TOKEN, CLAUDE_CONFIG_DIR or ANTHROPIC_API_KEY are kept.
+HOST_VARS = re.compile(r"^(CLAUDECODE|CLAUDE_PID|CLAUDE_EFFORT|CLAUDE_AGENT_SDK_\w+|CLAUDE_PREVIEW_\w+|"
+                       r"CLAUDE_CODE_(ENTRYPOINT|SESSION_\w+|CHILD_SESSION|HOST_\w+|SDK_\w+|MESSAGING_\w+|"
+                       r"OAUTH_SCOPES|EXECPATH|DESKTOP_\w+|ORGANIZATION_UUID|ACCOUNT_UUID|USER_EMAIL|EMIT_\w+|"
+                       r"TERMINAL_\w+|REPORT_FINDINGS|EAGER_FLUSH|ENABLE_ASK_USER_QUESTION_TOOL|"
+                       r"ENABLE_SDK_FILE_CHECKPOINTING|DISABLE_TERMINAL_TITLE|DISABLE_CRON))$")
+
+
+def child_env(extra=None):
+    """The environment for a spawned agent CLI: ours minus the host session's markers."""
+    env = {k: v for k, v in os.environ.items() if not HOST_VARS.match(k)}
+    env.update(extra or {})
+    return env
+
+
+def claude_login():
+    """(logged_in, detail) for the standalone `claude` CLI — the desktop app's login does not count."""
+    if not shutil.which("claude"):
+        return False, "`claude` not on PATH"
+    try:
+        r = subprocess.run(["claude", "auth", "status"], capture_output=True, text=True, timeout=30, env=child_env())
+        j = json.loads(r.stdout)
+    except (subprocess.SubprocessError, ValueError, OSError):
+        return True, "login status unknown (older claude without `auth status`)"
+    if j.get("loggedIn"):
+        return True, j.get("authMethod", "logged in")
+    return False, "the standalone `claude` CLI is not logged in — run `claude` in a terminal and type /login"
 
 
 def command(harness, model, prompt):
@@ -41,10 +74,14 @@ def run(harness, model, prompt, cwd, log_path=None, env=None, timeout=7200):
     """Run one headless agent session. Returns {ok, seconds, cost_usd, turns, tail}."""
     if not shutil.which(harness):
         raise SystemExit(f"✗ `{harness}` is not installed / not on PATH")
+    if harness == "claude":
+        good, why = claude_login()
+        if not good:
+            raise SystemExit(f"✗ {why}")
     t0 = time.time()
     try:
         r = subprocess.run(command(harness, model, prompt), cwd=cwd, capture_output=True, text=True,
-                           timeout=timeout, env=env)
+                           timeout=timeout, env=child_env(env))
         out, err, code = r.stdout, r.stderr, r.returncode
     except subprocess.TimeoutExpired as e:
         out, err, code = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or ""), "timeout", 124

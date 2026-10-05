@@ -73,6 +73,7 @@ def main():
     if cmd not in TABLE:
         sys.exit(f"✗ unknown command {cmd!r}\n\n{usage()}")
     mod, fn = TABLE[cmd]
+    sys.argv[0] = f"evofilm {cmd}"          # argparse's default prog → "usage: evofilm voice …"
     getattr(importlib.import_module(mod), fn)(sys.argv[2:])
 
 

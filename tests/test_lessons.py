@@ -41,3 +41,16 @@ def test_export_excludes_taste_and_paths(tmp_path):
     lessons.export(tmp_path / "out")
     files = list((tmp_path / "out" / "lessons").glob("*.md"))
     assert len(files) == 1 and "secret-project" not in files[0].read_text()
+
+
+def test_rule_lesson_already_built_in(isolated_home):
+    p = lessons.add("A tween that starts visible must not render before its cue", "rule", "frame")
+    lessons.accept(p.stem, rule_dir=str(lint.BUILTIN / "visible-from-state"))
+    assert lessons.all_lessons("accepted")[0][2]["rule"] == "builtin:visible-from-state"
+    assert not (isolated_home / "rules").exists()      # nothing copied, so the rule never runs twice
+
+
+def test_user_rule_replaces_builtin_of_same_name(isolated_home):
+    lint.cmd_rules(["new", "caption-band"])
+    dirs = [d for d in lint.rule_dirs() if d.name == "caption-band"]
+    assert dirs == [isolated_home / "rules" / "caption-band"]

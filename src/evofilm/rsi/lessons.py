@@ -121,7 +121,8 @@ def accept(lid, rule_dir=None):
                      "(scaffold one with `evofilm rules new <rule-id>`)")
         from evofilm.rsi import lint
         src = Path(rule_dir).resolve()
-        dst = paths.user_rules() / src.name
+        builtin = src.parent == lint.BUILTIN
+        dst = src if builtin else paths.user_rules() / src.name   # a lesson that already became a built-in rule
         if src != dst:
             if dst.exists():
                 shutil.rmtree(dst)
@@ -131,7 +132,7 @@ def accept(lid, rule_dir=None):
         if bad:
             shutil.rmtree(dst) if src != dst else None
             sys.exit("✗ rule fails its own examples: " + "; ".join(f"{n}: {d}" for n, _, d in bad))
-        meta["rule"] = str(dst)
+        meta["rule"] = f"builtin:{dst.name}" if builtin else str(dst)
     meta["accepted"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     target = paths.lessons("accepted") / p.name
     write(target, meta, body)

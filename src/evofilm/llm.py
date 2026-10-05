@@ -73,7 +73,12 @@ def available(spec) -> tuple[bool, str]:
     except LLMError as e:
         return False, str(e)
     if provider in CLI:
-        return (bool(shutil.which(CLI[provider])), f"`{CLI[provider]}` not on PATH")
+        if not shutil.which(CLI[provider]):
+            return False, f"`{CLI[provider]}` not on PATH"
+        if provider == "claude-cli":
+            from evofilm.agents import claude_login
+            return claude_login()
+        return True, ""
     if provider == "anthropic":
         return bool(os.environ.get("ANTHROPIC_API_KEY")), "ANTHROPIC_API_KEY not set"
     table = providers()
@@ -140,7 +145,8 @@ def _cli(provider, model, system, prompt, images):
             cmd = [exe, "exec", "--model", model, "--skip-git-repo-check", text]
         else:
             cmd = [exe, "-m", model, "-p", text]
-        r = subprocess.run(cmd, capture_output=True, text=True, cwd=tmp, timeout=1800)
+        from evofilm.agents import child_env
+        r = subprocess.run(cmd, capture_output=True, text=True, cwd=tmp, timeout=1800, env=child_env())
     if r.returncode:
         raise LLMError(f"{exe} failed (exit {r.returncode}): {(r.stderr or r.stdout).strip()[-800:]}")
     return r.stdout

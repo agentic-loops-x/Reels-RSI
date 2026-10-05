@@ -82,14 +82,19 @@ def cmd_doctor(argv):
             print(f"  ✓ skill    installed for {name}: {t}")
     print("agents (harnesses that can direct a film):")
     for h in ("claude", "codex", "gemini", "opencode"):
+        note = ""
+        if h == "claude" and shutil.which(h):
+            good, why = agents.claude_login()
+            note = f"  ({why})"
+            print(f"  {ok(good)} {h}{note}")
+            continue
         print(f"  {ok(shutil.which(h))} {h}")
     h, m = config.harness()
     print(f"models: harness={h} model={m}")
     for r in ("judge", "retro"):
         spec = config.role(r)
         good, why = llm.available(spec) if spec else (False, "none configured/detected")
-        note = "  (login not checked — if calls fail, run `claude` once and /login)" if good and spec.startswith("claude-cli:") else ""
-        print(f"  {ok(good)} {r:6} {spec or '-'}{'' if good else '  (' + why + ')'}{note}")
+        print(f"  {ok(good)} {r:6} {spec or '-'}{'' if good else '  (' + why + ')'}")
     print(f"self-improvement: {len(lint.load_rules())} rules · lessons "
           + " · ".join(f"{s} {len(lessons.all_lessons(s))}" for s in ("inbox", "accepted", "rejected")))
 
