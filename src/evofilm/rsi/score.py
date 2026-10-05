@@ -235,22 +235,58 @@ def print_score(res):
     print(f"composite {res['composite']}/100")
 
 
-def compare(a, b, spec, votes=3):
-    """Blind pairwise: which film is better? Order alternates between votes; returns wins per side."""
-    wins = {"A": 0, "B": 0}
+def compare(a, b, spec, votes=3, detail=False):
+    """Blind pairwise: which of two films on the same topic is better? Each vote sees both films'
+    sample sheets with the order swapped every vote (position bias cancels); the judge is never told
+    which version is which. Returns {"A": wins, "B": wins} (+ "why": [...] with detail=True).
+    Relative judgments are far steadier than absolute 1–5 scores from the same judge."""
+    wins, why = {"A": 0, "B": 0}, []
     with tempfile.TemporaryDirectory() as tmp:
-        sa = sample_sheets(a, Path(tmp) / "a", per_sheet=99)
-        sb = sample_sheets(b, Path(tmp) / "b", per_sheet=99)
+        sheets = {"A": sample_sheets(a, Path(tmp) / "a"), "B": sample_sheets(b, Path(tmp) / "b")}
+        digest = {k: storyboard_digest(p) for k, p in (("A", a), ("B", b))}
         for v in range(votes):
-            first, second = (("A", sa), ("B", sb)) if v % 2 == 0 else (("B", sb), ("A", sa))
-            prompt = ("Two versions of the same narrated explainer film, each shown as one image whose rows are its frames "
-                      "(30/60/92% samples left→right). Image 1 is film X, image 2 is film Y. Which is the better film overall — "
-                      "richer visuals, clearer mechanism, livelier camera, better pacing and composition?\n"
-                      f"{RUBRIC}\nReturn JSON: {{\"winner\": \"X\" or \"Y\", \"why\": \"one sentence\"}}")
-            j = llm.complete_json(spec, prompt, images=[first[1][0][0], second[1][0][0]])
-            pick = first[0] if str(j.get("winner", "")).upper().startswith("X") else second[0]
+            x, y = ("A", "B") if v % 2 == 0 else ("B", "A")
+            ix, iy = [s for s, _ in sheets[x]], [s for s, _ in sheets[y]]
+            prompt = f"""Two narrated explainer films on the same topic, made independently. You see stills only.
+Film X = images 1–{len(ix)}; film Y = images {len(ix) + 1}–{len(ix) + len(iy)}. In each image every row is one
+frame of the film, sampled at 30%, 60% and 92% of its duration (left → right). Captions sit in the bottom band.
+
+Film X — what each frame shows and says:
+{digest[x]}
+
+Film Y — what each frame shows and says:
+{digest[y]}
+
+Which film is better overall for a viewer who wants to understand the topic? Weigh:
+{RUBRIC}
+Judge the films, not their length or number of frames.
+Return JSON: {{"winner": "X" or "Y", "why": "one concrete sentence"}}"""
+            j = llm.complete_json(spec, prompt, images=ix + iy)
+            pick = x if str(j.get("winner", "")).strip().upper().startswith("X") else y
             wins[pick] += 1
-    return wins
+            why.append(f"{'A' if pick == 'A' else 'B'}: {j.get('why', '')}")
+    return {**wins, "why": why} if detail else wins
+
+
+def side_by_side(a, b, out):
+    """One image for a human: film A's frames (left) next to film B's (right), for the evolve report."""
+    def height(img):
+        r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=height",
+                            "-of", "csv=p=0", str(img)], capture_output=True, text=True)
+        return int(r.stdout.strip() or 0)
+    with tempfile.TemporaryDirectory() as tmp:
+        cols = []
+        for k, proj in (("a", a), ("b", b)):
+            sheets = sample_sheets(proj, Path(tmp) / k, per_sheet=99)
+            if not sheets:
+                return None
+            cols.append(sheets[0][0])
+        h = max(height(c) for c in cols)
+        Path(out).parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(cols[0]), "-i", str(cols[1]), "-filter_complex",
+                        f"[0:v]pad=iw+40:{h}:0:0:white[l];[1:v]pad=iw:{h}:0:0:white[r];[l][r]hstack=inputs=2,"
+                        "scale='min(2400,iw)':-2", "-q:v", "4", str(out)], check=False, capture_output=True)
+    return out if Path(out).exists() else None
 
 
 def cmd_score(argv):
@@ -274,5 +310,7 @@ def cmd_compare(argv):
     ap.add_argument("--votes", type=int, default=3)
     a = ap.parse_args(argv)
     spec = a.judge or config.role("judge")
-    w = compare(a.a, a.b, spec, a.votes)
+    w = compare(a.a, a.b, spec, a.votes, detail=True)
     print(f"A ({a.a}) {w['A']} · B ({a.b}) {w['B']} → {'A' if w['A'] > w['B'] else 'B'} wins ({spec})")
+    for line in w["why"]:
+        print("  " + line)

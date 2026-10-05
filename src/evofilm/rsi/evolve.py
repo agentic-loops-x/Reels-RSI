@@ -4,16 +4,20 @@
     evofilm evolve apply <evolve-id>      copy an accepted candidate over the installed skill (backup kept)
 
 One round:
-  1. baseline   the current skill's scores on the train topics (reuse --baseline, or run it now)
+  1. baseline   the current skill makes the train films (reuse --baseline, or run it now)
   2. propose    an agent reads the baseline's judge notes, findings and the lesson inbox, and edits a
                 COPY of the skill (≤ 3 focused edits + CHANGES.md)                — prompts/propose.md
-  3. evaluate   the candidate makes the same train films; it must beat the baseline mean composite
-                by --margin, lose no topic by more than 10, and render at least as many films
-  4. confirm    both versions make the holdout films; the candidate must not be worse there
-                (guards against overfitting the train topics and judge-pleasing)
-  5. report     report.md + skill.patch. Nothing changes until you run `evolve apply` — the human gate.
+  3. evaluate   the candidate makes the same train topics. Per topic the judge sees both films blind,
+                order swapped between 3 votes (`score.compare`). The candidate must win most of the
+                votes, render at least as many films and lose no topic by more than 10 composite points.
+                Absolute 1–5 scores from one judge are noisy; "which of these two is better" is not.
+  4. confirm    both versions make the holdout topics; the candidate must win at least half the votes
+                there (guards against overfitting the train topics)
+  5. report     report.md (per topic: votes, the judge's reasons, a side-by-side image of both films)
+                + skill.patch. Nothing changes until you run `evolve apply` — the human gate.
 
-Cost: one round = up to 4 + 4 + 4 + 4 films. `--dry-run` prints the plan without running anything.
+Cost: one round = 4 + 4 + 4 + 4 films, plus ~40 judge calls. A quota/login stop pauses the round;
+`evofilm evolve --resume <id>` continues it. `--dry-run` prints the plan without running anything.
 """
 
 import argparse
@@ -61,12 +65,48 @@ def require_complete(summary, what):
                  "its mean is not comparable. Fix the cause (quota, login, network) and rerun.")
 
 
-def verdict(base, cand, margin):
+def verdict(base, cand, pairs):
     b = {r["topic"]: r for r in base["rows"]}
     worst = min((r["composite"] - b[r["topic"]]["composite"] for r in cand["rows"] if r["topic"] in b), default=0)
     renders = (sum(1 for r in cand["rows"] if r.get("rendered")), sum(1 for r in base["rows"] if r.get("rendered")))
-    checks = {"mean +margin": cand["mean"] >= base["mean"] + margin, "no topic −10": worst > -10, "renders ≥": renders[0] >= renders[1]}
+    cv, bv = votes(pairs)
+    checks = {f"pairwise: candidate wins most votes ({cv}–{bv})": cv > bv, "no topic −10": worst > -10,
+              "renders ≥": renders[0] >= renders[1]}
     return all(checks.values()), checks, worst
+
+
+def votes(pairs):
+    return sum(p["cand"] for p in pairs.values()), sum(p["base"] for p in pairs.values())
+
+
+def pairwise(root, st, tag, base, cand, n=3):
+    """Blind pairwise judgments per topic, cached in state.json so a resumed round never re-asks."""
+    from evofilm import llm
+    from evofilm.rsi import score
+    cache = st.setdefault("pairwise", {}).setdefault(tag, {})
+    rows_b = {r["topic"]: r for r in base["rows"]}
+    for r in cand["rows"]:
+        t = r["topic"]
+        if t in cache or t not in rows_b:
+            continue
+        pb, pc = bench.runs_root() / base["id"] / t, bench.runs_root() / cand["id"] / t
+        rb, rc = rows_b[t].get("rendered"), r.get("rendered")
+        if not (rb and rc):                      # a film that never rendered loses every vote
+            cache[t] = {"base": n if rb else 0, "cand": n if rc else 0, "why": ["only one version rendered"]}
+        else:
+            print(f"▶ pairwise {tag}/{t} …", flush=True)
+            try:
+                w = score.compare(pb, pc, st["judge"], votes=n, detail=True)
+            except llm.LLMError as e:
+                save_state(root, st)
+                stopped(root, f"pairwise judging ({str(e)[:120]})")
+            cache[t] = {"base": w["A"], "cand": w["B"],
+                        "why": [x.replace("A:", "baseline:", 1).replace("B:", "candidate:", 1) for x in w["why"]]}
+        img = score.side_by_side(pb, pc, root / "compare" / f"{tag}-{t}.jpg")
+        cache[t]["image"] = f"compare/{tag}-{t}.jpg" if img else None
+        save_state(root, st)
+        print(f"  baseline {cache[t]['base']} · candidate {cache[t]['cand']}", flush=True)
+    return cache
 
 
 def cmd_evolve(argv):
@@ -75,7 +115,7 @@ def cmd_evolve(argv):
     ap = argparse.ArgumentParser(prog="evofilm evolve", description="One benchmark-gated self-improvement round of the skill.")
     ap.add_argument("--baseline", default=None, help="reuse a bench run id of the current skill on the train split")
     ap.add_argument("--harness", default=None); ap.add_argument("--model", default=None)
-    ap.add_argument("--judge", default=None); ap.add_argument("--margin", type=float, default=3.0)
+    ap.add_argument("--judge", default=None); ap.add_argument("--margin", type=float, default=3.0, help=argparse.SUPPRESS)  # kept for old scripts
     ap.add_argument("--max-edits", type=int, default=3)
     ap.add_argument("--skip-holdout", action="store_true")
     ap.add_argument("--resume", default=None, metavar="EVOLVE_ID", help="continue a round stopped by quota/login")
@@ -96,8 +136,9 @@ def cmd_evolve(argv):
         print(f"evolve {eid}: harness {harness}/{model} · judge {a.judge or config.role('judge')} · skill {current}")
         print(f"  1 baseline  {'reuse ' + a.baseline if a.baseline else 'bench run --split train (' + str(len(bench.topics('train'))) + ' films)'}")
         print(f"  2 propose   ≤{a.max_edits} edits to a copy of the skill (prompts/propose.md)")
-        print(f"  3 evaluate  candidate on train; accept if mean ≥ baseline + {a.margin}, no topic −10, renders ≥")
-        print(f"  4 confirm   holdout ({len(bench.topics('holdout'))} films × 2 versions)" if not a.skip_holdout else "  4 confirm   skipped")
+        print("  3 evaluate  candidate on train; blind pairwise per topic (3 votes, order swapped) — accept if it wins")
+        print("              most votes, no topic −10 composite, renders ≥")
+        print(f"  4 confirm   holdout ({len(bench.topics('holdout'))} films × 2 versions, candidate wins ≥ half the votes)" if not a.skip_holdout else "  4 confirm   skipped")
         print("  5 report    report.md + skill.patch → `evofilm evolve apply <id>`")
         print("  a quota/login stop saves the round: `evofilm evolve --resume <id>` continues it")
         return
@@ -139,6 +180,20 @@ def ensure_run(root, st, key, split, skill):
     return summary
 
 
+def pair_table(title, base, cand, pairs):
+    b = {r["topic"]: r for r in base["rows"]}
+    out = [f"### {title}\n", "| topic | composite base → cand | votes base : cand |", "|---|---|---|"]
+    for r in cand["rows"]:
+        p = pairs.get(r["topic"], {})
+        out.append(f"| {r['topic']} | {b.get(r['topic'], {}).get('composite', '-')} → {r['composite']} | "
+                   f"{p.get('base', '-')} : {p.get('cand', '-')} |")
+    for t, p in pairs.items():
+        out.append(f"\n**{t}** — " + " · ".join(p.get("why", [])))
+        if p.get("image"):
+            out.append(f"\n![{t}: baseline left, candidate right]({p['image']})")
+    return "\n".join(out) + "\n\n"
+
+
 def run_round(root, st):
     current = Path(st["current"])
     cand = root / "skill"
@@ -162,14 +217,17 @@ def run_round(root, st):
     diff = (root / "skill.patch").read_text("utf-8")
 
     cs = ensure_run(root, st, "cand", "train", cand)
-    ok, checks, worst = verdict(base, cs, st["margin"])
-    hold = None
+    pairs = pairwise(root, st, "train", base, cs)
+    ok, checks, worst = verdict(base, cs, pairs)
+    hold, hold_pairs = None, {}
     if ok and not st["skip_holdout"]:
         hb = ensure_run(root, st, "hold_base", "holdout", current)
         hc = ensure_run(root, st, "hold_cand", "holdout", cand)
+        hold_pairs = pairwise(root, st, "holdout", hb, hc)
         hold = (hb["mean"], hc["mean"])
-        checks["holdout ≥"] = hc["mean"] >= hb["mean"] - 1
-        ok = ok and checks["holdout ≥"]
+        hv = votes(hold_pairs)
+        checks[f"holdout: candidate wins ≥ half the votes ({hv[0]}–{hv[1]})"] = hv[0] >= hv[1]
+        ok = ok and hv[0] >= hv[1]
     eid = st["id"]
     changes = (cand / "CHANGES.md").read_text("utf-8") if (cand / "CHANGES.md").exists() else "(no CHANGES.md)"
     report = (f"# Evolve {eid} — {'ACCEPTED' if ok else 'REJECTED'}\n\n"
@@ -177,13 +235,14 @@ def run_round(root, st):
               f"| train mean | {base['mean']} | {cs['mean']} |\n"
               + (f"| holdout mean | {hold[0]} | {hold[1]} |\n" if hold else "")
               + f"\nworst topic delta: {worst:+.1f}\n\nchecks: " + ", ".join(f"{k} {'✓' if v else '✗'}" for k, v in checks.items())
-              + "\n\n| topic | baseline | candidate |\n|---|---|---|\n"
-              + "".join(f"| {r['topic']} | {next((b['composite'] for b in base['rows'] if b['topic'] == r['topic']), '-')} | {r['composite']} |\n"
-                        for r in cs["rows"])
+              + "\n\n" + pair_table("Train", base, cs, pairs)
+              + (pair_table("Holdout", hb, hc, hold_pairs) if hold_pairs else "")
               + f"\n## Proposed changes\n\n{changes}\n\n## Patch\n\n```diff\n{diff}\n```\n")
     (root / "report.md").write_text(report, "utf-8")
     (root / "result.json").write_text(json.dumps({"id": eid, "accepted": ok, "checks": checks, "base": base["id"],
-                                                  "cand": cs["id"], "holdout": hold}, indent=2), "utf-8")
+                                                  "cand": cs["id"], "holdout": hold, "votes": votes(pairs),
+                                                  "holdout_votes": votes(hold_pairs) if hold_pairs else None},
+                                                 ensure_ascii=False, indent=2), "utf-8")
     st["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save_state(root, st)
     print(f"{'✓ ACCEPTED' if ok else '✗ rejected'}: train {base['mean']} → {cs['mean']}" + (f" · holdout {hold[0]} → {hold[1]}" if hold else ""))
