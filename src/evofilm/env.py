@@ -97,6 +97,15 @@ def cmd_doctor(argv):
         print(f"  {ok(good)} {r:6} {spec or '-'}{'' if good else '  (' + why + ')'}")
     print(f"self-improvement: {len(lint.load_rules())} rules · lessons "
           + " · ".join(f"{s} {len(lessons.all_lessons(s))}" for s in ("inbox", "accepted", "rejected")))
+    todo = []
+    if len(fonts) < len(FONTS) or not (paths.sfx_lib() / "whoosh.wav").exists():
+        todo.append("evofilm setup            # fonts + sound effects, one time")
+    if not any((root / "evofilm").exists() for root in SKILL_TARGETS.values()):
+        todo.append("evofilm install          # put the skill where your agent finds it")
+    if shutil.which("claude") and not agents.claude_login()[0]:
+        todo.append("claude  → /login          # judge, retro, make and bench call the standalone CLI")
+    if todo:
+        print("next:\n" + "\n".join("  " + t for t in todo))
 
 
 def cmd_install(argv):
@@ -144,7 +153,7 @@ def cmd_make(argv):
     a = ap.parse_args(argv)
     h, m = config.harness()
     harness, model = a.harness or h, a.model or m
-    slug = re.sub(r"[^a-z0-9]+", "-", a.topic.lower()).strip("-")[:40] or f"film-{os.getpid()}"
+    slug = re.sub(r"[^\w]+", "-", a.topic.lower()).strip("-_")[:40] or f"film-{os.getpid()}"   # keeps 中文
     proj = Path(a.dir or f"videos/{slug}").resolve()
     if not a.yes:
         if not sys.stdin.isatty():
