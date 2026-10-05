@@ -20,8 +20,9 @@ def doc(text, kind="kit", rel="assets/kit.js"):
 def test_polygon_reverse_regression():
     """The Yuan film's real bug: a clockwise ring followed by .reverse()."""
     ring = "const TERRITORY = [[73, 39], [95, 53], [132, 51], [140, 47], [120, 25], [100, 21], [80, 30], [73, 39]]"
-    assert not lint.lint_docs([doc(ring + ";")])
-    hits = lint.lint_docs([doc(ring + ".reverse();")])
+    use = "\nconst path = d3.geoPath(proj);\npath({ type: \"Polygon\", coordinates: [TERRITORY] });"
+    assert not lint.lint_docs([doc(ring + ";" + use)])
+    hits = lint.lint_docs([doc(ring + ".reverse();" + use)])
     assert [h.rule for h in hits] == ["polygon-winding"]
 
 
