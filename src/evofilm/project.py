@@ -65,6 +65,18 @@ def preset_dir(name):
                      f"need `npx hyperframes skills update hyperframes-creative` first.")
 
 
+def copy_preset_kit(preset, target):
+    """Presets can ship reusable drawing code (presets/<name>/kit/*.js) — copied into assets/."""
+    kit_dir = paths.PRESETS / preset / "kit"
+    out = []
+    if kit_dir.is_dir():
+        (Path(target) / "assets").mkdir(parents=True, exist_ok=True)
+        for f in sorted(kit_dir.glob("*.js")):
+            shutil.copyfile(f, Path(target) / "assets" / f.name)
+            out.append(f.name)
+    return out
+
+
 def cmd_new(argv):
     ap = argparse.ArgumentParser(prog="evofilm new", description="Scaffold a film project.")
     ap.add_argument("dir")
@@ -91,6 +103,8 @@ def cmd_new(argv):
     if not vt.exists():
         vt.write_text(f"{a.title}\n{a.desc}\n", "utf-8")
     node("build-frame.mjs", "--preset", a.preset, "--preset-dir", pdir, "--hyperframes", target)
+    for kit in copy_preset_kit(a.preset, target):
+        print(f"  kit: assets/{kit} (shared drawing helpers for this preset)")
     state = target / ".evofilm"
     state.mkdir(exist_ok=True)
     (state / "project.json").write_text(json.dumps({
@@ -136,6 +150,18 @@ def cmd_packets(argv):
     skill = paths.skill_dir()
     from evofilm.rsi import lessons
     digest = lessons.digest(scope="frame")
+    kits = sorted(p.relative_to(project) for p in project.glob("assets/*.js") if not p.name.startswith(("hanzi",)))
+    refs = [fid for num, fid, block in split_frames(sb)
+            if fid and re.search(r"^-\s+status:\s*animated", block, re.M)
+            and (project / "compositions" / "frames" / f"{fid}.html").exists()
+            and not is_placeholder(project / "compositions" / "frames" / f"{fid}.html")]
+    shared = ""
+    if kits:
+        shared += "\nShared kit — load it and build on it, so every frame's figure, palette and strokes line up:\n" + \
+                  "".join(f"- {project / k}\n" for k in kits)
+    if refs:
+        shared += "\nApproved frames — match their look, sizes and motion grammar:\n" + \
+                  "".join(f"- {project / 'compositions' / 'frames' / (r + '.html')}\n" for r in refs)
     (out / "_role.md").write_text(f"""# Role: frame worker (EvoFilm)
 
 You build exactly one HyperFrames frame: `compositions/frames/<frame_id>.html` in {project}.
@@ -151,7 +177,7 @@ Canvas {canvas(sb)} · captions enabled: keep text out of the caption band (y > 
 Cue every reveal to the spoken word times in your packet. Write only your frame file, then run
 `evofilm lint --project {project} --frame <frame_id>` and fix everything it reports.
 Reply with one line describing the hero visual.
-{digest}""", "utf-8")
+{shared}{digest}""", "utf-8")
     n = 0
     for num, fid, block in split_frames(sb):
         if not fid:

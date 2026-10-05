@@ -105,8 +105,8 @@ code, it flags the exact line. Details and design notes: [docs/rsi.md](docs/rsi.
 
 | | |
 |---|---|
-| ✅ verified on real films | full pipeline (two films delivered), Chinese TTS/captions/fonts, maps, overlays, Commons, retro on a real bug→fix history, 12 rules on their examples + real films, KaTeX + stroke order in a render, 63 unit tests |
-| 🧪 implemented, needs a model/budget to exercise | vision judge (`claude-cli` needs a logged-in `claude`; API providers tested against a mock server), `bench`, `evolve`, headless `make` |
+| ✅ verified on real films | full pipeline on 4 films (two made from scratch with EvoFilm during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, maps, overlays, Commons, retro on real bug→fix histories, 13 rules on their examples + 4 films, KaTeX + stroke order, chalk kit, clean install from git, 71 unit tests |
+| 🧪 implemented, needs a model/budget to exercise | vision judge (`claude-cli` needs a logged-in `claude`; API providers tested against a mock server), retro with a model, `bench`, `evolve`, headless `make` |
 | ❔ untested | Codex / Gemini / OpenCode harnesses, ElevenLabs voices, image-generation layers |
 
 ## Credits & licenses

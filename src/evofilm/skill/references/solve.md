@@ -16,6 +16,24 @@ EvoFilm snapshot test.
    脚 23×2+12×4=94 ✓) and marks it in green.
 4. 语文: quote the standard text (人教/部编版) exactly; 注释 and 译文 from a reliable edition, sources in BRIEF.
 
+## Problem from a photo (练习册拍照)
+
+1. Transcribe the problem text exactly and describe the figure: which points, which segments are
+   drawn, what is shaded, which angle is marked right. Keep the photo in `capture/problem-photo.jpg`.
+2. **Restate it at the plan gate** ("我读到的题目是…，图中连了 CM 和 AD，阴影是 △AMN，对吗？") — a
+   misread letter or segment ruins the whole film.
+3. Build the figure from the **given lengths** in problem coordinates, never from the photo's pixel
+   proportions (textbook figures are not to scale). Keep the textbook orientation so students recognise it.
+
+## The chalk kit (`assets/chalk-kit.js`, copied by `evofilm new --preset chalk`)
+
+Reusable helpers distilled from the first solve films: board, chalk strokes, draw-on and "writing",
+`coords()` (problem units → screen), `meet()` / `foot()` (intersections and feet of heights — never
+eyeball them), `region()` fills, `label()` / `text({halo})` (readable on coloured regions), `box()`,
+`tick()`, `rightMark()`, `brace()`, `dust()`. Put the film's own points and figure in
+`assets/<film>-kit.js` on top of it; every frame loads both. Layout rules that cost review rounds:
+labels inside a thin region go at its widest part; marks on text ride on the text element.
+
 ## Shape of a problem film (45–90 s; 9:16 suits 抖音/视频号 study accounts)
 
 | Beat | Screen | Narration |

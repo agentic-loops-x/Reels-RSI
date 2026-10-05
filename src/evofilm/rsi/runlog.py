@@ -11,7 +11,7 @@ import time
 from dataclasses import asdict
 from pathlib import Path
 
-from evofilm.project import HF_SECTIONS, hf_findings
+from evofilm.project import HF_SECTIONS, hf_findings, is_placeholder
 
 
 def state(project) -> Path:
@@ -61,7 +61,7 @@ def record_finalize(project, report, findings):
         "hf_warnings": sum(1 for i in hf_items if i["severity"] == "warning"),
         "hf_findings": hf_items,
         "rules": [asdict(f) for f in findings],
-        "frames": len(list(Path(project).glob("compositions/frames/*.html"))),
+        "frames": sum(1 for f in Path(project).glob("compositions/frames/*.html") if not is_placeholder(f)),
     })
 
 

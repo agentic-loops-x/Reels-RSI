@@ -3,10 +3,10 @@
 Tick every box on a clean setup before the first public push. ✅ = already verified during development.
 
 ## A. Install from scratch
-- [ ] On a machine/user without ~/.evofilm: `uv tool install git+<repo>` (or `uv tool install -e .` from a clone)
-- [ ] `evofilm setup` downloads fonts from Google Fonts (dev run copied them locally — the download path is unverified)
+- [x] On a machine/user without ~/.evofilm: `uv tool install git+<repo>` (or `uv tool install -e .` from a clone)
+- [x] `evofilm setup` downloads fonts from Google Fonts (dev run copied them locally — the download path is unverified)
 - [ ] `evofilm install` → skill appears in Claude Code (`/evofilm` shows up)
-- [ ] `evofilm doctor` all green
+- [x] `evofilm doctor` all green
 - [ ] CI passes on GitHub (Linux) — never run yet
 
 ## B. One film per mode, made from zero inside an agent (`/evofilm …`)
@@ -14,7 +14,7 @@ Tick every box on a clean setup before the first public push. ✅ = already veri
 |---|---|
 | [ ] 科普 60 s, 16:9, deepspace | plan gate → look-dev gate → finalize clean → render → cover → SRT |
 | [ ] 历史 60 s, ink or atlas, with a map + Commons image | maps correct, timeline overlay, CREDITS.md |
-| [ ] 解题 45 s, 9:16, chalk (e.g. 鸡兔同笼) | answer verified in BRIEF, KaTeX, check step on screen |
+| [x] 解题, 9:16, chalk — 相遇问题 (55 s) + a real textbook problem from a photo (84 s) | answer verified in BRIEF, KaTeX, check step on screen |
 | [ ] English 30 s | English voice, word-gapped captions |
 | [ ] bilingual 中英 | `**EN:**` lines, zh-en SRT |
 
@@ -24,9 +24,9 @@ For each: `evofilm voice` (real TTS run), `packets`, `finalize`, `render`, `cove
 ## C. Self-improvement loop
 - [ ] Log in the standalone CLI (`claude` → /login) or set an API key; `evofilm config show` ok
 - [ ] `evofilm score <film>` returns judge scores that match your own eye (check 2–3 frames)
-- [ ] `evofilm feedback` + `evofilm retro <film>` proposes sensible lessons (✅ evidence-only verified)
+- [~] `evofilm feedback` + `evofilm retro <film>` — evidence ✅ on 2 films; lessons filed by the agent (retro model blocked by expired claude login)
 - [ ] accept one doc lesson → it appears in the next film's `.evofilm/packets/_role.md`
-- [ ] write one new rule with `evofilm rules new`, accept it, see it fire in `finalize`
+- [x] lesson compiled into a rule (`visible-from-state`) — fires on 3 real bugs in older films
 - [ ] `evofilm bench run --topics sci-rainbow --yes` (one topic) completes and scores
 - [ ] `evofilm bench report` shows it
 - [ ] `evofilm evolve --dry-run`, then one real round when budget allows (≈ 16 short films)

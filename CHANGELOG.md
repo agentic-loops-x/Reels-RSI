@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased — release testing
+
+- Renamed TakeLoop → EvoFilm.
+- From two from-scratch films (相遇问题, a textbook 燕尾模型 problem from a photo): 13 tool fixes —
+  TTS retries, look-dev placeholders, project guard, non-fatal rules, rule false positive fixed,
+  chalk caption contrast, caption band per canvas, packets list the shared kit + approved frames,
+  caption-free `cover --frame`, canvas-generic frame-worker guide.
+- New rule `visible-from-state` (compiled from a lesson) — found 3 latent bugs in two earlier films.
+- `chalk` preset ships `assets/chalk-kit.js` (board, strokes, coords/meet/foot, regions, labels with halo).
+- Solve mode: problem-from-a-photo flow.
+
 ## 0.1.0 — 2026-10-05
 
 First public release.

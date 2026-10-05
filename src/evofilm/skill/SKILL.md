@@ -34,6 +34,7 @@ Ask only what the request leaves open, in one message, each with a recommended d
 XiaoxiaoNeural 女声温暖 · YunjianNeural 浑厚 · en-US-AndrewNeural; ElevenLabs if `ELEVENLABS_API_KEY`)
 · 字幕 (中文 · 中英双语 · none) · 音乐 (user track in `assets/music/`, else a mood) · 审阅 (**yes**: plan → look-dev → final).
 "直接做 / don't ask" ⇒ take every default, state them in one line, no gates.
+A photo of a problem (练习册拍照) → solve.md "Problem from a photo": transcribe it and restate it at the plan gate.
 
 ## Step 1 — Research & facts
 
@@ -103,7 +104,8 @@ Closer look: `evofilm times --project . --frame 04` → `evofilm hf --project . 
 
 ```bash
 evofilm render . --quality high
-evofilm cover --project . --composition    # if compositions/cover.html exists, else: --at <seconds>
+evofilm cover --project . --composition    # if compositions/cover.html exists
+evofilm cover --project . --frame 08       # else: the most telling frame alone, caption-free
 ```
 Deliver `renders/video.mp4`, `renders/cover.jpg`, `renders/subtitles*.srt`, `CREDITS.md` if any;
 duration; frame ids for edits; what was defaulted.

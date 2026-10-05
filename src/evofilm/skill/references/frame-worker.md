@@ -14,7 +14,7 @@ it checks the non-negotiables below plus every rule learned from past films.
 ## Non-negotiables (each one broke a real EvoFilm render or lint)
 
 1. **File shape** — exactly one bare `<template>…</template>`; every `<style>`/`<script>` inside it;
-   root `<div id="root" data-composition-id="<frame_id>" data-width="1920" data-height="1080">`,
+   root `<div id="root" data-composition-id="<frame_id>" data-width="W" data-height="H">` (W×H = the canvas in your packet: 1920×1080, 1080×1920 or 1080×1080),
    styled only via `#root`. One `gsap.timeline({ paused: true })` → `window.__timelines["<frame_id>"]`.
 2. **Ids** — every `class="clip"` element has an id (`<prefix>-ground`, `<prefix>-stage`) and
    `data-start` / `data-duration` / `data-track-index`. Prefix every id and class with a short frame
@@ -31,7 +31,9 @@ it checks the non-negotiables below plus every rule learned from past films.
    `immediateRender: false`, or merge the properties into one tween.
 7. **No negative z-index** — paint order by DOM order: underlay element first, then the text in a
    later `position: relative` span.
-8. **Caption band** — nothing that matters below y = 900. Ground/ambient layers may bleed.
+8. **Caption band** — nothing that matters inside the bottom 16.67 % of the canvas (below y = 900 on 1920×1080,
+   y = 1600 on 1080×1920 — your role file states it). Ground/ambient layers may bleed. On 9:16, use the height:
+   title/working zone at the top, the hero in the middle, a second working zone above the band.
 9. **Blooms / glows that bleed off-canvas** carry `data-layout-allow-overflow`.
 10. **Determinism** — no `Math.random`, `Date.now`, `requestAnimationFrame`, CSS transitions. Use the
     seeded PRNG below. Every pixel is a function of timeline time.
@@ -46,6 +48,9 @@ it checks the non-negotiables below plus every rule learned from past films.
 15. **Film-wide elements are not yours** — a timeline ribbon or chapter bar that spans frames is an
     overlay (`compositions/overlays/`), built by the orchestrator; leave its band (y 40–110) clear
     if the brief says one exists.
+
+17. **Shared kit first** — if your role file lists `assets/<film>-kit.js`, load it and build on it (figure
+    coordinates, strokes, draw/write helpers) instead of redrawing; match the approved frames it lists.
 
 ## The shot skeleton (camera + depth + idle)
 

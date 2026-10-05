@@ -108,3 +108,24 @@ def test_placeholders_keep_unbuilt_frames_on_the_timeline(tmp_path):
 
 def test_band_top_follows_canvas():
     assert project.band_top("format: 1080x1920") == 1600 and project.band_top("format: 1920x1080") == 900
+
+
+def test_chalk_preset_ships_its_kit(tmp_path):
+    assert project.copy_preset_kit("chalk", tmp_path) == ["chalk-kit.js"]
+    assert "window.ChalkKit" in (tmp_path / "assets" / "chalk-kit.js").read_text()
+    assert project.copy_preset_kit("ink", tmp_path / "x") == []
+
+
+def test_packets_list_kit_and_approved_frames(tmp_path):
+    p = tmp_path / "film"
+    (p / "compositions/frames").mkdir(parents=True)
+    (p / "assets").mkdir()
+    (p / "assets/film-kit.js").write_text("window.FilmKit = {};")
+    sb = STORYBOARD.replace("- src: compositions/frames/01-hook.html", "- status: animated\n- src: compositions/frames/01-hook.html")
+    (p / "STORYBOARD.md").write_text(sb)
+    (p / "hyperframes.json").write_text("{}")
+    (p / "compositions/frames/01-hook.html").write_text("<template>real</template>")
+    project.cmd_packets(["--project", str(p)])
+    role = (p / ".evofilm/packets/_role.md").read_text()
+    assert "film-kit.js" in role and "01-hook.html" in role and "02-flood.html" not in role
+    assert "y > 1600" in role                       # 9:16 caption band from the canvas
