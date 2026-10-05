@@ -201,12 +201,12 @@ def report(md=None):
             continue
         if not s.get("complete", True):
             s = {**s, "id": s["id"] + " ⚠ incomplete"}
-        j = [r["judge"] for r in rows if r.get("judge") is not None]
-        c = [r["cost_usd"] for r in rows if r.get("cost_usd")]
+        def avg(key, fmt="{:.1f}", scale=1):
+            vals = [r[key] / scale for r in rows if isinstance(r.get(key), (int, float))]
+            return fmt.format(statistics.mean(vals)) if vals else "-"
         lines.append(f"| {s['id']} | {s['harness']} / {s['model']} | {Path(s['skill']).name} | {s['split']} | {len(rows)} | "
                      f"{sum(1 for r in rows if r.get('rendered'))}/{len(rows)} | **{s['mean']}** | "
-                     f"{round(statistics.mean(j), 1) if j else '-'} | {round(statistics.mean(r['det'] for r in rows), 1)} | "
-                     f"{round(statistics.mean(r['seconds'] for r in rows) / 60, 1)} min | {f'${statistics.mean(c):.2f}' if c else '-'} |")
+                     f"{avg('judge')} | {avg('det')} | {avg('seconds', '{:.1f} min', 60)} | {avg('cost_usd', '${:.2f}')} |")
     text = "# EvoFilm Bench — leaderboard\n\n" + "\n".join(lines) + "\n"
     if md:
         Path(md).write_text(text, "utf-8")
