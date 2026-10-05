@@ -19,6 +19,9 @@
 - Round 4: first headless benchmark film (sonnet, 28.5 s, composite 76.8); bench writes its summary as it
   goes, survives scoring crashes, `bench rescore`; lessons take `when` conditions (preset / aspect /
   mode) and packets get only the lessons that apply to the film; `lessons digest --project`.
+- Round 5: evolve judged by blind pairwise votes with side-by-side images; bench/evolve resume after
+  quota stops; the skill now actually ships in the wheel (a symlink dropped it); first real evolve round
+  (11–1 train, 8–4 holdout); `ChalkKit.board` sized to the canvas (found by the evolve proposer).
 
 ## 0.1.0 — 2026-10-05
 

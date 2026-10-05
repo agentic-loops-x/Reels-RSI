@@ -29,7 +29,7 @@ For each: `evofilm voice` (real TTS run), `packets`, `finalize`, `render`, `cove
 - [x] lesson compiled into a rule (`visible-from-state`) — fires on 3 real bugs in older films
 - [x] `evofilm bench run --topics sci-rainbow --yes` — 1st try hit the account usage limit (now recorded as infra-error); 2nd try with `--model sonnet`: 28.5 s film, 0 check errors, composite 76.8 (scored via `bench rescore` after a sheet-grouping crash, fixed)
 - [x] `evofilm bench report` shows it
-- [ ] `evofilm evolve --dry-run`, then one real round when budget allows (≈ 16 short films)
+- [x] `evofilm evolve --dry-run`, then one real round — accepted (pairwise 11–1 train, 8–4 holdout), paused once by quota and resumed; not applied (human gate)
 - [ ] `evofilm make "…" --yes` headless film completes
 
 ## D. Other models (optional for v0.1, but state the result in the README)

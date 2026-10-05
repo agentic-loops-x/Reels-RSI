@@ -191,7 +191,8 @@ Reading order for contributors: `cli.py` → `skill/SKILL.md` → `cmd_finalize`
 |---|---|
 | ✅ verified on real films | full pipeline on 4 films (two made from scratch with EvoFilm during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, English and bilingual 中英 voice → captions → SRT, maps, overlays, Commons, KaTeX + stroke order, chalk kit, clean install from git, 81 unit tests |
 | ✅ self-improvement, verified | run log + code snapshots on every pass · vision judge (`claude-cli:sonnet`, ~30 s per film) · model retro proposing lessons from a real bug→fix history · lessons accepted and injected into packets — including a headless benchmark film, filtered by `when` · a lesson compiled into a rule that found 3 latent bugs in older films · `bench`: a headless Claude Code (sonnet) session made a 28.5 s science film from one sentence (0 check errors, composite 76.8) and filed its own lessons |
-| 🧪 implemented, not yet run | `evolve` (needs ≈ 16 short films of quota per round), `make` outside bench |
+| ✅ evolve, one real round | 16 headless films, blind pairwise verdict: the evolved skill won 11–1 on train and 8–4 on holdout ([details](docs/rsi.md#the-first-real-round-2026-10-06)) — and surfaced a code bug in the blackboard kit |
+| 🧪 implemented, not yet run | `make` outside bench |
 | ❔ untested | Codex / Gemini / OpenCode harnesses, non-Anthropic judges against real APIs (tested against a mock server), ElevenLabs voices, image-generation layers |
 
 ## Credits & licenses

@@ -71,6 +71,32 @@ better?" with the order swapped is far steadier, and the position swap cancels t
 the first or second image. A quota or login stop pauses a round instead of failing it:
 `evofilm evolve --resume <id>`.
 
+### The first real round (2026-10-06)
+
+Claude Code (sonnet) directed all 16 films; `claude-cli:sonnet` judged; a Pro subscription's quota
+paused the round once for about two hours and `--resume` picked it up.
+
+| | baseline | candidate |
+|---|---|---|
+| train, mean composite | 75.3 | 74.9 |
+| train, blind pairwise votes | 1 | **11** |
+| holdout, mean composite | 72.8 | 73.5 |
+| holdout, blind pairwise votes | 4 | **8** |
+
+The proposer made three edits: checkable minimums for hero size and camera moves, "mechanism
+recipes" (show travel and effect, don't label them), and board legibility for solve films. It also
+traced a broken 16:9 blackboard to a hard-coded canvas in `chalk-kit.js` — a code bug, fixed by hand.
+
+<img src="assets/evolve-seasons.jpg" width="880" alt="en-seasons: baseline (left) vs candidate (right)">
+
+<sub>*Why do we have seasons?* — baseline skill (left) vs evolved skill (right), same topic, same model.</sub>
+
+What it shows: the absolute scores did not move, while side by side the judge preferred the new
+skill 11 to 1 on train — the reason the verdict is pairwise. The caveats: one film per topic; every
+holdout topic was a 2–1 split; and on 静夜思 a human might prefer the baseline's quieter mood (the
+new "hero ≥ half the frame" minimum suits science better than poetry). That judgment is why
+`evolve apply` is left to a person.
+
 ## Safeguards
 
 | Risk | Guard |
