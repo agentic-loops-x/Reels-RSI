@@ -74,14 +74,36 @@ def set_value(key, value, project=False):
     if not k:
         raise SystemExit("✗ key must be section.name, e.g. roles.judge")
     data.setdefault(section, {})[k] = value
-    lines = []
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(dump(data), "utf-8")
+
+
+def _val(v):
+    if isinstance(v, bool):
+        return "true" if v else "false"
+    if isinstance(v, (int, float)):
+        return str(v)
+    if isinstance(v, list):
+        return "[" + ", ".join(_val(x) for x in v) + "]"
+    return '"' + str(v).replace("\\", "\\\\").replace('"', '\\"') + '"'
+
+
+def dump(data, prefix=""):
+    """Minimal TOML writer for config files: tables, nested tables ([providers.mylab]), scalars, lists."""
+    out = []
     for sec, kv in data.items():
         if not isinstance(kv, dict):
             continue
-        lines.append(f"[{sec}]")
-        lines += [f'{kk} = "{vv}"' for kk, vv in kv.items() if not isinstance(vv, dict)]
-        lines.append("")
-    path.write_text("\n".join(lines), "utf-8")
+        name = f"{prefix}{sec}"
+        scalars = {k: v for k, v in kv.items() if not isinstance(v, dict)}
+        if scalars or not any(isinstance(v, dict) for v in kv.values()):
+            out.append(f"[{name}]")
+            out += [f"{k} = {_val(v)}" for k, v in scalars.items()]
+            out.append("")
+        nested = {k: v for k, v in kv.items() if isinstance(v, dict)}
+        if nested:
+            out.append(dump(nested, name + "."))
+    return "\n".join(out)
     print(f"✓ {path}: {section}.{k} = {value}")
 
 

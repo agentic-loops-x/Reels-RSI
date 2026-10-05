@@ -19,3 +19,9 @@ def test_child_env_drops_host_session_but_keeps_user_auth(monkeypatch):
 def test_command_shapes():
     assert agents.command("claude", "opus", "hi")[:2] == ["claude", "-p"]
     assert agents.command("opencode", "deepseek/deepseek-chat", "hi") == ["opencode", "run", "-m", "deepseek/deepseek-chat", "hi"]
+
+
+def test_child_env_filters_a_passed_copy_of_environ(monkeypatch):
+    import os
+    monkeypatch.setenv("CLAUDECODE", "1")
+    assert "CLAUDECODE" not in agents.child_env({**os.environ, "EVOFILM_SKILL_DIR": "/s"})

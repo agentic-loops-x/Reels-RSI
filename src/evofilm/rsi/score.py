@@ -27,6 +27,28 @@ R3 Camera & life — the three samples differ by camera position/motion, not onl
 R4 Pacing — the build-up is spread across the frame (30% sample is not empty, 92% is not identical to 60%)
 R5 Composition — depth layers, clear hierarchy, nothing colliding with the captions, nothing clipped
 R6 Consistency — palette/type coherent with the rest of the film"""
+# A worked problem is a teacher at a board: a still board is right, and "camera" means guiding the eye.
+R3_SOLVE = ("R3 Guiding the eye — the step being spoken is singled out (highlight, colour, pointer, zoom on the "
+            "region); earlier steps dim; each sample shows a clearly different step. A static board is fine")
+
+
+def film_mode(storyboard):
+    routes = re.findall(r"^-\s+route:\s*(\S+)", storyboard, re.M)
+    return "solve" if routes and sum(r.startswith("solve") for r in routes) * 2 >= len(routes) else "explain"
+
+
+def rubric(mode):
+    return RUBRIC.replace(RUBRIC.splitlines()[2], R3_SOLVE) if mode == "solve" else RUBRIC
+
+
+def layout_for(w, h):
+    """Tile size and frames per sheet so a sheet stays near 4:3 — vision models downscale any image to
+    ~1.5k px, and a 9:16 film stacked four deep shrank each frame to ~200 px ("everything is tiny")."""
+    if h > w:
+        return "scale=-2:640", 2          # 360×640 tiles → 1080×1280 sheet
+    if h == w:
+        return "scale=480:-2", 3          # 1440×1440
+    return "scale=640:-2", 4              # 1920×1440
 
 
 def target_seconds(storyboard):
@@ -62,9 +84,13 @@ def deterministic(project):
     return m, max(0.0, s)
 
 
-def sample_sheets(project, out_dir, per_sheet=4):
-    """Per frame a strip of 3 samples (30/60/92 %), stacked 4 frames per image → [(path, [frame ids])]."""
+def sample_sheets(project, out_dir, per_sheet=None):
+    """Per frame a strip of 3 samples (30/60/92 %), stacked a few frames per image → [(path, [frame ids])]."""
     project = Path(project)
+    from evofilm.project import canvas
+    w, h = map(int, canvas((project / "STORYBOARD.md").read_text("utf-8")).split("x"))
+    scale, per = layout_for(w, h)
+    per_sheet = per_sheet or per
     hosts = frame_times.hosts((project / "index.html").read_text("utf-8"))
     video = project / "renders" / "video.mp4"
     out_dir = Path(out_dir)
@@ -77,7 +103,7 @@ def sample_sheets(project, out_dir, per_sheet=4):
             tile = out_dir / f"{fid}-{k}.jpg"
             if video.exists():
                 subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", f"{t:.2f}", "-i", str(video), "-frames:v", "1",
-                                "-vf", "scale=640:-2", str(tile)], check=True)
+                                "-vf", scale, str(tile)], check=True)
             else:
                 from evofilm.project import hf
                 snap = project / "snapshots"
@@ -85,17 +111,19 @@ def sample_sheets(project, out_dir, per_sheet=4):
                 pngs = sorted(snap.glob("frame-*.png"), key=lambda p: p.stat().st_mtime)
                 if not pngs:
                     continue
-                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(pngs[-1]), "-vf", "scale=640:-2", str(tile)], check=True)
+                subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(pngs[-1]), "-vf", scale, str(tile)], check=True)
             tiles.append(tile)
         if len(tiles) == 3:
             strip = out_dir / f"{fid}.jpg"
             subprocess.run(["ffmpeg", "-v", "error", "-y", *sum((["-i", str(t)] for t in tiles), []),
                             "-filter_complex", "hstack=inputs=3", str(strip)], check=True)
             strips.append((fid, strip))
+    groups = [strips[i:i + per_sheet] for i in range(0, len(strips), per_sheet)]
+    if len(groups) > 1 and len(groups[-1]) == 1:      # a lone row reads as one wide frame — fold it into the previous sheet
+        groups[-2] += groups.pop()
     sheets = []
-    for i in range(0, len(strips), per_sheet):
-        group = strips[i:i + per_sheet]
-        sheet = out_dir / f"sheet-{i // per_sheet + 1}.jpg"
+    for n, group in enumerate(groups, 1):
+        sheet = out_dir / f"sheet-{n}.jpg"
         if len(group) == 1:
             sheet.write_bytes(group[0][1].read_bytes())
         else:
@@ -122,15 +150,25 @@ def judge(project, spec):
         if not sheets:
             raise llm.LLMError("no frames to judge (finalize first)")
         layout = "\n".join(f"- image {i + 1}: rows top→bottom = {', '.join(ids)}" for i, (_, ids) in enumerate(sheets))
-        prompt = f"""You are a strict film critic scoring a narrated explainer video made with code (HTML/SVG/canvas).
-Each row of each image is ONE frame of the film, sampled at 30%, 60% and 92% of its duration (left → right).
+        sb = (Path(project) / "STORYBOARD.md").read_text("utf-8")
+        from evofilm.project import band_top, canvas
+        w, h = canvas(sb).split("x")
+        mode = film_mode(sb)
+        kind = ("a worked-problem lesson on a board (judge it as teaching: clarity of each step beats spectacle)"
+                if mode == "solve" else "a narrated explainer")
+        prompt = f"""You are a strict film critic scoring {kind}, made with code (HTML/SVG/canvas).
+Canvas {w}×{h} ({"portrait 9:16 — judge the layout for a phone screen" if int(h) > int(w) else "landscape"}).
+Captions are burned in the band below y={band_top(sb)} (the bottom 16.67 %); that band is reserved for them,
+so content stopping above it is correct, not wasted space.
+Each row of each image is ONE frame of the film: three tiles, each the full {w}×{h} canvas scaled down,
+sampled at 30%, 60% and 92% of its duration (left → right).
 {layout}
 
 What each frame is meant to show and say:
 {storyboard_digest(project)}
 
 Score every frame 1–5 on each criterion (5 = excellent, 3 = acceptable, 1 = broken):
-{RUBRIC}
+{rubric(mode)}
 
 Return JSON: {{"frames": [{{"id": "<frame id>", "R1": n, "R2": n, "R3": n, "R4": n, "R5": n, "R6": n, "note": "<the one fix that would raise this frame most>"}}],
 "top_issues": ["<the 3 most important problems across the film, concrete>"]}}"""

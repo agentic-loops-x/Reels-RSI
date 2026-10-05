@@ -10,6 +10,12 @@
 - New rule `visible-from-state` (compiled from a lesson) — found 3 latent bugs in two earlier films.
 - `chalk` preset ships `assets/chalk-kit.js` (board, strokes, coords/meet/foot, regions, labels with halo).
 - Solve mode: problem-from-a-photo flow.
+- Round 3 (models online): nested agent CLIs no longer inherit the host Claude Code session (false
+  "OAuth session expired"); `doctor` checks the standalone `claude` login; judge sheets sized per aspect
+  (portrait frames were ~200 px), canvas + caption band in the judge prompt, solve-mode R3; retro prompt
+  weighs evidence and refuses judge-sampling lessons; bench records quota/login failures as unscored and
+  evolve refuses incomplete runs; readable SRT cues; `config set` keeps `[providers.*]`; agents get
+  `evofilm` on PATH; README code-structure sections.
 
 ## 0.1.0 — 2026-10-05
 

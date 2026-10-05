@@ -59,7 +59,7 @@ Look at the contact sheet (30% / 60% / 92% samples per frame) and the frame's co
 |---|---|---|
 | R1 | Hero richness | the hero visual is detailed, fills ~half the frame, would look good as a still |
 | R2 | Mechanism shown | the narration's cause→effect is visibly happening, not just labelled |
-| R3 | Camera & life | the three samples differ by camera position, not only by added elements; holds idle |
+| R3 | Camera & life | the three samples differ by camera position, not only by added elements; holds idle. **Solve films:** guiding the eye instead — the spoken step is singled out, earlier steps dim; a still board is fine |
 | R4 | Pacing | reveals land on their spoken words; nothing front-loaded; no dead second >1.5 s |
 | R5 | Composition | 3 depth layers, clear hierarchy, nothing in the caption band, nothing clipped |
 | R6 | Consistency | palette/type from frame.md; the frame belongs to the same film as its neighbours |

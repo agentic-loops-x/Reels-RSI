@@ -101,13 +101,98 @@ Example: the Yuan film's map once collapsed to a speck because a hand-drawn bord
 counter-clockwise. That cost a review round. It is now rule `polygon-winding` — run against the old
 code, it flags the exact line. Details and design notes: [docs/rsi.md](docs/rsi.md).
 
+## Code structure
+
+### The three parts
+
+```
+ ┌───────────────────────────┐  reads  ┌───────────────────────────┐
+ │ ① skill/  (Markdown)      │ ──────▶ │ your agent (Claude Code…) │  the creative half —
+ │   the director's handbook │         │ script, storyboard, frame │  model-driven, varies per run
+ └───────────────────────────┘         │ code, review              │
+                                       └─────────────┬─────────────┘
+                                                     │ runs `evofilm …`
+                                                     ▼
+ ┌───────────────────────────┐  r/w    ┌───────────────────────────┐
+ │ ③ ~/.evofilm/  (memory)   │ ◀─────▶ │ ② evofilm CLI  (Python)   │  the deterministic half —
+ │   lessons, rules, bench   │         │ voice, captions, assemble,│  same input → same bytes
+ └───────────────────────────┘         │ checks, render            │
+                                       └───────────────────────────┘
+```
+
+① is why **any model** works — it is plain instructions any file-reading, command-running agent can
+follow. ② is why it is **simple** — every non-creative chore is one command. ③ is the **RSI** — what
+past films taught, fed back into the next one.
+
+### Layout
+
+```
+src/evofilm/
+├── cli.py            entry point — the command table, dispatches `evofilm <cmd>` to a module
+├── paths.py          single source of truth for locations (package, ~/.evofilm, skill dir)
+├── env.py            setup · doctor · install · make (headless film)
+├── config.py         which model plays which role (harness / judge / retro)
+├── agents.py         model plug-in #1: hand a whole film to an agent CLI (claude/codex/gemini/opencode)
+├── llm.py            model plug-in #2: one-shot calls for judge + retro, 12 providers, stdlib HTTP
+├── project.py        film lifecycle: new → packets → finalize → render (the deterministic conductor)
+├── pipeline/         one file per production step
+│   ├── tts.py            narration + per-word timings + real durations → storyboard + music bed
+│   ├── captions_cjk.py   karaoke captions (CJK line breaking, bilingual)
+│   ├── fonts.py          subset fonts to the characters the film uses
+│   ├── music.py sfx.py   procedural score / sound effects (offline, deterministic)
+│   ├── srt.py cover.py   subtitle export · cover image
+│   ├── geo.py commons.py hanzi.py overlays.py   maps · Commons images · stroke order · film-wide overlays
+│   └── frame_times.py gen_image.py              review timestamps · optional generated illustrations
+├── rsi/              self-improvement
+│   ├── runlog.py         L0  per-pass log + code snapshot of every finalize
+│   ├── score.py          L0  deterministic score + vision judge (R1–R6)
+│   ├── retro.py          L1  evidence (issue → the diff that fixed it) → proposed lessons
+│   ├── lessons.py        L1  inbox → human accept → digest injected into frame packets
+│   ├── lint.py rules/    L2  rule engine; each rule = rule.py + bad.* (must fire) + good.* (must pass)
+│   ├── bench.py          L3  fixed topics, headless films, scored
+│   └── evolve.py         L3  edit a copy of the skill, keep it only if the benchmark improves
+├── skill/            ① SKILL.md (steps 0–9) + references/ (quality bar, frame worker, solve, history, styles…)
+├── presets/<style>/  deepspace · notebook · ink · atlas · chalk — FRAME.md, caption skin, optional kit/*.js
+├── prompts/          templates sent to models: make · retro · propose
+├── bench/topics.toml 8 benchmark topics (4 train, 4 holdout)
+└── vendor/hyperframes/  adapted HyperFrames Node scripts: assemble, transitions, captions
+tests/                pytest; every rule's examples run here too
+docs/                 rsi.md · models.md · comparison.md · release-checklist.md
+```
+
+### A film through the code
+
+| Step | Who | Command | Code | Writes (in the film folder) |
+|---|---|---|---|---|
+| brief, research | agent | — | `skill/SKILL.md` | `BRIEF.md` |
+| scaffold | CLI | `evofilm new` | `project.py` | project, preset, kit |
+| script, storyboard | agent | — | `references/script-and-storyboard.md` | `SCRIPT.md`, `STORYBOARD.md` |
+| voice | CLI | `evofilm voice` | `pipeline/tts.py`, `music.py` | `assets/voice/`, `audio_meta.json`, music |
+| packets | CLI | `evofilm packets` | `project.py` + `rsi/lessons.py` | `.evofilm/packets/` — per-frame briefs **with accepted lessons** |
+| frames | agent (parallel) | — | `references/frame-worker.md` | `compositions/frames/*.html` |
+| finalize (repeat) | CLI | `evofilm finalize` | `project.py` → fonts, captions, sfx, assemble, transitions, checks, **rules**, snapshots | `index.html`, `snapshots/`, **`.evofilm/runs.jsonl` + `history/NNN`** |
+| deliver | CLI | `evofilm render` · `cover` · `srt` | `project.py`, `pipeline/cover.py`, `srt.py` | `renders/` |
+| learn | CLI + model + you | `evofilm score` · `retro` · `lessons` | `rsi/` | lessons → inbox → (you accept) → next film |
+
+### Where things live
+
+| Location | Holds | Written by |
+|---|---|---|
+| package `src/evofilm/` | skill, presets, built-in rules, prompts, bench topics | developers (and `evolve apply`) |
+| `~/.evofilm/` | fonts, SFX, lessons, your rules, feedback, bench runs, `config.toml` | the CLI and you |
+| a film folder | script, storyboard, frames, audio, renders, and `.evofilm/` (that film's log, snapshots, packets, retro evidence) | the agent and the CLI |
+
+Reading order for contributors: `cli.py` → `skill/SKILL.md` → `cmd_finalize` in `project.py` →
+`rsi/lessons.py` and `rsi/rules/visible-from-state/` → `rsi/bench.py`, `rsi/evolve.py`.
+
 ## Status — what is verified
 
 | | |
 |---|---|
-| ✅ verified on real films | full pipeline on 4 films (two made from scratch with EvoFilm during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, maps, overlays, Commons, retro on real bug→fix histories, 13 rules on their examples + 4 films, KaTeX + stroke order, chalk kit, clean install from git, 71 unit tests |
-| 🧪 implemented, needs a model/budget to exercise | vision judge (`claude-cli` needs a logged-in `claude`; API providers tested against a mock server), retro with a model, `bench`, `evolve`, headless `make` |
-| ❔ untested | Codex / Gemini / OpenCode harnesses, ElevenLabs voices, image-generation layers |
+| ✅ verified on real films | full pipeline on 4 films (two made from scratch with EvoFilm during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, English and bilingual 中英 voice → captions → SRT, maps, overlays, Commons, KaTeX + stroke order, chalk kit, clean install from git, 79 unit tests |
+| ✅ self-improvement, verified | run log + code snapshots on every pass · vision judge (`claude-cli:sonnet`, ~30 s per film) · model retro proposing lessons from a real bug→fix history · lessons accepted and injected into packets · a lesson compiled into a rule that found 3 latent bugs in older films |
+| 🧪 implemented, partly exercised | `bench` (harness launch, scoring, quota/login failures recorded as *not scored*), `evolve`, headless `make` — a full benchmark film has not finished yet |
+| ❔ untested | Codex / Gemini / OpenCode harnesses, non-Anthropic judges against real APIs (tested against a mock server), ElevenLabs voices, image-generation layers |
 
 ## Credits & licenses
 

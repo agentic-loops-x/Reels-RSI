@@ -129,3 +129,21 @@ def test_packets_list_kit_and_approved_frames(tmp_path):
     role = (p / ".evofilm/packets/_role.md").read_text()
     assert "film-kit.js" in role and "01-hook.html" in role and "02-flood.html" not in role
     assert "y > 1600" in role                       # 9:16 caption band from the canvas
+
+
+def test_judge_layout_and_mode():
+    from evofilm.rsi import score
+    assert score.layout_for(1080, 1920)[1] == 2 and score.layout_for(1920, 1080)[1] == 4
+    sb = "- route: solve/geometry · svg\n- route: solve/formula\n- route: kinetic-type\n"
+    assert score.film_mode(sb) == "solve"
+    assert "Guiding the eye" in score.rubric("solve") and "Camera & life" in score.rubric("explain")
+    assert score.film_mode("- route: science/sim\n") == "explain"
+
+
+def test_bench_infra_errors_are_not_scores():
+    from evofilm.rsi import bench
+    assert bench.infra_error("You've hit your session limit · resets 10pm")
+    assert bench.infra_error("Failed to authenticate: OAuth session expired")
+    assert bench.infra_error("frame 03 failed lint: contrast") is None
+    rows = [{"composite": 80.0}, {"composite": None, "status": "infra-error"}]
+    assert bench.mean(rows) == 80.0

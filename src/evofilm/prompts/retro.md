@@ -14,6 +14,12 @@ Rules for a good lesson:
   - "kit" for a reusable component worth extracting;
   - otherwise "doc".
 - scope: director (script, storyboard, pacing) · frame (building frames) · history · solve · script · style · all.
+- Weigh the evidence: a FIXED check finding or the viewer's words are facts; the judge's notes are one
+  model's opinion from small downscaled stills — its pixel sizes, proportions and "wrong aspect" claims are
+  often mistaken. Never infer a render or tooling bug from a judge note alone, and say "judge:" in the
+  evidence when a lesson rests only on it.
+- Write about what the viewer sees, never about how the judge samples ("make the 30 % sample differ" is
+  teaching to the test; "spread the build across the frame's narration" is the lesson).
 - Skip anything listed under "Already known".
 
 Return JSON: {"lessons": [{"kind": "...", "scope": "...", "text": "...", "evidence": "pass/diff/feedback it comes from"}]}

@@ -55,6 +55,12 @@ def patch(base, cand):
     return "".join(lines)
 
 
+def require_complete(summary, what):
+    if not summary.get("complete", True):
+        sys.exit(f"✗ {what} bench run {summary['id']} is incomplete (not scored: {', '.join(summary.get('missing', []))}) — "
+                 "its mean is not comparable. Fix the cause (quota, login, network) and rerun.")
+
+
 def verdict(base, cand, margin):
     b = {r["topic"]: r for r in base["rows"]}
     worst = min((r["composite"] - b[r["topic"]]["composite"] for r in cand["rows"] if r["topic"] in b), default=0)
@@ -93,6 +99,7 @@ def cmd_evolve(argv):
     common = dict(harness=harness, model=model, judge=a.judge)
 
     base = bench.load(a.baseline) if a.baseline else bench.run("train", label=f"evolve-{eid}-base", skill_dir=current, **common)
+    require_complete(base, "baseline")
     cand = root / "skill"
     shutil.copytree(current, cand, ignore=shutil.ignore_patterns("__pycache__"))
     inbox = "\n".join(f"- [{m.get('kind')}/{m.get('scope')}] {b}" for st, p, m, b in lessons.all_lessons("inbox")) or "(empty)"
@@ -105,11 +112,13 @@ def cmd_evolve(argv):
         sys.exit(f"✗ the proposer changed nothing ({res['tail'][-300:]})")
 
     cs = bench.run("train", label=f"evolve-{eid}-cand", skill_dir=cand, **common)
+    require_complete(cs, "candidate")
     ok, checks, worst = verdict(base, cs, a.margin)
     hold = None
     if ok and not a.skip_holdout:
         hb = bench.run("holdout", label=f"evolve-{eid}-base-holdout", skill_dir=current, **common)
         hc = bench.run("holdout", label=f"evolve-{eid}-cand-holdout", skill_dir=cand, **common)
+        require_complete(hb, "holdout baseline"); require_complete(hc, "holdout candidate")
         hold = (hb["mean"], hc["mean"])
         checks["holdout ≥"] = hc["mean"] >= hb["mean"] - 1
         ok = ok and checks["holdout ≥"]

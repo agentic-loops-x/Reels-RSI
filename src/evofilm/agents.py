@@ -13,6 +13,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -31,8 +32,11 @@ HOST_VARS = re.compile(r"^(CLAUDECODE|CLAUDE_PID|CLAUDE_EFFORT|CLAUDE_AGENT_SDK_
 
 def child_env(extra=None):
     """The environment for a spawned agent CLI: ours minus the host session's markers."""
-    env = {k: v for k, v in os.environ.items() if not HOST_VARS.match(k)}
-    env.update(extra or {})
+    merged = {**os.environ, **(extra or {})}      # callers often pass a copy of os.environ — filter after merging
+    env = {k: v for k, v in merged.items() if not HOST_VARS.match(k)}
+    here = Path(sys.executable).parent             # the agent runs `evofilm …` — make it the same install as ours
+    if (here / "evofilm").exists() and str(here) not in env.get("PATH", "").split(os.pathsep):
+        env["PATH"] = str(here) + os.pathsep + env.get("PATH", "")
     return env
 
 

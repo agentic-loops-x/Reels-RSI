@@ -15,19 +15,19 @@ Tick every box on a clean setup before the first public push. ✅ = already veri
 | [ ] 科普 60 s, 16:9, deepspace | plan gate → look-dev gate → finalize clean → render → cover → SRT |
 | [ ] 历史 60 s, ink or atlas, with a map + Commons image | maps correct, timeline overlay, CREDITS.md |
 | [x] 解题, 9:16, chalk — 相遇问题 (55 s) + a real textbook problem from a photo (84 s) | answer verified in BRIEF, KaTeX, check step on screen |
-| [ ] English 30 s | English voice, word-gapped captions |
-| [ ] bilingual 中英 | `**EN:**` lines, zh-en SRT |
+| [~] English 30 s | English voice, word-gapped captions — voice → captions → SRT smoke-tested (placeholder frames) |
+| [~] bilingual 中英 | `**EN:**` lines, zh-en SRT — smoke-tested (placeholder frames), captions show EN under zh |
 
 For each: `evofilm voice` (real TTS run), `packets`, `finalize`, `render`, `cover` all via EvoFilm
 (✅ finalize/new/fonts/hanzi verified; voice, packets, render, cover not yet run through EvoFilm).
 
 ## C. Self-improvement loop
-- [ ] Log in the standalone CLI (`claude` → /login) or set an API key; `evofilm config show` ok
-- [ ] `evofilm score <film>` returns judge scores that match your own eye (check 2–3 frames)
-- [~] `evofilm feedback` + `evofilm retro <film>` — evidence ✅ on 2 films; lessons filed by the agent (retro model blocked by expired claude login)
-- [ ] accept one doc lesson → it appears in the next film's `.evofilm/packets/_role.md`
+- [x] Log in the standalone CLI (`claude` → /login) or set an API key; `evofilm doctor` now checks the login (the desktop app's login does not count)
+- [x] `evofilm score <film>` returns judge scores — fixed: portrait sheets were downscaled to ~200 px per frame; solve films get an eye-guiding R3. Judge pixel/proportion claims remain unreliable (human gate)
+- [x] `evofilm feedback` + `evofilm retro <film>` — model retro proposed 5 lessons on the textbook film (1 false, from a judge misreading → retro prompt now weighs evidence)
+- [x] accept doc lessons → digest appears in `.evofilm/packets/_role.md` (8 accepted)
 - [x] lesson compiled into a rule (`visible-from-state`) — fires on 3 real bugs in older films
-- [ ] `evofilm bench run --topics sci-rainbow --yes` (one topic) completes and scores
+- [~] `evofilm bench run --topics sci-rainbow --yes` — launched, agent scaffolded + voiced, then hit the account usage limit; now recorded as infra-error (not a score)
 - [ ] `evofilm bench report` shows it
 - [ ] `evofilm evolve --dry-run`, then one real round when budget allows (≈ 16 short films)
 - [ ] `evofilm make "…" --yes` headless film completes

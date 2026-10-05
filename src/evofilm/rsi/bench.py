@@ -67,6 +67,17 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
         res = agents.run(harness, model, make_prompt(t, proj, skill, quality), cwd=root, log_path=root / f"{t['id']}.log", env=env)
         row = {"topic": t["id"], "split": t["split"], "genre": t["genre"], "agent_ok": res["ok"], "seconds": res["seconds"],
                "cost_usd": res["cost_usd"], "turns": res["turns"]}
+        infra = None if res["ok"] else infra_error(res["tail"])
+        if infra:
+            # not the skill's fault — a score here would be noise that evolve then trusts
+            row.update(status="infra-error", error=infra, composite=None, det=None, judge=None, rendered=False,
+                       notes=[], top_issues=[])
+            rows.append(row)
+            print(f"  ✗ {infra} — topic not scored", flush=True)
+            if INFRA_STOP.search(infra):
+                print("  stopping: the remaining topics would fail the same way", flush=True)
+                break
+            continue
         if (proj / "index.html").exists():
             s = scoring.score(proj, judge, use_judge=bool(judge))
             row.update(composite=s["composite"], det=s["det_score"], judge=s["judge_score"],
@@ -79,10 +90,31 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
         rows.append(row)
         print(f"  composite {row['composite']} · det {row['det']} · judge {row['judge']} · {row['seconds']}s"
               + (f" · ${row['cost_usd']:.2f}" if row.get("cost_usd") else ""))
-    summary = {**plan, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "mean": mean(rows)}
+    scored = [r["topic"] for r in rows if r.get("composite") is not None]
+    missing = [t["id"] for t in chosen if t["id"] not in scored]
+    summary = {**plan, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "mean": mean(rows),
+               "complete": not missing, "missing": missing}
     (root / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), "utf-8")
-    print(f"✓ bench {rid}: mean composite {summary['mean']} over {len(rows)} topic(s) → {root}")
+    if missing:
+        print(f"⚠ bench {rid}: INCOMPLETE — not scored: {', '.join(missing)}. Mean {summary['mean']} over "
+              f"{len(scored)} topic(s) is not comparable; rerun those topics. → {root}")
+    else:
+        print(f"✓ bench {rid}: mean composite {summary['mean']} over {len(rows)} topic(s) → {root}")
     return summary
+
+
+# Failures of the environment, not of the film: quota, login, network, provider outages.
+INFRA = re.compile(r"session limit|usage limit|rate.?limit|quota|credit balance|Failed to authenticate|"
+                   r"OAuth|not logged in|overloaded|ECONNRESET|ETIMEDOUT|network error|503 Service|529", re.I)
+INFRA_STOP = re.compile(r"limit|quota|credit|authenticate|OAuth|logged in", re.I)
+
+
+def infra_error(tail):
+    m = INFRA.search(tail or "")
+    if not m:
+        return None
+    line = next((ln.strip() for ln in (tail or "").splitlines() if m.group(0) in ln), m.group(0))
+    return line[:200]
 
 
 def last_findings(proj):
@@ -117,7 +149,11 @@ def report(md=None):
     lines = ["| run | harness / model | skill | split | topics | rendered | composite | judge | det | avg time | avg cost |",
              "|---|---|---|---|---|---|---|---|---|---|---|"]
     for s in sorted(runs, key=lambda s: -s["mean"]):
-        rows = s["rows"]
+        rows = [r for r in s["rows"] if r.get("composite") is not None]
+        if not rows:
+            continue
+        if not s.get("complete", True):
+            s = {**s, "id": s["id"] + " ⚠ incomplete"}
         j = [r["judge"] for r in rows if r.get("judge") is not None]
         c = [r["cost_usd"] for r in rows if r.get("cost_usd")]
         lines.append(f"| {s['id']} | {s['harness']} / {s['model']} | {Path(s['skill']).name} | {s['split']} | {len(rows)} | "
