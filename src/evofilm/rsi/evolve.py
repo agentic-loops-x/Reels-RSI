@@ -52,7 +52,7 @@ def baseline_digest(summary):
 def patch(base, cand):
     lines = []
     for f in sorted(cand.rglob("*")):
-        if f.is_file() and f.suffix == ".md" and f.name != "CHANGES.md":
+        if f.is_file() and f.suffix == ".md" and f.name not in ("CHANGES.md", "TOOL-BUGS.md"):
             rel = f.relative_to(cand)
             old = (base / rel).read_text("utf-8").splitlines(keepends=True) if (base / rel).exists() else []
             lines += difflib.unified_diff(old, f.read_text("utf-8").splitlines(keepends=True), f"a/{rel}", f"b/{rel}")
@@ -230,6 +230,7 @@ def run_round(root, st):
         ok = ok and hv[0] >= hv[1]
     eid = st["id"]
     changes = (cand / "CHANGES.md").read_text("utf-8") if (cand / "CHANGES.md").exists() else "(no CHANGES.md)"
+    bugs = (cand / "TOOL-BUGS.md").read_text("utf-8").strip() if (cand / "TOOL-BUGS.md").exists() else ""
     report = (f"# Evolve {eid} — {'ACCEPTED' if ok else 'REJECTED'}\n\n"
               f"harness {st['harness']}/{st['model']} · judge {st['judge']}\n\n| | baseline | candidate |\n|---|---|---|\n"
               f"| train mean | {base['mean']} | {cs['mean']} |\n"
@@ -237,7 +238,9 @@ def run_round(root, st):
               + f"\nworst topic delta: {worst:+.1f}\n\nchecks: " + ", ".join(f"{k} {'✓' if v else '✗'}" for k, v in checks.items())
               + "\n\n" + pair_table("Train", base, cs, pairs)
               + (pair_table("Holdout", hb, hc, hold_pairs) if hold_pairs else "")
-              + f"\n## Proposed changes\n\n{changes}\n\n## Patch\n\n```diff\n{diff}\n```\n")
+              + f"\n## Proposed changes\n\n{changes}\n\n"
+              + (f"## Tool bugs found (for a developer — not applied by `evolve apply`)\n\n{bugs}\n\n" if bugs else "")
+              + "## Patch\n\n```diff\n{diff}\n```\n")
     (root / "report.md").write_text(report, "utf-8")
     (root / "result.json").write_text(json.dumps({"id": eid, "accepted": ok, "checks": checks, "base": base["id"],
                                                   "cand": cs["id"], "holdout": hold, "votes": votes(pairs),
@@ -262,7 +265,7 @@ def apply(argv):
     backup = root / "backup"
     shutil.copytree(target, backup, dirs_exist_ok=True)
     for f in (root / "skill").rglob("*.md"):
-        if f.name == "CHANGES.md":
+        if f.name in ("CHANGES.md", "TOOL-BUGS.md"):
             continue
         dst = target / f.relative_to(root / "skill")
         dst.parent.mkdir(parents=True, exist_ok=True)

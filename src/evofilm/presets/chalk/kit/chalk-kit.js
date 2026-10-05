@@ -35,13 +35,22 @@
     return e;
   }
 
-  /* board: soft lighter centre + seeded eraser smudges (static) */
-  function board(div, seed) {
+  /* the composition's canvas (data-width/height on the frame root); 9:16 if none is found */
+  function canvas(node) {
+    const root = node && node.closest ? node.closest("[data-width][data-height]") : null;
+    const w = root ? +root.getAttribute("data-width") : 0, h = root ? +root.getAttribute("data-height") : 0;
+    return w > 0 && h > 0 ? { w, h } : { w: 1080, h: 1920 };
+  }
+
+  /* board: soft lighter centre + seeded eraser smudges (static), sized to the canvas — 16:9, 9:16 or 1:1
+     (w/h override the detected canvas) */
+  function board(div, seed, w, h) {
+    const cv = w && h ? { w, h } : canvas(div);
     div.style.background = "radial-gradient(ellipse 70% 55% at 50% 42%, #2D3E38 0%, #22302B 58%, #18231F 100%)";
-    const svg = el("svg", { viewBox: "0 0 1080 1920", width: 1080, height: 1920, style: "position:absolute;inset:0" }, div);
-    const r = rng(seed || 3);
+    const svg = el("svg", { viewBox: `0 0 ${cv.w} ${cv.h}`, width: cv.w, height: cv.h, style: "position:absolute;inset:0" }, div);
+    const r = rng(seed || 3), k = Math.min(cv.w, cv.h) / 1080;
     for (let i = 0; i < 9; i++) {
-      el("ellipse", { cx: r() * 1080, cy: 200 + r() * 1300, rx: 120 + r() * 220, ry: 30 + r() * 60,
+      el("ellipse", { cx: r() * cv.w, cy: cv.h * 0.1 + r() * cv.h * 0.68, rx: (120 + r() * 220) * k, ry: (30 + r() * 60) * k,
         fill: "#F2EFE6", opacity: (0.018 + r() * 0.02).toFixed(3), transform: `rotate(${(r() - 0.5) * 30})` }, svg);
     }
     return svg;
@@ -177,5 +186,5 @@
     }
   }
 
-  window.ChalkKit = { C, rng, el, board, defs, wobble, line, box, stroke, draw, write, text, seg, coords, foot, meet, region, label, tick, rightMark, brace, dust };
+  window.ChalkKit = { C, canvas, rng, el, board, defs, wobble, line, box, stroke, draw, write, text, seg, coords, foot, meet, region, label, tick, rightMark, brace, dust };
 })();

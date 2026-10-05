@@ -16,6 +16,11 @@ Make at most {{max_edits}} focused edits to {{candidate}}/SKILL.md or {{candidat
 - Prefer concrete, checkable instructions (numbers, recipes, examples) over exhortations.
 - Do not lengthen the skill by more than ~60 lines in total; delete what is obsolete.
 - Do not change command names, file contracts or scripts.
+- Write for what a viewer sees, never for how the judge samples: "the 30/60/92 % stills must differ" is
+  teaching to the test; "keep the picture changing until the narration ends" is the instruction.
+- If the evidence points at a defect in EvoFilm's code, a preset or a kit (something an instruction can
+  only work around), still add the workaround if it helps, and ALSO describe the defect in
+  {{candidate}}/TOOL-BUGS.md (file, what breaks, how to reproduce) so a developer fixes the cause.
 
 Then write {{candidate}}/CHANGES.md: one bullet per edit — what changed, which evidence motivated it,
 and which R-score or finding it should move. Reply with the bullets.
