@@ -2,7 +2,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from takeloop.rsi import lint
+from evofilm.rsi import lint
 
 RULES = lint.load_rules()
 

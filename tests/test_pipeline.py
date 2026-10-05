@@ -1,8 +1,8 @@
 import json
 
-from takeloop import project
-from takeloop.pipeline import music, srt, tts
-from takeloop.rsi import retro, runlog, score
+from evofilm import project
+from evofilm.pipeline import music, srt, tts
+from evofilm.rsi import retro, runlog, score
 
 STORYBOARD = """---
 format: 9:16

@@ -1,14 +1,14 @@
-TakeLoop
-Copyright 2026 TakeLoop contributors
+EvoFilm
+Copyright 2026 EvoFilm contributors
 Licensed under the Apache License, Version 2.0 (see LICENSE).
 
 This product includes software from HyperFrames (https://github.com/heygen-com/hyperframes),
 Copyright HeyGen, licensed under the Apache License, Version 2.0:
-  - src/takeloop/vendor/hyperframes/  — workflow scripts from the faceless-explainer skill
-    (assemble-index, build-frame, captions, transitions and lib/), vendored unmodified; TakeLoop
-    patches captions.mjs at run time (src/takeloop/pipeline/captions_cjk.py) and ports the
-    sync-durations step to Python (src/takeloop/pipeline/tts.py).
-  - src/takeloop/presets/*/caption-skin.html — derived from the HyperFrames biennale-yellow
+  - src/evofilm/vendor/hyperframes/  — workflow scripts from the faceless-explainer skill
+    (assemble-index, build-frame, captions, transitions and lib/), vendored unmodified; EvoFilm
+    patches captions.mjs at run time (src/evofilm/pipeline/captions_cjk.py) and ports the
+    sync-durations step to Python (src/evofilm/pipeline/tts.py).
+  - src/evofilm/presets/*/caption-skin.html — derived from the HyperFrames biennale-yellow
     caption skin (modified: CJK tuning and palettes).
 
 Third-party material fetched at run time, not distributed in this repository:

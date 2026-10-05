@@ -1,13 +1,13 @@
 <div align="center">
 
-# TakeLoop · 越拍越好的开源 AI 导演
+# EvoFilm · 会进化的开源 AI 导演
 
 一句话进去，一部带配音、字幕、配乐的讲解视频出来。画面全部由代码渲染，任何模型都能当导演，
 而且**每拍一部，它就变强一点**。
 
 [English](README.md) · [自我改进原理](docs/rsi.md) · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
-<img src="docs/assets/yuan-frames.jpg" width="880" alt="用 TakeLoop 制作的《元朝是怎么灭亡的》画面">
+<img src="docs/assets/yuan-frames.jpg" width="880" alt="用 EvoFilm 制作的《元朝是怎么灭亡的》画面">
 
 <sub>《元朝是怎么灭亡的》：96 秒水墨历史片，包含手绘疆域地图、贯穿全片的年代标尺、公版肖像、逐字高亮字幕和程序化配乐。</sub>
 
@@ -15,12 +15,12 @@
 
 ## 三个卖点
 
-- **🔁 会自我改进（RSI）**：每部片子都会留下记录：检查抓到了什么问题、哪段代码修好了它、你说了什么。TakeLoop 把这些记录变成三样东西：
+- **🔁 会自我改进（RSI）**：每部片子都会留下记录：检查抓到了什么问题、哪段代码修好了它、你说了什么。EvoFilm 把这些记录变成三样东西：
   - **规则**：犯过的错写成自动检查，每条规则都附带一个必须报错的样例和一个必须通过的样例。
   - **经验**：自动写进下一部片子的制作说明。
   - **基准测试**：技能可以自己改写自己，但只有在跑分里确实更好的改动才会保留。
 - **🔌 模型随便换**：导演工作交给你已经在用的智能体：Claude Code、Codex CLI、Gemini CLI，或者 OpenCode（可以接 DeepSeek、通义千问、Kimi、智谱 GLM、本地模型）。评审和复盘这两个角色可以填任意 `厂商:模型`。不依赖任何 SDK。
-- **⚡ 足够简单**：`takeloop setup && takeloop install` 装好以后，对智能体说一句「/takeloop 做一个讲浮力的视频」就行；也可以用 `takeloop make "…"` 一条命令出片。默认全免费：Edge 中文配音、程序化配乐和音效、开源字体、公有领域地图。
+- **⚡ 足够简单**：`evofilm setup && evofilm install` 装好以后，对智能体说一句「/evofilm 做一个讲浮力的视频」就行；也可以用 `evofilm make "…"` 一条命令出片。默认全免费：Edge 中文配音、程序化配乐和音效、开源字体、公有领域地图。
 
 **中文优先**：
 - 配音给出逐字时间，字幕逐字高亮。
@@ -34,18 +34,18 @@
 需要：Python ≥ 3.11（[uv](https://docs.astral.sh/uv/)）、Node ≥ 22、FFmpeg，以及一个智能体 CLI（推荐 Claude Code）。
 
 ```bash
-uv tool install git+https://github.com/OWNER/takeloop
-takeloop setup      # 一次性：字体、音效库、HyperFrames
-takeloop install    # 把技能装进 Claude Code / Codex / ~/.agents/skills
-takeloop doctor     # 检查环境，看每个角色用的是哪个模型
+uv tool install git+https://github.com/OWNER/evofilm
+evofilm setup      # 一次性：字体、音效库、HyperFrames
+evofilm install    # 把技能装进 Claude Code / Codex / ~/.agents/skills
+evofilm doctor     # 检查环境，看每个角色用的是哪个模型
 ```
 
 然后在智能体里说：
 
 ```
-/takeloop 做一个 90 秒的视频：元朝是怎么灭亡的
-/takeloop 小学奥数：鸡兔同笼，头 35 脚 94，用画图法讲解，竖屏
-/takeloop 古诗《静夜思》逐句讲解，水墨风
+/evofilm 做一个 90 秒的视频：元朝是怎么灭亡的
+/evofilm 小学奥数：鸡兔同笼，头 35 脚 94，用画图法讲解，竖屏
+/evofilm 古诗《静夜思》逐句讲解，水墨风
 ```
 
 ## 能做什么
@@ -53,7 +53,7 @@ takeloop doctor     # 检查环境，看每个角色用的是哪个模型
 | 类型 | 说明 |
 |---|---|
 | 历史 | 朝代速览、战役、人物、路线；水墨、古地图、手账三种风格；地图有古今地理校验；维基共享资源图片自动署名 |
-| 解题 | 板书风格；KaTeX 公式（化学方程式用 mhchem）；笔顺动画（`takeloop hanzi`）；先验算再写稿，片中演示验算 |
+| 解题 | 板书风格；KaTeX 公式（化学方程式用 mhchem）；笔顺动画（`evofilm hanzi`）；先验算再写稿，片中演示验算 |
 | 科普 | Three.js / Canvas / SVG；深空和手账风格；按 6 项评分表审片 |
 | 其他 | 无台词故事短片、分章节长片、「照这个视频的风格做」、封面、SRT 字幕 |
 
@@ -61,7 +61,7 @@ takeloop doctor     # 检查环境，看每个角色用的是哪个模型
 
 | 层级 | 命令 | 作用 |
 |---|---|---|
-| L0 片内审查 | `finalize` · `score` | 每轮都跑 HyperFrames 检查和 TakeLoop 规则，结果记日志；视觉模型按 R1–R6 打分 |
+| L0 片内审查 | `finalize` · `score` | 每轮都跑 HyperFrames 检查和 EvoFilm 规则，结果记日志；视觉模型按 R1–R6 打分 |
 | L1 跨片记忆 | `retro` · `lessons` | 把每个修掉的问题和修它的代码改动对应起来，加上你的反馈，提出经验；你同意的经验会注入以后每个镜头的制作包 |
 | L2 经验变规则 | `rules new/test` | 反复出现的错误编译成静态检查，附带正反样例，换哪个模型都绕不过 |
 | L3 技能进化 | `bench` · `evolve` | 8 个固定题目分训练集和验证集。智能体改一份技能副本，用它重拍同样的题目；训练集分数超过基线、验证集分数也没变差，才算通过，最后由你 `evolve apply` 确认 |
