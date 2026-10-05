@@ -28,3 +28,20 @@ def test_config_set_keeps_custom_providers(isolated_home):
     config.set_value("roles.judge", "mylab:vl")
     data = tomllib.loads((isolated_home / "config.toml").read_text())
     assert data["providers"]["mylab"]["base_url"] == "https://x/v1" and data["roles"]["judge"] == "mylab:vl"
+
+
+def test_wheel_ships_the_skill(tmp_path):
+    """A symlink to the skill once made hatch drop src/evofilm/skill from the sdist — and so the wheel."""
+    import shutil, subprocess, zipfile
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    if not shutil.which("uv"):
+        import pytest
+        pytest.skip("uv not installed")
+    subprocess.run(["uv", "build", "-q", "--out-dir", str(tmp_path)], cwd=root, check=True)
+    names = zipfile.ZipFile(next(tmp_path.glob("*.whl"))).namelist()
+    for need in ("evofilm/skill/SKILL.md", "evofilm/skill/references/solve.md", "evofilm/presets/chalk/kit/chalk-kit.js",
+                 "evofilm/rsi/rules/visible-from-state/bad.js", "evofilm/vendor/hyperframes/lib/transitions.json",
+                 "evofilm/bench/topics.toml", "evofilm/prompts/retro.md"):
+        assert need in names, need
+    assert not [n for n in names if n.endswith(".test.mjs") or "__pycache__" in n]

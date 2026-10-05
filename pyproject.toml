@@ -36,6 +36,10 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/evofilm"]
+exclude = ["*.test.mjs"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [".github", "docs/assets"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

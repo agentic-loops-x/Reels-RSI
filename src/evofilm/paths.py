@@ -22,9 +22,8 @@ def skill_dir() -> Path:
     env = os.environ.get("EVOFILM_SKILL_DIR")
     if env:
         return Path(env).expanduser().resolve()
-    for cand in (PACKAGE / "skill", PACKAGE.parent.parent / "skills" / "evofilm"):
-        if (cand / "SKILL.md").exists():
-            return cand
+    if (PACKAGE / "skill" / "SKILL.md").exists():
+        return PACKAGE / "skill"
     raise SystemExit("✗ evofilm skill directory not found (set EVOFILM_SKILL_DIR)")
 
 
