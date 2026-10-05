@@ -128,7 +128,15 @@ def load_rule(d):
 
 
 def load_rules():
-    return [load_rule(d) for d in rule_dirs()]
+    """Every rule that loads. A broken rule (e.g. a user rule with a syntax error) is reported and
+    skipped — one bad rule must never take the whole check down."""
+    out = []
+    for d in rule_dirs():
+        try:
+            out.append(load_rule(d))
+        except Exception as e:  # noqa: BLE001 — any error in third-party rule code
+            print(f"  ⚠ rule {d.name} failed to load and was skipped: {type(e).__name__}: {e}", file=sys.stderr)
+    return out
 
 
 def doc_for(path, root=None):
@@ -141,7 +149,8 @@ def doc_for(path, root=None):
 
 def project_files(project, frame=None):
     project = Path(project)
-    files = [p for p in project.glob("compositions/**/*.html") if p.name not in GENERATED]
+    from evofilm.project import is_placeholder
+    files = [p for p in project.glob("compositions/**/*.html") if p.name not in GENERATED and not is_placeholder(p)]
     files += [p for p in project.glob("assets/*.js")]
     if frame:
         files = [p for p in files if p.stem.startswith(frame)]
@@ -156,7 +165,12 @@ def lint_docs(docs, rules=None):
             kinds = r.RULE.get("kinds")
             if kinds and doc.kind not in kinds:
                 continue
-            for f in r.check(doc) or []:
+            try:
+                found = r.check(doc) or []
+            except Exception as e:  # noqa: BLE001
+                print(f"  ⚠ rule {r.RULE['id']} crashed on {doc.rel}: {type(e).__name__}: {e}", file=sys.stderr)
+                continue
+            for f in found:
                 f.rule, f.severity = r.RULE["id"], f.severity or r.RULE.get("severity", "warning")
                 f.fix = f.fix or r.RULE.get("fix", "")
                 out.append(f)

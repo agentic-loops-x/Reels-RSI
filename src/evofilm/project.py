@@ -42,6 +42,16 @@ def hf(project, args, capture=False, check=True):
     return run(["npx", "-y", f"hyperframes@{hf_version(project)}", *args], cwd=project, capture=capture, check=check)
 
 
+def require_project(path, need=("hyperframes.json", "STORYBOARD.md")):
+    """Fail fast outside a film project instead of creating stray folders (seen in release testing)."""
+    project = Path(path).resolve()
+    missing = [n for n in need if not (project / n).exists()]
+    if missing:
+        sys.exit(f"✗ {project} is not an EvoFilm project (missing {', '.join(missing)}) — "
+                 "run inside the project or pass its path; create one with `evofilm new`")
+    return project
+
+
 # ── new ──────────────────────────────────────────────────────────────────────
 def preset_dir(name):
     if (paths.PRESETS / name / "FRAME.md").exists():
@@ -116,7 +126,7 @@ def cmd_packets(argv):
     ap = argparse.ArgumentParser(prog="evofilm packets", description="Write per-frame worker packets.")
     ap.add_argument("--project", default=".")
     a = ap.parse_args(argv)
-    project = Path(a.project).resolve()
+    project = require_project(a.project)
     sb = (project / "STORYBOARD.md").read_text("utf-8")
     direction = re.search(r"^## Video direction\n(.*?)(?=^## Frame)", sb, re.M | re.S)
     meta = json.loads((project / "audio_meta.json").read_text("utf-8")) if (project / "audio_meta.json").exists() else {}
@@ -157,6 +167,48 @@ Reply with one line describing the hero visual.
     print(f"✓ packets: {n} frames → {out}")
 
 
+# ── placeholders: look-dev builds 2 frames; the rest must still hold their place on the timeline ──
+PLACEHOLDER = "<!-- evofilm:placeholder -->"
+
+
+def placeholders(project):
+    """Write a plain stand-in for every storyboard frame whose file does not exist yet. Without it the
+    assembler closes the gap and every later frame plays under the wrong narration and captions."""
+    sb = (project / "STORYBOARD.md").read_text("utf-8")
+    w, h = canvas(sb).split("x")
+    made = []
+    for num, fid, block in split_frames(sb):
+        if not fid:
+            continue
+        path = project / "compositions" / "frames" / f"{fid}.html"
+        if path.exists():
+            continue
+        dur = re.search(r"^-\s+duration:\s*([\d.]+)", block, re.M)
+        d = dur.group(1) if dur else "5"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"""{PLACEHOLDER}
+<template>
+  <style>#root {{ position: absolute; inset: 0; }} .ph {{ position: absolute; inset: 0; background: #2a2a2a; }}
+  .ph-l {{ position: absolute; left: 60px; top: 60px; font: 600 40px "JetBrains Mono", monospace; color: #8a8a8a; }}</style>
+  <div id="root" data-composition-id="{fid}" data-width="{w}" data-height="{h}">
+    <div id="ph-{fid}" class="clip ph" data-start="0" data-duration="{d}" data-track-index="0"></div>
+    <div id="ph-{fid}-label" class="clip ph-l" data-start="0" data-duration="{d}" data-track-index="1">frame {fid} · not built yet</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>window.__timelines["{fid}"] = gsap.timeline({{ paused: true }});</script>
+</template>
+""", "utf-8")
+        made.append(fid)
+    return made
+
+
+def is_placeholder(path):
+    try:
+        return Path(path).read_text("utf-8").startswith(PLACEHOLDER)
+    except OSError:
+        return False
+
+
 # ── finalize ─────────────────────────────────────────────────────────────────
 def step(name):
     print(f"── {name}", flush=True)
@@ -168,7 +220,7 @@ def cmd_finalize(argv):
     ap.add_argument("project", nargs="?", default=".")
     ap.add_argument("--no-snapshot", action="store_true")
     a = ap.parse_args(argv)
-    project = Path(a.project).resolve()
+    project = require_project(a.project)
     from evofilm.pipeline import captions_cjk, fonts, music, overlays, sfx, srt
     from evofilm.rsi import lint, runlog
 
@@ -181,6 +233,9 @@ def cmd_finalize(argv):
     else:
         print("  (user track or none — unchanged)")
     step("sfx"); sfx.main(["cues", "--project", str(project)])
+    made = placeholders(project)
+    if made:
+        print(f"── placeholders for frames not built yet (keeps voice and captions aligned): {', '.join(made)}")
     step("assemble")
     r = node("assemble-index.mjs", "--storyboard", "./STORYBOARD.md", "--hyperframes", ".", cwd=project, capture=True)
     print("\n".join(l for l in r.stdout.splitlines() if re.search(r"total duration|anomal|skipped|frames|voice|bgm|captions|sfx", l)))
@@ -207,7 +262,8 @@ def cmd_finalize(argv):
         times = ",".join(f"{t:.2f}" for t in frame_times.sample_times(project))
         sr = hf(project, ["snapshot", "--at", times], capture=True, check=False)
         print("\n".join([l for l in (sr.stdout + sr.stderr).splitlines() if re.search(r"contact-sheet|frame-", l)][-3:]))
-        print(f"   review: {project}/snapshots/contact-sheet.jpg (3 samples per frame: 30% · 60% · 92%)")
+        sheets = sorted(p.name for p in (project / "snapshots").glob("contact-sheet*.jpg"))
+        print(f"   review: {project}/snapshots/{', '.join(sheets) or '(none)'} (3 samples per frame: 30% · 60% · 92%)")
     rec = runlog.record_finalize(project, report, findings)
     print(f"✓ finalize #{rec['n']}: hyperframes {rec['hf_errors']} error(s) / {rec['hf_warnings']} warning(s) · "
           f"evofilm rules {len(findings)} finding(s)")
@@ -251,7 +307,7 @@ def cmd_render(argv):
     ap.add_argument("--quality", default="high", choices=["draft", "standard", "high"])
     ap.add_argument("--output", default="renders/video.mp4")
     a = ap.parse_args(argv)
-    project = Path(a.project).resolve()
+    project = require_project(a.project)
     t0 = time.time()
     r = hf(project, ["render", "--skill=faceless-explainer", "--quality", a.quality, "--output", a.output],
            capture=True, check=False)

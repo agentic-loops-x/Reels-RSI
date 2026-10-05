@@ -14,8 +14,13 @@ RING = re.compile(r"\[\s*" + PAIR + r"(?:\s*,\s*" + PAIR + r"){3,}\s*,?\s*\]")
 NAMEY = re.compile(r"(poly|territor|border|region|empire|realm|zone|area|疆|域)", re.I)
 
 
+GEO = re.compile(r"d3\.geo|geoPath|geo[A-Z]\w+\(|[\"']Polygon[\"']|EF_GEO|projection")
+
+
 def check(doc):
     out, t = [], doc.text
+    if not GEO.search(t):
+        return out  # no map code in this file — small closed shapes are screen coordinates
     for m in RING.finditer(t):
         pts = [tuple(map(float, p)) for p in re.findall(r"\[\s*(" + NUM + r")\s*,\s*(" + NUM + r")\s*\]", m.group(0))]
         if not all(-180 <= x <= 180 and -90 <= y <= 90 for x, y in pts):

@@ -39,3 +39,17 @@ def test_user_rule_scaffold_loads(isolated_home):
     d = isolated_home / "rules" / "my-rule"
     assert (d / "rule.py").exists() and (d / "bad.html").exists()
     assert "my-rule" in [r.RULE["id"] for r in lint.load_rules()]
+
+
+def test_broken_user_rule_is_skipped_not_fatal(isolated_home, capsys):
+    d = isolated_home / "rules" / "broken"
+    d.mkdir(parents=True)
+    (d / "rule.py").write_text("RULE = {'id': 'broken'\n")          # syntax error
+    ids = [r.RULE["id"] for r in lint.load_rules()]
+    assert "broken" not in ids and "polygon-winding" in ids
+    assert "failed to load" in capsys.readouterr().err
+
+
+def test_screen_shapes_are_not_maps():
+    car = "const outline = wobble([[-62, -22], [-62, -60], [52, -66], [62, -22], [-62, -22]], 2, 21);"
+    assert not lint.lint_docs([doc(car)])

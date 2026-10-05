@@ -84,3 +84,27 @@ def test_deterministic_score(tmp_path):
     assert m["rendered"] and m["avg_shot_s"] == 5.0 and m["duration_err"] == 0.5
     assert s == 90.0   # −10 for missing the 20 s target by 50 %
     assert score.judge_score({"frames": [{"R1": 5, "R2": 4, "R3": 3, "R4": 4, "R5": 5, "R6": 3}]}) == 80.0
+
+
+def test_require_project_fails_fast(tmp_path):
+    import pytest
+    with pytest.raises(SystemExit) as e:
+        project.require_project(tmp_path)
+    assert "not an EvoFilm project" in str(e.value)
+    assert not any(tmp_path.iterdir())          # nothing created
+
+
+def test_placeholders_keep_unbuilt_frames_on_the_timeline(tmp_path):
+    p = tmp_path / "film"
+    (p / "compositions/frames").mkdir(parents=True)
+    (p / "STORYBOARD.md").write_text(STORYBOARD)
+    (p / "compositions/frames/01-hook.html").write_text("<template>real</template>")
+    assert project.placeholders(p) == ["02-flood"]
+    ph = p / "compositions/frames/02-flood.html"
+    assert project.is_placeholder(ph) and 'data-duration="6"' in ph.read_text() and 'data-width="1080"' in ph.read_text()
+    assert 'id="ph-02-flood"' in ph.read_text()               # ids must not start with a digit
+    assert project.placeholders(p) == []                       # idempotent, never overwrites
+
+
+def test_band_top_follows_canvas():
+    assert project.band_top("format: 1080x1920") == 1600 and project.band_top("format: 1920x1080") == 900

@@ -48,8 +48,8 @@
     max-width: 78%;
     padding: 20px 44px 24px;
     background: var(--cap-canvas, #e9e5db);
-    border: 1px solid var(--cap-ink, #1b2566);
-    border-radius: 0;
+    border: 1px solid color-mix(in srgb, var(--cap-ink, #1b2566) 35%, transparent);
+    border-radius: 6px;
   }
   .caption-line {
     display: flex;
@@ -67,12 +67,13 @@
   .caption-word {
     display: inline-block;
     padding: 0 0.02em;
-    color: color-mix(in srgb, var(--cap-ink, #1b2566) 42%, var(--cap-canvas, #e9e5db));
+    color: color-mix(in srgb, var(--cap-ink, #1b2566) 62%, var(--cap-canvas, #e9e5db));
   }
   /* current word — THE solar-yellow underprint (box-shadow spread = a hard square
      block w/o layout shift; no blur), indigo ink reading on top */
   .caption-word.is-active {
-    color: var(--cap-ink, #1b2566);
+    /* dark board ink on the yellow chalk block — light-on-yellow fails contrast */
+    color: var(--cap-canvas, #1b2566);
     background: var(--cap-accent, #f1ee2e);
     box-shadow: 0 0 0 0.06em var(--cap-accent, #f1ee2e);
   }

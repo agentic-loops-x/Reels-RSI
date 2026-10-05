@@ -75,7 +75,21 @@ def attach_punct(words, source):
 DEFAULT_VOICE = {"zh": "zh-CN-YunxiNeural", "en": "en-US-AndrewNeural"}
 
 
-async def edge_synth(text, voice, rate, mp3, lang="zh"):
+async def edge_synth(text, voice, rate, mp3, lang="zh", attempts=4):
+    """edge-tts with retries — the service drops connections now and then."""
+    for i in range(attempts):
+        try:
+            return await _edge_once(text, voice, rate, mp3, lang)
+        except Exception as e:  # aiohttp / websocket / service errors
+            if i == attempts - 1:
+                sys.exit(f"✗ edge-tts failed after {attempts} tries ({type(e).__name__}: {str(e)[:160]}) — "
+                         "check the network (speech.platform.bing.com) and rerun; finished frames are kept with --only")
+            wait = 2 ** i * 2
+            print(f"  ⚠ edge-tts {type(e).__name__} — retry in {wait}s", flush=True)
+            await asyncio.sleep(wait)
+
+
+async def _edge_once(text, voice, rate, mp3, lang):
     import edge_tts
     comm = edge_tts.Communicate(text, voice or DEFAULT_VOICE[lang], rate=rate, boundary="WordBoundary")
     words = []
@@ -177,7 +191,8 @@ async def _main(argv=None):
     ap.add_argument("--lang", default="auto", choices=["auto", "zh", "en"])
     a = ap.parse_args(argv)
 
-    project = Path(a.project).resolve()
+    from evofilm.project import require_project
+    project = require_project(a.project, need=("SCRIPT.md", "STORYBOARD.md"))
     provider = pick_provider(a.provider)
     voice_dir = project / "assets" / "voice"
     voice_dir.mkdir(parents=True, exist_ok=True)
