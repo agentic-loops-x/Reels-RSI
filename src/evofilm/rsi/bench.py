@@ -15,6 +15,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import statistics
 import sys
 import time
@@ -43,27 +44,43 @@ def style_for(genre):
 
 
 def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge=None, label=None,
-        quality="draft", dry_run=False):
-    h, m = config.harness()
-    harness, model = harness or h, model or m
-    skill = Path(skill_dir).resolve() if skill_dir else paths.skill_dir()
-    judge = judge or config.role("judge")
-    rid = f"{time.strftime('%Y%m%d-%H%M%S')}-{label or re.sub(r'[^a-z0-9]+', '-', f'{harness}-{model}'.lower())}"
-    root = runs_root() / rid
-    chosen = topics(split, ids)
-    plan = {"id": rid, "harness": harness, "model": model, "skill": str(skill), "judge": judge, "split": split,
-            "topics": [t["id"] for t in chosen], "quality": quality, "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        quality="draft", dry_run=False, rid=None, resume=None):
+    """Make and score one film per topic. `rid` names the run (evolve does, to find it again);
+    `resume` continues an incomplete run: scored topics are kept, the rest are made again."""
+    if resume:
+        prev = load(resume)
+        plan = {k: prev[k] for k in ("id", "harness", "model", "skill", "judge", "split", "topics", "quality", "started")}
+        harness, model, judge, quality, skill = plan["harness"], plan["model"], plan["judge"], plan["quality"], Path(plan["skill"])
+        root = runs_root() / resume
+        rows = [r for r in prev.get("rows", []) if r.get("composite") is not None]   # infra / score errors are redone
+        done = {r["topic"] for r in rows}
+        chosen = [t for t in topics() if t["id"] in plan["topics"] and t["id"] not in done]
+        plan["resumed"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+        print(f"↻ resuming {resume}: {len(done)} scored, {len(chosen)} to make", flush=True)
+        for t in chosen:                       # a half-made film from the failed attempt would confuse the agent
+            shutil.rmtree(root / t["id"], ignore_errors=True)
+    else:
+        h, m = config.harness()
+        harness, model = harness or h, model or m
+        skill = Path(skill_dir).resolve() if skill_dir else paths.skill_dir()
+        judge = judge or config.role("judge")
+        rid = rid or f"{time.strftime('%Y%m%d-%H%M%S')}-{label or re.sub(r'[^a-z0-9]+', '-', f'{harness}-{model}'.lower())}"
+        root = runs_root() / rid
+        chosen = topics(split, ids)
+        plan = {"id": rid, "harness": harness, "model": model, "skill": str(skill), "judge": judge, "split": split,
+                "topics": [t["id"] for t in chosen], "quality": quality, "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
+        rows = []
     if dry_run:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
-        t = chosen[0]
-        print("\n--- prompt for", t["id"], "---\n" + make_prompt(t, root / t["id"], skill, quality))
+        if chosen:
+            t = chosen[0]
+            print("\n--- prompt for", t["id"], "---\n" + make_prompt(t, root / t["id"], skill, quality))
         return None
-    root.mkdir(parents=True)
+    root.mkdir(parents=True, exist_ok=bool(resume))
     env = {**os.environ, "EVOFILM_SKILL_DIR": str(skill)}
-    rows = []
     progress = root / "summary.json"          # written as we go: a crash never loses the films already made
-    progress.write_text(json.dumps({**plan, "rows": rows, "mean": 0.0, "complete": False, "missing": plan["topics"]},
-                                   ensure_ascii=False, indent=2), "utf-8")
+    progress.write_text(json.dumps({**plan, "rows": rows, "mean": mean(rows), "complete": False,
+                                    "missing": [t["id"] for t in chosen]}, ensure_ascii=False, indent=2), "utf-8")
     for t in chosen:
         proj = root / t["id"]
         print(f"▶ {t['id']} ({harness}/{model}) …", flush=True)
@@ -121,7 +138,7 @@ def save(root, summary, topic_ids):
     (root / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), "utf-8")
     if missing:
         print(f"⚠ bench {rid}: INCOMPLETE — not scored: {', '.join(missing)}. Mean {summary['mean']} over "
-              f"{len(scored)} topic(s) is not comparable; rerun those topics. → {root}")
+              f"{len(scored)} topic(s) is not comparable. Continue it later: evofilm bench run --resume {rid}  → {root}")
     else:
         print(f"✓ bench {rid}: mean composite {summary['mean']} over {len(rows)} topic(s) → {root}")
     return summary
@@ -226,6 +243,7 @@ def cmd_bench(argv):
     r.add_argument("--label", default=None); r.add_argument("--quality", default="draft", choices=["draft", "standard", "high"])
     r.add_argument("--yes", action="store_true", help="I understand each topic runs a full-permission agent session")
     r.add_argument("--dry-run", action="store_true")
+    r.add_argument("--resume", default=None, metavar="RUN_ID", help="continue an incomplete run (after a quota/login stop)")
     rp = sub.add_parser("report"); rp.add_argument("--md", default=None)
     rs = sub.add_parser("rescore", help="score an existing run's films again (no new films)")
     rs.add_argument("run_id"); rs.add_argument("--judge", default=None)
@@ -236,7 +254,8 @@ def cmd_bench(argv):
     elif a.cmd == "run":
         if not a.yes and not a.dry_run:
             sys.exit("✗ each topic runs a headless agent with full tool permissions and costs model usage — rerun with --yes (or --dry-run)")
-        run(a.split, a.topics.split(",") if a.topics else None, a.harness, a.model, a.skill_dir, a.judge, a.label, a.quality, a.dry_run)
+        run(a.split, a.topics.split(",") if a.topics else None, a.harness, a.model, a.skill_dir, a.judge, a.label, a.quality,
+            a.dry_run, resume=a.resume)
     elif a.cmd == "rescore":
         rescore(a.run_id, a.judge)
     else:

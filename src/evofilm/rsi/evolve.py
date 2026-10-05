@@ -78,12 +78,19 @@ def cmd_evolve(argv):
     ap.add_argument("--judge", default=None); ap.add_argument("--margin", type=float, default=3.0)
     ap.add_argument("--max-edits", type=int, default=3)
     ap.add_argument("--skip-holdout", action="store_true")
+    ap.add_argument("--resume", default=None, metavar="EVOLVE_ID", help="continue a round stopped by quota/login")
     ap.add_argument("--yes", action="store_true"); ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
+    if a.resume:
+        root = evolve_root() / a.resume
+        if not (root / "state.json").exists():
+            sys.exit(f"✗ no evolve round {a.resume}")
+        st = json.loads((root / "state.json").read_text("utf-8"))
+        print(f"↻ resuming evolve {a.resume} ({st['harness']}/{st['model']})", flush=True)
+        return run_round(root, st)
     h, m = config.harness()
     harness, model = a.harness or h, a.model or m
     eid = time.strftime("%Y%m%d-%H%M%S")
-    root = evolve_root() / eid
     current = paths.skill_dir()
     if a.dry_run:
         print(f"evolve {eid}: harness {harness}/{model} · judge {a.judge or config.role('judge')} · skill {current}")
@@ -92,46 +99,93 @@ def cmd_evolve(argv):
         print(f"  3 evaluate  candidate on train; accept if mean ≥ baseline + {a.margin}, no topic −10, renders ≥")
         print(f"  4 confirm   holdout ({len(bench.topics('holdout'))} films × 2 versions)" if not a.skip_holdout else "  4 confirm   skipped")
         print("  5 report    report.md + skill.patch → `evofilm evolve apply <id>`")
+        print("  a quota/login stop saves the round: `evofilm evolve --resume <id>` continues it")
         return
     if not a.yes:
         sys.exit("✗ evolve runs many full-permission agent sessions (≈ 16 films per round) — rerun with --yes, or --dry-run")
+    root = evolve_root() / eid
     root.mkdir(parents=True)
-    common = dict(harness=harness, model=model, judge=a.judge)
+    st = {"id": eid, "harness": harness, "model": model, "judge": a.judge or config.role("judge"), "margin": a.margin,
+          "max_edits": a.max_edits, "skip_holdout": a.skip_holdout, "current": str(current),
+          "runs": {"base": a.baseline or f"evolve-{eid}-base", "cand": f"evolve-{eid}-cand",
+                   "hold_base": f"evolve-{eid}-base-holdout", "hold_cand": f"evolve-{eid}-cand-holdout"}}
+    save_state(root, st)
+    return run_round(root, st)
 
-    base = bench.load(a.baseline) if a.baseline else bench.run("train", label=f"evolve-{eid}-base", skill_dir=current, **common)
-    require_complete(base, "baseline")
+
+def save_state(root, st):
+    (root / "state.json").write_text(json.dumps(st, ensure_ascii=False, indent=2), "utf-8")
+
+
+def stopped(root, what, summary=None):
+    """Quota / login / network stopped the round: keep everything, tell the user how to continue."""
+    missing = ", ".join((summary or {}).get("missing", []))
+    sys.exit(f"⏸ evolve paused at {what}" + (f" (not scored yet: {missing})" if missing else "") +
+             f" — the films made so far are kept.\n  When the quota resets / login works: evofilm evolve --resume {root.name}")
+
+
+def ensure_run(root, st, key, split, skill):
+    """The bench run for one stage: load it if complete, continue it if not, else start it."""
+    rid = st["runs"][key]
+    common = dict(harness=st["harness"], model=st["model"], judge=st["judge"])
+    if (bench.runs_root() / rid / "summary.json").exists():
+        summary = bench.load(rid)
+        if not summary.get("complete", True):
+            summary = bench.run(resume=rid)
+    else:
+        summary = bench.run(split, skill_dir=skill, rid=rid, **common)
+    if not summary.get("complete", True):
+        stopped(root, f"{key} ({rid})", summary)
+    return summary
+
+
+def run_round(root, st):
+    current = Path(st["current"])
     cand = root / "skill"
-    shutil.copytree(current, cand, ignore=shutil.ignore_patterns("__pycache__"))
-    inbox = "\n".join(f"- [{m.get('kind')}/{m.get('scope')}] {b}" for st, p, m, b in lessons.all_lessons("inbox")) or "(empty)"
-    prompt = agents.render_prompt("propose", candidate=cand, baseline=baseline_digest(base), inbox=inbox, max_edits=a.max_edits)
-    print("▶ proposing skill edits …", flush=True)
-    res = agents.run(harness, model, prompt, cwd=root, log_path=root / "propose.log")
-    diff = patch(current, cand)
-    (root / "skill.patch").write_text(diff, "utf-8")
-    if not diff.strip():
-        sys.exit(f"✗ the proposer changed nothing ({res['tail'][-300:]})")
+    base = ensure_run(root, st, "base", "train", current)
 
-    cs = bench.run("train", label=f"evolve-{eid}-cand", skill_dir=cand, **common)
-    require_complete(cs, "candidate")
-    ok, checks, worst = verdict(base, cs, a.margin)
+    if not (root / "skill.patch").exists() or not (root / "skill.patch").read_text("utf-8").strip():
+        shutil.rmtree(cand, ignore_errors=True)
+        shutil.copytree(current, cand, ignore=shutil.ignore_patterns("__pycache__"))
+        inbox = "\n".join(f"- [{m.get('kind')}/{m.get('scope')}] {b}" for _, _, m, b in lessons.all_lessons("inbox")) or "(empty)"
+        prompt = agents.render_prompt("propose", candidate=cand, baseline=baseline_digest(base), inbox=inbox,
+                                      max_edits=st["max_edits"])
+        print("▶ proposing skill edits …", flush=True)
+        res = agents.run(st["harness"], st["model"], prompt, cwd=root, log_path=root / "propose.log")
+        if not res["ok"] and bench.infra_error(res["tail"]):
+            shutil.rmtree(cand, ignore_errors=True)
+            stopped(root, "propose")
+        diff = patch(current, cand)
+        (root / "skill.patch").write_text(diff, "utf-8")
+        if not diff.strip():
+            sys.exit(f"✗ the proposer changed nothing ({res['tail'][-300:]})")
+    diff = (root / "skill.patch").read_text("utf-8")
+
+    cs = ensure_run(root, st, "cand", "train", cand)
+    ok, checks, worst = verdict(base, cs, st["margin"])
     hold = None
-    if ok and not a.skip_holdout:
-        hb = bench.run("holdout", label=f"evolve-{eid}-base-holdout", skill_dir=current, **common)
-        hc = bench.run("holdout", label=f"evolve-{eid}-cand-holdout", skill_dir=cand, **common)
-        require_complete(hb, "holdout baseline"); require_complete(hc, "holdout candidate")
+    if ok and not st["skip_holdout"]:
+        hb = ensure_run(root, st, "hold_base", "holdout", current)
+        hc = ensure_run(root, st, "hold_cand", "holdout", cand)
         hold = (hb["mean"], hc["mean"])
         checks["holdout ≥"] = hc["mean"] >= hb["mean"] - 1
         ok = ok and checks["holdout ≥"]
+    eid = st["id"]
     changes = (cand / "CHANGES.md").read_text("utf-8") if (cand / "CHANGES.md").exists() else "(no CHANGES.md)"
     report = (f"# Evolve {eid} — {'ACCEPTED' if ok else 'REJECTED'}\n\n"
-              f"harness {harness}/{model}\n\n| | baseline | candidate |\n|---|---|---|\n"
+              f"harness {st['harness']}/{st['model']} · judge {st['judge']}\n\n| | baseline | candidate |\n|---|---|---|\n"
               f"| train mean | {base['mean']} | {cs['mean']} |\n"
               + (f"| holdout mean | {hold[0]} | {hold[1]} |\n" if hold else "")
               + f"\nworst topic delta: {worst:+.1f}\n\nchecks: " + ", ".join(f"{k} {'✓' if v else '✗'}" for k, v in checks.items())
-              + f"\n\n## Proposed changes\n\n{changes}\n\n## Patch\n\n```diff\n{diff}\n```\n")
+              + "\n\n| topic | baseline | candidate |\n|---|---|---|\n"
+              + "".join(f"| {r['topic']} | {next((b['composite'] for b in base['rows'] if b['topic'] == r['topic']), '-')} | {r['composite']} |\n"
+                        for r in cs["rows"])
+              + f"\n## Proposed changes\n\n{changes}\n\n## Patch\n\n```diff\n{diff}\n```\n")
     (root / "report.md").write_text(report, "utf-8")
     (root / "result.json").write_text(json.dumps({"id": eid, "accepted": ok, "checks": checks, "base": base["id"],
                                                   "cand": cs["id"], "holdout": hold}, indent=2), "utf-8")
+    st["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    save_state(root, st)
     print(f"{'✓ ACCEPTED' if ok else '✗ rejected'}: train {base['mean']} → {cs['mean']}" + (f" · holdout {hold[0]} → {hold[1]}" if hold else ""))
     print(f"  report: {root / 'report.md'}" + (f"\n  apply:  evofilm evolve apply {eid}" if ok else ""))
 
