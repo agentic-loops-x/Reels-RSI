@@ -1,0 +1,19 @@
+TakeLoop
+Copyright 2026 TakeLoop contributors
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product includes software from HyperFrames (https://github.com/heygen-com/hyperframes),
+Copyright HeyGen, licensed under the Apache License, Version 2.0:
+  - src/takeloop/vendor/hyperframes/  — workflow scripts from the faceless-explainer skill
+    (assemble-index, build-frame, captions, transitions and lib/), vendored unmodified; TakeLoop
+    patches captions.mjs at run time (src/takeloop/pipeline/captions_cjk.py) and ports the
+    sync-durations step to Python (src/takeloop/pipeline/tts.py).
+  - src/takeloop/presets/*/caption-skin.html — derived from the HyperFrames biennale-yellow
+    caption skin (modified: CJK tuning and palettes).
+
+Third-party material fetched at run time, not distributed in this repository:
+  - Noto Serif SC / Noto Sans SC, Instrument Serif, Archivo — SIL Open Font License 1.1 (Google Fonts)
+  - Natural Earth vector data — public domain
+  - hanzi-writer-data — Arphic Public License (credited in each film's CREDITS.md)
+  - Wikimedia Commons images — per-file licenses (credited in each film's CREDITS.md)
+  - edge-tts — uses Microsoft Edge's online text-to-speech service (unofficial endpoint)

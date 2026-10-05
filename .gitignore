@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+.DS_Store
+# films made inside the repo
+videos/

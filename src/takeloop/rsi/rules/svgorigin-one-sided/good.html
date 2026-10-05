@@ -1,0 +1,12 @@
+<template>
+  <style></style>
+  <div id="root" data-composition-id="f01" data-width="1920" data-height="1080">
+    <svg width="1920" height="1080"><g id="f01-wheel"><circle cx="960" cy="540" r="100"/></g></svg>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#f01-wheel", { rotation: 0, svgOrigin: "960 540" }, { rotation: 90, svgOrigin: "960 540", duration: 2 }, 0);
+    window.__timelines["f01"] = tl;
+  </script>
+</template>

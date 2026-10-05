@@ -1,0 +1,13 @@
+<template>
+  <style></style>
+  <div id="root" data-composition-id="f01" data-width="1920" data-height="1080">
+    <canvas id="f01-c" width="1920" height="1080"></canvas>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const stars = Array.from({ length: 50 }, () => ({ x: Math.random() * 1920 }));
+    requestAnimationFrame(() => {});
+    window.__timelines["f01"] = tl;
+  </script>
+</template>

@@ -1,0 +1,15 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg libsndfile1
+      - run: uv venv --python 3.12 && uv pip install -e ".[dev]"
+      - run: uv run pytest -q
+      - run: uv run takeloop rules test
+      - run: cd src/takeloop/vendor/hyperframes && node --test
