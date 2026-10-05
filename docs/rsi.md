@@ -58,10 +58,18 @@ given harness, model and skill directory, then scores them. `evofilm evolve`:
 1. baseline = current skill on the train topics
 2. an agent reads the baseline's judge notes and findings plus the lesson inbox and makes ≤ 3 edits
    to a **copy** of the skill, explaining each in `CHANGES.md`
-3. the copy makes the same train films; it must beat the baseline mean by a margin, lose no topic by
-   more than 10 points, and render at least as many films
-4. both versions make the holdout films; the candidate must not be worse there
-5. `report.md` + `skill.patch`; nothing changes until `evofilm evolve apply <id>`
+3. the copy makes the same train topics. Per topic the judge sees **both films blind**, order swapped
+   between 3 votes, and picks the better one (`evofilm compare`). The candidate must win most of the
+   votes, render at least as many films and lose no topic by more than 10 composite points
+4. both versions make the holdout topics; the candidate must win at least half the votes there
+5. `report.md` (per topic: votes, the judge's reasons, a side-by-side image of both films) +
+   `skill.patch`; nothing changes until `evofilm evolve apply <id>`
+
+Why pairwise: the same skill making the same topic twice can differ by more than a few composite
+points (the agent writes different code each time, and a 1–5 judge drifts). "Which of these two is
+better?" with the order swapped is far steadier, and the position swap cancels the judge's bias for
+the first or second image. A quota or login stop pauses a round instead of failing it:
+`evofilm evolve --resume <id>`.
 
 ## Safeguards
 
@@ -69,7 +77,7 @@ given harness, model and skill directory, then scores them. `evofilm evolve`:
 |---|---|
 | judge-pleasing ("reward hacking") | holdout topics the proposer never sees · deterministic score is 40 % · blind A/B (`evofilm compare`) · human apply |
 | skill bloat / drift | ≤ 3 edits per round, ≤ ~60 lines, CHANGES.md with evidence, patch reviewed before apply |
-| noisy single runs | margin + per-topic regression limit; re-run the bench before applying big changes |
+| noisy single runs | blind pairwise votes instead of absolute score deltas · per-topic regression limit · the side-by-side images in the report for your own eye |
 | cost | bench defaults to 30 s films and draft quality; `--dry-run` everywhere; `--yes` required |
 | unsafe agent actions | headless sessions run with full tool permissions — run bench/evolve in a container or a throwaway user |
 

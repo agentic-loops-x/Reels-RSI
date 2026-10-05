@@ -95,7 +95,7 @@ seeks a paused GSAP timeline frame by frame and FFmpeg encodes.
 | L0 · in-film review | `evofilm finalize` · `evofilm score` | every pass is checked (HyperFrames lint/runtime/layout/contrast + EvoFilm rules), logged, and scored on R1–R6 by a vision judge |
 | L1 · cross-film memory | `evofilm retro` · `evofilm lessons` | pairs each fixed issue with the diff that fixed it, adds your feedback, proposes lessons; you accept; accepted lessons are injected into every frame worker's packet |
 | L2 · lessons → rules | `evofilm rules new/test` | a recurring mistake becomes a static check that ships with a failing and a passing example — no model can forget it |
-| L3 · evolve the skill | `evofilm bench` · `evofilm evolve` | 8 fixed topics (train/holdout); an agent edits a copy of the skill, the copy makes the same films, and it is kept only if it beats the baseline on train **and** holds up on holdout — then you `evolve apply` |
+| L3 · evolve the skill | `evofilm bench` · `evofilm evolve` | 8 fixed topics (train/holdout); an agent edits a copy of the skill, the copy makes the same films, and the judge compares old vs new films blind, per topic; the copy is kept only if it wins most votes on train **and** holds up on holdout — then you `evolve apply` |
 
 Example: the Yuan film's map once collapsed to a speck because a hand-drawn border ran
 counter-clockwise. That cost a review round. It is now rule `polygon-winding` — run against the old

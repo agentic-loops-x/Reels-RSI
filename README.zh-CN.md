@@ -64,7 +64,7 @@ evofilm doctor     # 检查环境，看每个角色用的是哪个模型
 | L0 片内审查 | `finalize` · `score` | 每轮都跑 HyperFrames 检查和 EvoFilm 规则，结果记日志；视觉模型按 R1–R6 打分 |
 | L1 跨片记忆 | `retro` · `lessons` | 把每个修掉的问题和修它的代码改动对应起来，加上你的反馈，提出经验；你同意的经验会注入以后每个镜头的制作包 |
 | L2 经验变规则 | `rules new/test` | 反复出现的错误编译成静态检查，附带正反样例，换哪个模型都绕不过 |
-| L3 技能进化 | `bench` · `evolve` | 8 个固定题目分训练集和验证集。智能体改一份技能副本，用它重拍同样的题目；训练集分数超过基线、验证集分数也没变差，才算通过，最后由你 `evolve apply` 确认 |
+| L3 技能进化 | `bench` · `evolve` | 8 个固定题目分训练集和验证集。智能体改一份技能副本，用它重拍同样的题目；评审把新旧两版同一题目的片子放在一起盲比（交换顺序投 3 票）；训练集上新版赢得多数票、验证集上不输，才算通过，最后由你 `evolve apply` 确认 |
 
 ## 代码结构
 
@@ -167,7 +167,7 @@ evofilm.nosync/
 | L0 片内记录 | `<片子>/.evofilm/runs.jsonl`、`history/001…`（每轮代码快照）、`score.json` | 给 L1 提供证据："第 3 轮报了对比度错误，第 4 轮改了这几行就好了" | `rsi/runlog.py` `score.py` |
 | L1 经验 | `~/.evofilm/lessons/{inbox,accepted,rejected}/*.md` | `evofilm packets` 把已批准的经验写进每个镜头的任务书，智能体一开工就能看到；经验可以带适用条件（如 `preset=chalk`、`aspect=9:16`），只发给适用的片子 | `rsi/retro.py` `lessons.py` |
 | L2 规则 | `rsi/rules/`（内置）、`~/.evofilm/rules/`（你自己的） | 每次 `finalize` 和 `lint` 自动检查，模型不可能"忘记" | `rsi/lint.py` |
-| L3 技能进化 | `~/.evofilm/bench/runs/`（跑分）、技能副本 | 改写 `skill/` 本身；只有训练集更好、验证集不退步，并且你执行 `evolve apply`，才会生效 | `rsi/bench.py` `evolve.py` |
+| L3 技能进化 | `~/.evofilm/bench/runs/`（跑分）、技能副本 | 改写 `skill/` 本身；只有盲比中训练集赢、验证集不输，并且你执行 `evolve apply`，才会生效 | `rsi/bench.py` `evolve.py` |
 
 经验是"建议"，规则是"强制"。一条经验如果能从代码文本里检查出来（比如"从可见状态开始的动画要加 `immediateRender: false`"），
 就可以升级成规则 `visible-from-state`。这条规则一加上，就在以前的元朝片和天空片里找出了 3 处没人发现的同类 bug。
