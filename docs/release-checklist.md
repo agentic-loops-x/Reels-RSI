@@ -27,8 +27,8 @@ For each: `evofilm voice` (real TTS run), `packets`, `finalize`, `render`, `cove
 - [x] `evofilm feedback` + `evofilm retro <film>` — model retro proposed 5 lessons on the textbook film (1 false, from a judge misreading → retro prompt now weighs evidence)
 - [x] accept doc lessons → digest appears in `.evofilm/packets/_role.md` (8 accepted)
 - [x] lesson compiled into a rule (`visible-from-state`) — fires on 3 real bugs in older films
-- [~] `evofilm bench run --topics sci-rainbow --yes` — launched, agent scaffolded + voiced, then hit the account usage limit; now recorded as infra-error (not a score)
-- [ ] `evofilm bench report` shows it
+- [x] `evofilm bench run --topics sci-rainbow --yes` — 1st try hit the account usage limit (now recorded as infra-error); 2nd try with `--model sonnet`: 28.5 s film, 0 check errors, composite 76.8 (scored via `bench rescore` after a sheet-grouping crash, fixed)
+- [x] `evofilm bench report` shows it
 - [ ] `evofilm evolve --dry-run`, then one real round when budget allows (≈ 16 short films)
 - [ ] `evofilm make "…" --yes` headless film completes
 

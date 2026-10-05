@@ -33,6 +33,13 @@ injected into `evofilm packets` (every frame worker reads them) and `evofilm les
 (the director reads them at Step 0). Taste lessons ("字幕再大一点") build a personal profile and are
 never exported.
 
+A lesson can carry a `when` (`preset=chalk`, `aspect=9:16`, `mode=solve`): it then reaches only the
+films it holds for. Without it, the first benchmark film — a 16:9 deep-space science film — was handed
+"draw chalk boxes" and "use the lower half of a 9:16 canvas" (`evofilm lessons when <id> "<cond>"`).
+The judge's and the retro model's words are evidence, not facts: in release testing a judge misread a
+downscaled sheet as "wrong aspect" and the retro model turned that into a false lesson — the human gate
+caught it, and the retro prompt now weighs check findings and viewer feedback above judge notes.
+
 ### L2 — lessons become rules
 A rule is a folder: `rule.py` (a `check(doc)` over the frame's HTML/JS text) + `bad.*` (must fire) +
 `good.*` (must not). `evofilm rules test` proves every rule; `evofilm lessons accept --rule-dir`

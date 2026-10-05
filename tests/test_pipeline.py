@@ -147,3 +147,11 @@ def test_bench_infra_errors_are_not_scores():
     assert bench.infra_error("frame 03 failed lint: contrast") is None
     rows = [{"composite": 80.0}, {"composite": None, "status": "infra-error"}]
     assert bench.mean(rows) == 80.0
+
+
+def test_judge_sheet_grouping():
+    from evofilm.rsi import score
+    assert [len(g) for g in score.group_rows(list(range(5)), 4)] == [5]
+    assert [len(g) for g in score.group_rows(list(range(9)), 2)] == [2, 2, 2, 3]
+    assert [len(g) for g in score.group_rows(list(range(1)), 4)] == [1]
+    assert [len(g) for g in score.group_rows(list(range(8)), 4)] == [4, 4]

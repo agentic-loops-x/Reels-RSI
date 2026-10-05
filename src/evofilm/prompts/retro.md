@@ -20,9 +20,11 @@ Rules for a good lesson:
   evidence when a lesson rests only on it.
 - Write about what the viewer sees, never about how the judge samples ("make the 30 % sample differ" is
   teaching to the test; "spread the build across the frame's narration" is the lesson).
+- when (optional): if a lesson only holds for some films, limit it — "preset=chalk", "aspect=9:16",
+  "mode=solve" (modes: solve · history · explain), comma-separated. This film: {{film}}.
 - Skip anything listed under "Already known".
 
-Return JSON: {"lessons": [{"kind": "...", "scope": "...", "text": "...", "evidence": "pass/diff/feedback it comes from"}]}
+Return JSON: {"lessons": [{"kind": "...", "scope": "...", "when": "", "text": "...", "evidence": "pass/diff/feedback it comes from"}]}
 
 ---
 

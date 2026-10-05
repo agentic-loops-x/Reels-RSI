@@ -33,8 +33,8 @@ R3_SOLVE = ("R3 Guiding the eye — the step being spoken is singled out (highli
 
 
 def film_mode(storyboard):
-    routes = re.findall(r"^-\s+route:\s*(\S+)", storyboard, re.M)
-    return "solve" if routes and sum(r.startswith("solve") for r in routes) * 2 >= len(routes) else "explain"
+    from evofilm.project import film_mode as mode
+    return mode(storyboard)
 
 
 def rubric(mode):
@@ -84,6 +84,15 @@ def deterministic(project):
     return m, max(0.0, s)
 
 
+def group_rows(rows, per_sheet):
+    """Split rows into sheets; a lone last row reads as one wide frame, so it joins the previous sheet."""
+    groups = [rows[i:i + per_sheet] for i in range(0, len(rows), per_sheet)]
+    if len(groups) > 1 and len(groups[-1]) == 1:
+        last = groups.pop()          # pop first: `groups[-2] += groups.pop()` indexes the shortened list
+        groups[-1] += last
+    return groups
+
+
 def sample_sheets(project, out_dir, per_sheet=None):
     """Per frame a strip of 3 samples (30/60/92 %), stacked a few frames per image → [(path, [frame ids])]."""
     project = Path(project)
@@ -118,9 +127,7 @@ def sample_sheets(project, out_dir, per_sheet=None):
             subprocess.run(["ffmpeg", "-v", "error", "-y", *sum((["-i", str(t)] for t in tiles), []),
                             "-filter_complex", "hstack=inputs=3", str(strip)], check=True)
             strips.append((fid, strip))
-    groups = [strips[i:i + per_sheet] for i in range(0, len(strips), per_sheet)]
-    if len(groups) > 1 and len(groups[-1]) == 1:      # a lone row reads as one wide frame — fold it into the previous sheet
-        groups[-2] += groups.pop()
+    groups = group_rows(strips, per_sheet)
     sheets = []
     for n, group in enumerate(groups, 1):
         sheet = out_dir / f"sheet-{n}.jpg"

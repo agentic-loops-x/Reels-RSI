@@ -9,6 +9,9 @@ kinds:  doc   a sentence the director / frame workers must read      → digest
         taste a preference of yours ("字幕再大一点", "少用霓虹色")    → digest, "Your taste" section
         kit   a reusable component worth extracting                   → digest (as a pointer)
 scopes: director · frame · history · solve · script · style · all
+when:   optional conditions, all must hold for the film: "preset=chalk", "aspect=9:16", "mode=solve",
+        comma-separated ("preset=chalk, aspect=9:16"). No `when` = every film. history/solve scopes
+        reach a film's frame workers only when the film is in that mode.
 
 Nothing is accepted silently: `lessons accept` is the human gate (or `evolve`, which only
 accepts what wins on the benchmark).
@@ -79,7 +82,27 @@ def slug(text):
     return "-".join(words) or "lesson"
 
 
-def add(text, kind="doc", scope="all", source="", evidence="", force=False):
+WHEN_KEYS = ("preset", "aspect", "mode")
+
+
+def parse_when(when):
+    out = {}
+    for part in filter(None, (x.strip() for x in (when or "").split(","))):
+        k, _, v = part.partition("=")
+        if k.strip() not in WHEN_KEYS or not v.strip():
+            raise SystemExit(f"✗ when: use {', '.join(k + '=…' for k in WHEN_KEYS)} (got {part!r})")
+        out[k.strip()] = v.strip()
+    return out
+
+
+def applies(meta, film):
+    """Does a lesson apply to this film? film = {"preset", "aspect", "mode"} or None (= show everything)."""
+    if film is None:
+        return True
+    return all(str(film.get(k, "")) == v for k, v in parse_when(meta.get("when", "")).items())
+
+
+def add(text, kind="doc", scope="all", source="", evidence="", force=False, when=""):
     if kind not in KINDS or scope not in SCOPES:
         raise SystemExit(f"✗ kind ∈ {KINDS}, scope ∈ {SCOPES}")
     for st, p, meta, body in all_lessons("all"):
@@ -92,16 +115,29 @@ def add(text, kind="doc", scope="all", source="", evidence="", force=False):
     while path.exists():
         path = paths.lessons("inbox") / f"{lid}-{i}.md"
         i += 1
-    write(path, {"id": path.stem, "kind": kind, "scope": scope, "source": source, "evidence": evidence.replace("\n", " ")[:300],
-                 "created": time.strftime("%Y-%m-%dT%H:%M:%S")}, text)
-    print(f"  + inbox/{path.stem} [{kind}/{scope}]")
+    meta = {"id": path.stem, "kind": kind, "scope": scope}
+    if when:
+        meta["when"] = ", ".join(f"{k}={v}" for k, v in parse_when(when).items())
+    meta.update(source=source, evidence=evidence.replace("\n", " ")[:300], created=time.strftime("%Y-%m-%dT%H:%M:%S"))
+    write(path, meta, text)
+    print(f"  + inbox/{path.stem} [{kind}/{scope}]" + (f" when {meta['when']}" if when else ""))
     return path
 
 
-def digest(scope="director"):
-    """The accepted lessons a role must read — compact markdown, empty string if none."""
-    items = [(m, b) for st, p, m, b in all_lessons("accepted") if m.get("scope") in (scope, "all") or scope == "all"
-             or (scope == "director" and m.get("scope") in ("script", "style", "history", "solve"))]
+def in_scope(lesson_scope, role, film):
+    if role == "all" or lesson_scope in (role, "all"):
+        return True
+    mode = (film or {}).get("mode")
+    if lesson_scope in ("history", "solve"):            # mode lessons: the director always (unless the film says otherwise),
+        return film is None and role == "director" or (film is not None and lesson_scope == mode)   # workers in that mode
+    return role == "director" and lesson_scope in ("script", "style")
+
+
+def digest(scope="director", film=None):
+    """The accepted lessons a role must read — compact markdown, empty string if none. With `film`
+    ({"preset", "aspect", "mode"}), only the lessons that apply to that film."""
+    items = [(m, b) for st, p, m, b in all_lessons("accepted")
+             if in_scope(m.get("scope"), scope, film) and applies(m, film)]
     taste = [b for m, b in items if m.get("kind") == "taste"]
     docs = [(m, b) for m, b in items if m.get("kind") in ("doc", "kit")]
     if not taste and not docs:
@@ -111,6 +147,16 @@ def digest(scope="director"):
     if taste:
         out += ["\n## Your viewer's taste\n"] + [f"- {b}" for b in taste]
     return "\n".join(out) + "\n"
+
+
+def set_when(lid, when):
+    st, p, meta, body = find(lid)
+    if when:
+        meta["when"] = ", ".join(f"{k}={v}" for k, v in parse_when(when).items())
+    else:
+        meta.pop("when", None)
+    write(p, meta, body)
+    print(f"✓ {meta['id']}: " + (f"when {meta['when']}" if when else "applies to every film"))
 
 
 def accept(lid, rule_dir=None):
@@ -190,22 +236,29 @@ def cmd_lessons(argv):
     ad = sub.add_parser("add"); ad.add_argument("text"); ad.add_argument("--kind", default="doc", choices=KINDS)
     ad.add_argument("--scope", default="all", choices=SCOPES); ad.add_argument("--source", default="")
     ad.add_argument("--evidence", default=""); ad.add_argument("--force", action="store_true")
+    ad.add_argument("--when", default="", help='only for some films: "preset=chalk", "aspect=9:16", "mode=solve"')
+    wh = sub.add_parser("when", help="limit a lesson to some films (empty = every film)")
+    wh.add_argument("id"); wh.add_argument("conditions", nargs="?", default="")
     ac = sub.add_parser("accept"); ac.add_argument("ids", nargs="+"); ac.add_argument("--rule-dir", default=None)
     rj = sub.add_parser("reject"); rj.add_argument("ids", nargs="+"); rj.add_argument("--reason", default="")
     dg = sub.add_parser("digest"); dg.add_argument("--scope", default="director", choices=SCOPES)
+    dg.add_argument("--project", default=None, help="only the lessons that apply to this film (preset, aspect, mode)")
     ex = sub.add_parser("export"); ex.add_argument("out")
     a = ap.parse_args(argv)
     if a.cmd == "list":
         rows = all_lessons(a.state)
         for st, p, m, b in rows:
-            print(f"{st:9} {m['id']:48} {m.get('kind', ''):5} {m.get('scope', ''):8} {b.splitlines()[0][:70] if b else ''}")
+            when = f" [when {m['when']}]" if m.get("when") else ""
+            print(f"{st:9} {m['id']:48} {m.get('kind', ''):5} {m.get('scope', ''):8} {b.splitlines()[0][:70] if b else ''}{when}")
         if not rows:
             print("(no lessons yet — they appear after `evofilm retro <project>`)")
     elif a.cmd == "show":
         st, p, m, b = find(a.id)
         print(f"[{st}] {p}\n" + "\n".join(f"{k}: {v}" for k, v in m.items()) + f"\n\n{b}")
     elif a.cmd == "add":
-        add(a.text, a.kind, a.scope, a.source, a.evidence, a.force)
+        add(a.text, a.kind, a.scope, a.source, a.evidence, a.force, a.when)
+    elif a.cmd == "when":
+        set_when(a.id, a.conditions)
     elif a.cmd == "accept":
         for i in a.ids:
             accept(i, a.rule_dir)
@@ -213,7 +266,11 @@ def cmd_lessons(argv):
         for i in a.ids:
             reject(i, a.reason)
     elif a.cmd == "digest":
-        print(digest(a.scope) or "(no accepted lessons for this scope)")
+        film = None
+        if a.project:
+            from evofilm.project import film_context
+            film = film_context(a.project)
+        print(digest(a.scope, film) or "(no accepted lessons for this scope)")
     elif a.cmd == "export":
         export(a.out)
 

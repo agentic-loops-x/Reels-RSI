@@ -61,6 +61,9 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
     root.mkdir(parents=True)
     env = {**os.environ, "EVOFILM_SKILL_DIR": str(skill)}
     rows = []
+    progress = root / "summary.json"          # written as we go: a crash never loses the films already made
+    progress.write_text(json.dumps({**plan, "rows": rows, "mean": 0.0, "complete": False, "missing": plan["topics"]},
+                                   ensure_ascii=False, indent=2), "utf-8")
     for t in chosen:
         proj = root / t["id"]
         print(f"▶ {t['id']} ({harness}/{model}) …", flush=True)
@@ -73,27 +76,48 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
             row.update(status="infra-error", error=infra, composite=None, det=None, judge=None, rendered=False,
                        notes=[], top_issues=[])
             rows.append(row)
+            progress.write_text(json.dumps({**plan, "rows": rows, "mean": mean(rows), "complete": False},
+                                           ensure_ascii=False, indent=2), "utf-8")
             print(f"  ✗ {infra} — topic not scored", flush=True)
             if INFRA_STOP.search(infra):
                 print("  stopping: the remaining topics would fail the same way", flush=True)
                 break
             continue
-        if (proj / "index.html").exists():
-            s = scoring.score(proj, judge, use_judge=bool(judge))
-            row.update(composite=s["composite"], det=s["det_score"], judge=s["judge_score"],
-                       rendered=s["deterministic"]["rendered"],
-                       notes=[f.get("note", "") for f in (s.get("judge") or {}).get("frames", []) if f.get("note")][:6],
-                       top_issues=(s.get("judge") or {}).get("top_issues", []),
-                       findings=last_findings(proj))
-        else:
-            row.update(composite=0.0, det=0.0, judge=None, rendered=False, notes=[], top_issues=["no project produced"])
         rows.append(row)
+        score_row(row, proj, judge)
+        progress.write_text(json.dumps({**plan, "rows": rows, "mean": mean(rows), "complete": False},
+                                       ensure_ascii=False, indent=2), "utf-8")
         print(f"  composite {row['composite']} · det {row['det']} · judge {row['judge']} · {row['seconds']}s"
               + (f" · ${row['cost_usd']:.2f}" if row.get("cost_usd") else ""))
+    summary = {**plan, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
+    return save(root, summary, plan["topics"])
+
+
+def score_row(row, proj, judge):
+    try:
+        s = scoring.score(proj, judge, use_judge=bool(judge)) if (proj / "index.html").exists() else None
+    except Exception as e:  # noqa: BLE001 — a scoring crash must not lose the film or the run
+        row.update(status="score-error", error=f"{type(e).__name__}: {e}"[:300], composite=None, det=None, judge=None,
+                   rendered=(proj / "renders" / "video.mp4").exists(), notes=[], top_issues=[])
+        print(f"  ✗ scoring failed: {row['error']} — rescore later with `evofilm bench rescore`", flush=True)
+        return row
+    if s is None:
+        row.update(composite=0.0, det=0.0, judge=None, rendered=False, notes=[], top_issues=["no project produced"])
+    else:
+        row.update(status="scored", composite=s["composite"], det=s["det_score"], judge=s["judge_score"],
+                   rendered=s["deterministic"]["rendered"],
+                   notes=[f.get("note", "") for f in (s.get("judge") or {}).get("frames", []) if f.get("note")][:6],
+                   top_issues=(s.get("judge") or {}).get("top_issues", []),
+                   findings=last_findings(proj))
+    return row
+
+
+def save(root, summary, topic_ids):
+    rows = summary["rows"]
+    rid = summary["id"]
     scored = [r["topic"] for r in rows if r.get("composite") is not None]
-    missing = [t["id"] for t in chosen if t["id"] not in scored]
-    summary = {**plan, "finished": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "mean": mean(rows),
-               "complete": not missing, "missing": missing}
+    missing = [t for t in topic_ids if t not in scored]
+    summary.update(mean=mean(rows), complete=not missing, missing=missing)
     (root / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), "utf-8")
     if missing:
         print(f"⚠ bench {rid}: INCOMPLETE — not scored: {', '.join(missing)}. Mean {summary['mean']} over "
@@ -115,6 +139,29 @@ def infra_error(tail):
         return None
     line = next((ln.strip() for ln in (tail or "").splitlines() if m.group(0) in ln), m.group(0))
     return line[:200]
+
+
+def rescore(rid, judge=None):
+    """Score the films a run already made again — after a scoring crash, or to re-judge with another
+    judge (then compare only runs scored by the same judge). Agent infra errors stay unscored."""
+    summary = load(rid)
+    root = runs_root() / rid
+    judge = judge or summary.get("judge") or config.role("judge")
+    summary["judge"] = judge
+    done = {r["topic"]: r for r in summary.get("rows", [])}
+    rows = []
+    for tid in summary["topics"]:
+        row = done.get(tid) or {"topic": tid, "agent_ok": None}
+        t = next((x for x in topics() if x["id"] == tid), {})
+        row.setdefault("split", t.get("split")); row.setdefault("genre", t.get("genre"))
+        if row.get("status") != "infra-error":
+            print(f"▶ rescoring {tid} …", flush=True)
+            score_row(row, root / tid, judge)
+            print(f"  composite {row['composite']} · det {row['det']} · judge {row['judge']}")
+        rows.append(row)
+    summary["rows"] = rows
+    summary["rescored"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    return save(root, summary, summary["topics"])
 
 
 def last_findings(proj):
@@ -180,6 +227,8 @@ def cmd_bench(argv):
     r.add_argument("--yes", action="store_true", help="I understand each topic runs a full-permission agent session")
     r.add_argument("--dry-run", action="store_true")
     rp = sub.add_parser("report"); rp.add_argument("--md", default=None)
+    rs = sub.add_parser("rescore", help="score an existing run's films again (no new films)")
+    rs.add_argument("run_id"); rs.add_argument("--judge", default=None)
     a = ap.parse_args(argv)
     if a.cmd == "topics":
         for t in topics():
@@ -188,5 +237,7 @@ def cmd_bench(argv):
         if not a.yes and not a.dry_run:
             sys.exit("✗ each topic runs a headless agent with full tool permissions and costs model usage — rerun with --yes (or --dry-run)")
         run(a.split, a.topics.split(",") if a.topics else None, a.harness, a.model, a.skill_dir, a.judge, a.label, a.quality, a.dry_run)
+    elif a.cmd == "rescore":
+        rescore(a.run_id, a.judge)
     else:
         report(a.md)

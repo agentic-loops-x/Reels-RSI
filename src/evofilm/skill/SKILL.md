@@ -12,7 +12,9 @@ commands; sub-agents are optional.
 
 **First run:** `evofilm doctor` — if fonts/SFX are missing run `evofilm setup`.
 **Every run:** read `references/quality-bar.md` (defines done), and run
-`evofilm lessons digest` — those are lessons from past films; follow them.
+`evofilm lessons digest` — those are lessons from past films; follow them. Once the project exists,
+`evofilm lessons digest --project <dir>` narrows them to this film's preset, aspect and mode
+(frame packets already carry the narrowed frame lessons).
 
 ## Route by genre
 

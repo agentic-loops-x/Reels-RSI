@@ -97,7 +97,10 @@ def evidence(project):
 
 
 def propose(project, spec, ev_path):
-    prompt = agents.render_prompt("retro", evidence=ev_path.read_text("utf-8"))
+    from evofilm.project import film_context
+    film = film_context(project)
+    prompt = agents.render_prompt("retro", evidence=ev_path.read_text("utf-8"),
+                                  film=", ".join(f"{k}={v}" for k, v in film.items()))
     j = llm.complete_json(spec, prompt, max_tokens=4000)
     added = []
     for item in j.get("lessons", [])[:8]:
@@ -106,10 +109,19 @@ def propose(project, spec, ev_path):
             continue
         p = lessons.add(text, item.get("kind", "doc") if item.get("kind") in lessons.KINDS else "doc",
                         item.get("scope", "all") if item.get("scope") in lessons.SCOPES else "all",
-                        source=str(Path(project).resolve()), evidence=item.get("evidence", ""))
+                        source=str(Path(project).resolve()), evidence=item.get("evidence", ""),
+                        when=valid_when(item.get("when", "")))
         if p:
             added.append(p)
     return added
+
+
+def valid_when(when):
+    try:
+        lessons.parse_when(when)
+        return when
+    except SystemExit:
+        return ""                      # a model's malformed condition must not drop the lesson
 
 
 def cmd_retro(argv):

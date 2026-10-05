@@ -54,3 +54,18 @@ def test_user_rule_replaces_builtin_of_same_name(isolated_home):
     lint.cmd_rules(["new", "caption-band"])
     dirs = [d for d in lint.rule_dirs() if d.name == "caption-band"]
     assert dirs == [isolated_home / "rules" / "caption-band"]
+
+
+def test_when_limits_lessons_to_matching_films():
+    a = lessons.add("Draw chalk boxes from four straight segments", "doc", "frame", when="preset=chalk")
+    b = lessons.add("Keep every label at least 28 px tall on screen", "doc", "frame")
+    c = lessons.add("Restate a photographed problem at the plan gate", "doc", "solve")
+    for p in (a, b, c):
+        lessons.accept(p.stem)
+    deep = lessons.digest("frame", {"preset": "deepspace", "aspect": "16:9", "mode": "explain"})
+    chalk = lessons.digest("frame", {"preset": "chalk", "aspect": "9:16", "mode": "solve"})
+    assert "chalk boxes" not in deep and "28 px" in deep and "photographed" not in deep
+    assert "chalk boxes" in chalk and "photographed" in chalk
+    assert "chalk boxes" in lessons.digest("frame")          # no film → everything (CLI view)
+    with pytest.raises(SystemExit):
+        lessons.parse_when("colour=red")

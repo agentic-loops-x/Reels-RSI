@@ -16,6 +16,9 @@
   weighs evidence and refuses judge-sampling lessons; bench records quota/login failures as unscored and
   evolve refuses incomplete runs; readable SRT cues; `config set` keeps `[providers.*]`; agents get
   `evofilm` on PATH; README code-structure sections.
+- Round 4: first headless benchmark film (sonnet, 28.5 s, composite 76.8); bench writes its summary as it
+  goes, survives scoring crashes, `bench rescore`; lessons take `when` conditions (preset / aspect /
+  mode) and packets get only the lessons that apply to the film; `lessons digest --project`.
 
 ## 0.1.0 — 2026-10-05
 
