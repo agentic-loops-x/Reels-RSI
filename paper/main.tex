@@ -23,7 +23,7 @@
 
 \newcommand{\sys}{Reels-RSI}
 
-\title{\textbf{The Reel Is a Program:}\\[2pt]
+\title{\textbf{\sys{}:}\\[2pt]
 \large Program-Level Self-Improvement for Code-Rendered Explainer Videos}
 
 \author{%
@@ -156,7 +156,8 @@ they encode, free to run. \emph{Dynamic} checks run on the assembled composition
 lint, runtime, layout and contrast checks---exact for what they cover. \emph{Judged} assessment lets
 a vision-language model score or compare sampled frames: cheap and informative, and, as
 \S\ref{sec:evolve} shows, not to be trusted alone. The design principle of the loop follows from
-this ordering: a learned judge may \emph{rank}; only the first two layers may \emph{admit}.
+this ordering: a learned judge may \emph{rank}; admission to memory requires a deterministic
+check or a person.
 
 \section{\sys{}}
 \label{sec:system}
@@ -201,7 +202,7 @@ ship a design spec and a caption skin; chalk ships a drawing kit.
 the user already has; \texttt{reels make "\ldots"} launches a headless session. The judge and
 retrospective roles are one-shot calls, named \texttt{provider:model}, over an OpenAI-compatible or
 Anthropic HTTP API or through a logged-in agent CLI; twelve providers and custom endpoints are
-configured in a TOML file. Nothing in memory records which model produced it.
+configured in a TOML file. Nothing in memory depends on the model that produced it.
 
 \paragraph{Languages.} A reel's language is detected from its script (Hangul, kana, Han, else Latin
 scored by stop words); the voice, caption cutting (grouped by character for Chinese and Japanese, by
@@ -221,8 +222,8 @@ person may commit.
 layout and contrast checks, then every \sys{} rule. Each pass appends a record to
 \texttt{.reels/runs.jsonl} (findings with codes, lines and messages; frame count; duration) and
 snapshots the frame sources to \texttt{.reels/history/NNN/}. Renders, scores and viewer feedback
-(\texttt{reels feedback "the labels are too small" --frame 04}) append to the same log. Nothing here
-involves a model; it is the raw material the next tiers read.
+(\texttt{reels feedback "the labels are too small" --frame 04}) append to the same log. Apart from the
+judge's score, no model writes this tier; it is the raw material the next tiers read.
 
 \subsection{L1: lessons, paired with the diff that earned them}
 \texttt{reels retro} compiles an \emph{evidence file} from the log: per pass, which findings were new
@@ -330,10 +331,11 @@ passes; their warning counts went $5 \rightarrow 12 \rightarrow 2 \rightarrow 2 
 in pass~2 is new frames being added). The headless reels needed 1--6 passes (median 2); the hardest,
 a history reel, went $3, 4, 3, 0$ errors over four passes. The two reviewed reels also exposed
 thirteen defects in the tool and the skill---a caption skin with 1.27:1 contrast, placeholders
-missing for unbuilt frames so voice and captions drifted, a kit that assumed one canvas size---each
-fixed in the tool rather than patched in the reel, which is the point of recording where a fix went.
+missing for unbuilt frames so voice and captions drifted, a map-winding rule that flagged a car
+outline as a polygon---each fixed in the tool rather than patched in the reel, which is the point of recording where a fix went.
 
 \subsection{Lessons}
+\label{sec:lessons}
 Retrospectives on the two reviewed reels, and the agents' own retrospectives after each headless
 reel, produced 56 proposed lessons. A person accepted 15, rejected 1 and left 40 in the inbox. Of the
 15, thirteen are \texttt{doc} lessons (e.g.\ ``budget 3.9 Chinese characters per second for the
@@ -379,8 +381,8 @@ All four findings are defects by construction: each is a fade-out tween whose vi
 renders at $t=0$. The sky reel's finding was confirmed in a rendered frame---a ripple ring that should
 appear at its cue is already standing in the picture at 21.0~s. Both pre-existing reels had been
 delivered and reviewed by a person, and nobody had noticed. This is the line of Table~\ref{tab:modality}
-that matters most: a lesson learned on reel $n$ is a program, and programs run on reels $1 \ldots
-n-1$. A prose lesson could not have found these, and a judge was never asked.
+that matters most: a lesson learned on reel $n$, once compiled, is a program, and programs run on reels
+$1 \ldots n-1$. A prose lesson could not have found these, and a judge was never asked.
 
 The guard side of the same table is the zero. The 117 frames authored under the rule contain no
 instance of the pattern, although the agents that wrote them were never shown the lesson in prose:
@@ -407,8 +409,8 @@ Holdout (4 topics $\times$ 3 votes) & 72.8 & 73.5 & 4 & \textbf{8} \\
 \bottomrule
 \end{tabular}
 \caption{The first evolve round. Composite $= 0.6 \cdot$ judge rubric $+\, 0.4 \cdot$ deterministic
-score; the deterministic part was at or near 100 for both versions, so the absolute columns are the
-judge's 1--5 rubric rescaled. Every held-out topic split 2--1.}
+score; the deterministic part was at or near 100 for both versions, so the absolute columns are an
+affine rescaling of the judge's 1--5 rubric. Every held-out topic split 2--1.}
 \label{tab:evolve}
 \end{table}
 
@@ -447,7 +449,7 @@ Failure & What the signal produced & Gate that caught it \\
 \label{tab:hacking}
 \end{table}
 
-\paragraph{(a) A judge misreading became a proposed lesson.} Described in \S\ref{sec:study}: the
+\paragraph{(a) A judge misreading became a proposed lesson.} Described in \S\ref{sec:lessons}: the
 retrospective model treated a judge note as fact. Caught at the human \texttt{accept} gate; prevented
 upstream afterwards.
 
@@ -513,7 +515,7 @@ agent's own past output, and the patches come from the agent's own revision log.
 \paragraph{Self-modifying agents and judge reward hacking.} ADAS \citep{adas2024}, the Darwin G\"odel
 Machine \citep{dgm2025} and GEPA \citep{gepa2025} let an agent rewrite its scaffold or prompts under
 an objective score. \citet{notanoracle2026} and \citet{moreconvincing2026} show what happens when the
-score is an LLM judge; \citet{fragility2026} shows how sensitive such loops are to variance and task
+score is an LLM judge; \citet{fragility2026} show how sensitive such loops are to variance and task
 order. Our evolve step is a small instance of this family with the guards those papers recommend: a
 frozen holdout, pairwise rather than absolute judgment \citep{mtbench2023}, a deterministic layer the
 proposer cannot edit, and a person at the end.
