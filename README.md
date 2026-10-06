@@ -9,7 +9,7 @@ One sentence in → a narrated, captioned, scored explainer reel out — rendere
 
 [中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
-<a href="docs/assets/reels-rsi-promo.mp4"><img src="docs/assets/reels-rsi-promo-poster.jpg" width="880" alt="Reels-RSI launch reel — click to play"></a>
+<a href="https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6"><img src="docs/assets/reels-rsi-promo-poster.jpg" width="880" alt="Reels-RSI launch reel — click to play"></a>
 
 <sub>The launch reel (57 s, <a href="docs/assets/reels-rsi-promo.mp4">watch with sound</a>) was made with Reels-RSI, and every picture in it is real output: reels the tool made, one lesson dubbed into six languages with <code>reels dub</code>, the first self-evolution round.</sub>
 
