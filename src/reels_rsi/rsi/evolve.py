@@ -70,7 +70,7 @@ def verdict(base, cand, pairs):
     worst = min((r["composite"] - b[r["topic"]]["composite"] for r in cand["rows"] if r["topic"] in b), default=0)
     renders = (sum(1 for r in cand["rows"] if r.get("rendered")), sum(1 for r in base["rows"] if r.get("rendered")))
     cv, bv = votes(pairs)
-    checks = {f"pairwise: candidate wins most votes ({cv}–{bv})": cv > bv, "no topic −10": worst > -10,
+    checks = {f"pairwise: candidate wins more than half the votes ({cv}–{bv})": cv > bv, "no topic −10": worst > -10,
               "renders ≥": renders[0] >= renders[1]}
     return all(checks.values()), checks, worst
 
@@ -79,7 +79,7 @@ def votes(pairs):
     return sum(p["cand"] for p in pairs.values()), sum(p["base"] for p in pairs.values())
 
 
-def pairwise(root, st, tag, base, cand, n=3):
+def pairwise(root, st, tag, base, cand, n=4):
     """Blind pairwise judgments per topic, cached in state.json so a resumed round never re-asks."""
     from reels_rsi import llm
     from reels_rsi.rsi import score

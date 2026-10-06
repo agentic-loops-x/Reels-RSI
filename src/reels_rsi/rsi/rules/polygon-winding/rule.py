@@ -14,13 +14,16 @@ RING = re.compile(r"\[\s*" + PAIR + r"(?:\s*,\s*" + PAIR + r"){3,}\s*,?\s*\]")
 NAMEY = re.compile(r"(poly|territor|border|region|empire|realm|zone|area|疆|域)", re.I)
 
 
-GEO = re.compile(r"d3\.geo|geoPath|geo[A-Z]\w+\(|[\"']Polygon[\"']|EF_GEO|projection")
+# Winding only matters once a ring becomes GeoJSON that d3-geo interprets ({type: "Polygon", coordinates: …},
+# fitExtent on a feature). A ring projected point by point into a plain SVG path (pathD(pts) + "Z") can run
+# either way — a release-test ablation reel drew its 吴 region that way and was flagged for nothing.
+GEOJSON = re.compile(r"coordinates\s*:|[\"']Polygon[\"']|[\"']MultiPolygon[\"']|[\"']Feature[\"']")
 
 
 def check(doc):
     out, t = [], doc.text
-    if not GEO.search(t):
-        return out  # no map code in this file — small closed shapes are screen coordinates
+    if not GEOJSON.search(t):
+        return out  # no GeoJSON in this file — rings here are screen shapes or hand-projected paths
     for m in RING.finditer(t):
         pts = [tuple(map(float, p)) for p in re.findall(r"\[\s*(" + NUM + r")\s*,\s*(" + NUM + r")\s*\]", m.group(0))]
         if not all(-180 <= x <= 180 and -90 <= y <= 90 for x, y in pts):

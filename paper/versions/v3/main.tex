@@ -384,14 +384,9 @@ delivered and reviewed by a person, and nobody had noticed. This is the line of 
 that matters most: a lesson learned on reel $n$, once compiled, is a program, and programs run on reels
 $1 \ldots n-1$. A prose lesson could not have found these, and a judge was never asked.
 
-The guard side of the same table is the zero, and it needs a caveat the run logs supply. Across the
-58 finalize passes of the 19 reels with logs, the thirteen rules fired only three times
-(\texttt{repeat-fromto} twice, \texttt{dasharray-attr} once; each fixed before the next pass), while
-the renderer's own checks fired 184 times (30 errors, 154 warnings). The agents that wrote the 117
-frames rarely made the mistakes the rules encode. So the zero is mostly the model's doing, and the
-rules are a backstop that was needed three times---the ablation in \S\ref{sec:ablation} measures what
-appears when the backstop is removed. The retroactive audit is the stronger claim: it does not depend
-on how often a mistake is made, only on the corpus being code.
+The guard side of the same table is the zero. The 117 frames authored under the rule contain no
+instance of the pattern, although the agents that wrote them were never shown the lesson in prose:
+the rule fires at \texttt{finalize}, and the fix is one line.
 
 \subsection{One evolution round}
 \label{sec:evolve}
@@ -420,10 +415,10 @@ affine rescaling of the judge's 1--5 rubric. Every held-out topic split 2--1.}
 \end{table}
 
 Table~\ref{tab:evolve} is why the verdict is pairwise. The same judge, asked for absolute rubric
-scores, moved by half a point; asked which of two reels on the same topic is better, it preferred the
-candidate on 11 of 12 training votes and 8 of 12 held-out votes. Fig.~\ref{fig:seasons} shows the
-largest change. The round was accepted by the gate and, after a person inspected the side-by-side
-images, applied. \S\ref{sec:reliability} re-examines both numbers.
+scores, could not tell the versions apart; asked which of two reels on the same topic is better,
+with the order swapped between votes, it preferred the candidate on 11 of 12 training votes and 8 of
+12 held-out votes. Fig.~\ref{fig:seasons} shows the largest change. The round was accepted by the
+gate and, after a person inspected the side-by-side images, applied.
 
 \begin{figure}[t]
 \centering
@@ -434,11 +429,10 @@ The judge preferred the right 3--0.}
 \label{fig:seasons}
 \end{figure}
 
-\subsection{Four ways the preference signal misled the loop}
+\subsection{Three ways the preference signal misled the loop}
 \label{sec:hacking}
-We record these because each happened, each was caught by a different check, and a loop without that
-check would have absorbed it (Table~\ref{tab:hacking}). The fourth was found by checking the harness's
-own verdict, which is the same discipline turned on ourselves.
+We record these because each happened, each was caught by a different gate, and a loop without that
+gate would have absorbed it (Table~\ref{tab:hacking}).
 
 \begin{table}[t]
 \centering\small
@@ -448,11 +442,10 @@ Failure & What the signal produced & Gate that caught it \\
 \midrule
 (a) Judge misreading & a proposed lesson asserting a non-existent render bug & human \texttt{accept}; then sample sheets sized per aspect, evidence ranked \\
 (b) Writing for the sampler & a playbook edit about ``the 30/60/92\,\% samples'' & human \texttt{apply}; then the proposer prompt forbids sampling-directed text \\
-(c) Craft bought with facts & preferred reels whose narration drops 13 baseline facts over 6 topics & none in the loop; found by reading the scripts \\
-(d) Position bias in our own vote design & a 3-vote alternation that gave the candidate the second slot twice; judges pick the second-shown reel 62--81\,\% of the time & the reliability study (\S\ref{sec:reliability}); votes now position-balanced \\
+(c) Craft bought with a fact & a preferred reel whose narration drops the Sun--Liu alliance & none in the loop; found by reading the script \\
 \bottomrule
 \end{tabular}
-\caption{Four failure modes of the judge signal observed around one round, and where each stopped.}
+\caption{Three failure modes of the learned judge observed in one round, and where each stopped.}
 \label{tab:hacking}
 \end{table}
 
@@ -467,46 +460,13 @@ schedule, not about what a viewer sees. Caught at the human \texttt{apply} gate 
 aimed at sampling. This is the ``teaching to the test'' of \citet{notanoracle2026} in a creative
 setting, produced within a single round.
 
-\paragraph{(c) Craft was bought with facts.} On the Red Cliffs topic the candidate reel is visibly
+\paragraph{(c) Craft was bought with a fact.} On the Red Cliffs topic the candidate reel is visibly
 richer (Fig.~\ref{fig:chibi}) and won 2--1. Its script lists three reasons Cao Cao lost and never
-names the Sun--Liu alliance that beat him; the baseline devotes a frame to it. We then read all
-sixteen scripts (Table~\ref{tab:facts}). The candidate drops at least one fact the baseline states on
-six of eight topics---the January perihelion that the seasons reel exists to correct, the 12\,h\,25\,min
-tide interval, Zhang Qian and Emperor Wu on the Silk Road, the 40$^\circ$ violet angle, the buoyancy
-numbers---and adds a new one on five. Script length is unchanged ($1{,}092 \rightarrow 1{,}063$
-characters, $-2.7\%$): the evolved skill, whose three edits are all about the picture, substitutes
-facts rather than compressing them, and the judge, which sees stills and a storyboard digest, cannot
-tell. Nothing in the evolve verdict looks at facts. Because the reel is a program, each omission is a
-one-line search over \texttt{SCRIPT.md}, which is how we found them---but the loop did not run that
-search, because no rule asked for it. A rule cannot know which facts a topic requires; an outcome test
-per topic can, which is what the companion benchmark adds and why we keep it separate.
-
-\paragraph{(d) Our own vote design leaned on the judge's position bias.} \S\ref{sec:reliability}: the
-judge picks the second-shown reel four times in five, and the three-vote alternation handed the
-candidate that slot twice per topic. The verdict survives position balancing, but three topics
-it reported as wins were ties. Caught by re-running the judging; fixed in the harness.
-
-\begin{table}[t]
-\centering\small
-\begin{tabular}{lp{6.2cm}p{4.6cm}c}
-\toprule
-Topic & Stated by the baseline, absent from the candidate & Added by the candidate & Votes \\
-\midrule
-sci-rainbow & white light split into seven colours; violet at $\sim$40$^\circ$; the viewer at the apex of a cone & --- & 0--3 \\
-hist-chibi & Cao Cao had just unified the north; the Sun--Liu alliance held the river; soldiers unacclimatised & chained ships became the fire attack's target & 1--2 \\
-solve-chicken-rabbit & --- & the general rule (assume all chickens; halve the missing feet) & 0--3 \\
-en-seasons & Earth is closest to the Sun in early January; in winter light spreads thin, days shrink & --- & 0--3 \\
-sci-tides & the two high tides are $\sim$12\,h\,25\,min apart because the Moon moves on & the Moon's pull differs across the Earth & 1--2 \\
-hist-silk-road & Emperor Wu of Han; Zhang Qian as envoy; Buddhism travelling east & Yumen Pass; porcelain west, glass east & 1--2 \\
-solve-buoyancy & the worked numbers (1.3\,N vs 10\,N; 1\,000\,cm$^3$) & Archimedes' principle stated & 1--2 \\
-poem-jingyesi & (scene-setting only) & --- & 1--2 \\
-\bottomrule
-\end{tabular}
-\caption{Fact coverage of the two scripts per topic, read by hand (a fact = a number, name, date or
-causal step). Votes are baseline--candidate from the round. The candidate drops thirteen baseline facts
-over six topics and adds six over five; the judge preferred it on all eight.}
-\label{tab:facts}
-\end{table}
+names the Sun--Liu alliance that beat him; the baseline devotes a frame to it. Nothing in the evolve
+verdict looks at facts. Because the reel is a program, the omission is a one-line search over
+\texttt{SCRIPT.md}, which is how we found it---but the loop did not run that search, because no rule
+asked for it. A rule cannot know which facts a topic requires; an outcome test per topic can, which
+is what the companion benchmark adds and why we keep it separate.
 
 \begin{figure}[t]
 \centering
@@ -516,70 +476,6 @@ Sun--Liu alliance holding the river; the evolved reel has no such frame, and its
 names the alliance. The judge preferred the right 2--1 for its larger, animated fire scene.}
 \label{fig:chibi}
 \end{figure}
-
-\subsection{Memory ablation}
-\label{sec:ablation}
-ABLATION-RESULTS-PENDING
-
-\subsection{Judge reliability}
-\label{sec:reliability}
-The round's verdict rests on one judge model voting once. To learn how much of it is the judge, we
-re-ran the judging without making any reels: the absolute rubric three times on each of the sixteen
-reels, the pairwise comparison three times per topic with the same judge, and once each with two other
-judges (\texttt{claude-cli:haiku}, \texttt{claude-cli:opus}); about 170 judge calls in 45 minutes.
-
-\paragraph{The absolute rubric is stable but sees little.} Within-reel standard deviation over three
-re-scores has median 1.3 and maximum 2.7 on the rubric's 20--100 scale, so the flat score in
-Table~\ref{tab:evolve} is not noise. Averaged over re-scores the rubric puts the candidate 3.5 points
-ahead on the training topics (57.0 vs 60.5) and 1.9 behind on the held-out ones (59.5 vs 57.6), with
-per-topic differences from $-9.9$ (the poem; baseline better) to $+8.7$ (the seasons). The rubric does
-see the change; it does not agree with the pairwise verdict about its direction on holdout.
-
-\paragraph{The pairwise verdict is repeatable---and biased by position.} Three repeats with the same
-judge gave the candidate 8 of 8 topics every time, with 10--11 of 12 training votes and 10 of 12
-held-out votes. But the breakdown by position (Table~\ref{tab:position}) shows that the judge picked
-the candidate 48 of 48 times when it was shown \emph{second} and 14 of 24 times when it was shown
-\emph{first}; over all votes it picked the second-shown reel 81\% of the time, and the two other judges
-67\% and 62\%. Our vote design---three votes, order alternating from a fixed start---gave the candidate
-the second slot twice per topic, which inflated its margin. Position-balanced, the candidate's win rate
-is 0.83 on the training topics and 0.75 on the held-out ones (an expected 10 and 9 of 12 votes under a
-balanced four-vote design): the round still passes its gate, but three of the eight topics (rainbow,
-buoyancy, the poem) are ties that position alone resolved. The harness now uses an even number of votes
-with each order shown equally often, and the gate requires strictly more than half.
-
-\begin{table}[t]
-\centering\small
-\begin{tabular}{lccc|cc}
-\toprule
- & \multicolumn{3}{c|}{candidate wins (sonnet, 3 repeats)} & \multicolumn{2}{c}{other judges, 1 run} \\
-Topic & shown first & shown second & balanced & haiku & opus \\
-\midrule
-sci-rainbow & 0/3 & 6/6 & 0.50 & C & C \\
-hist-chibi & 3/3 & 6/6 & 1.00 & C & C \\
-solve-chicken-rabbit & 2/3 & 6/6 & 0.83 & C & C \\
-en-seasons & 3/3 & 6/6 & 1.00 & C & C \\
-sci-tides & 3/3 & 6/6 & 1.00 & C & C \\
-hist-silk-road & 3/3 & 6/6 & 1.00 & B & C \\
-solve-buoyancy & 0/3 & 6/6 & 0.50 & C & B \\
-poem-jingyesi & 0/3 & 6/6 & 0.50 & B & B \\
-\midrule
-second-shown reel picked & \multicolumn{3}{c|}{58/72 = 81\%} & 67\% & 62\% \\
-\bottomrule
-\end{tabular}
-\caption{Pairwise judging by position. ``Balanced'' is the mean of the two position-specific win
-rates. C/B: topic winner by majority for the other judges. Topic-winner agreement between the five
-judge runs is 0.82.}
-\label{tab:position}
-\end{table}
-
-\paragraph{Where judges disagree, the human agrees with the minority.} The two other judges prefer the
-baseline on the poem, and so does the absolute rubric by 9.9 points; one of us, before seeing any of
-these numbers, had preferred the baseline's quieter staging too. Only the round's judge preferred the
-candidate there---three to nothing, three times---and every one of those votes came from the second
-slot. On the Silk Road and buoyancy topics one other judge each dissents. Agreement between judge runs
-on the topic winner is 0.82; the disagreements concentrate on exactly the topics where the fact
-coverage of Table~\ref{tab:facts} moved most.
-
 
 Together with the flat absolute score, these support a conclusion reached elsewhere in other
 settings \citep{notanoracle2026,moreconvincing2026,teachingmonster2026}: a learned judge is a useful

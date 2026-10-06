@@ -235,12 +235,16 @@ def print_score(res):
     print(f"composite {res['composite']}/100")
 
 
-def compare(a, b, spec, votes=3, detail=False):
+def compare(a, b, spec, votes=4, detail=False):
     """Blind pairwise: which of two reels on the same topic is better? Each vote sees both reels'
-    sample sheets with the order swapped every vote (position bias cancels); the judge is never told
-    which version is which. Returns {"A": wins, "B": wins} (+ "why": [...] with detail=True).
-    Relative judgments are far steadier than absolute 1–5 scores from the same judge."""
-    wins, why = {"A": 0, "B": 0}, []
+    sample sheets; the order alternates, and `votes` is rounded up to an even number so each reel is
+    shown first exactly as often as second. Vision judges prefer the reel shown SECOND far more often
+    than chance (in our reliability study sonnet picked the second-shown reel in 81 % of votes), so an
+    odd vote count silently favours whichever reel takes the extra second slot. The judge is never told
+    which version is which. Returns {"A": wins, "B": wins} (+ "why": [...] and "first": [...] with
+    detail=True — `first[i]` is the side shown first on vote i)."""
+    votes += votes % 2
+    wins, why, first = {"A": 0, "B": 0}, [], []
     with tempfile.TemporaryDirectory() as tmp:
         sheets = {"A": sample_sheets(a, Path(tmp) / "a"), "B": sample_sheets(b, Path(tmp) / "b")}
         digest = {k: storyboard_digest(p) for k, p in (("A", a), ("B", b))}
@@ -265,7 +269,8 @@ Return JSON: {{"winner": "X" or "Y", "why": "one concrete sentence"}}"""
             pick = x if str(j.get("winner", "")).strip().upper().startswith("X") else y
             wins[pick] += 1
             why.append(f"{'A' if pick == 'A' else 'B'}: {j.get('why', '')}")
-    return {**wins, "why": why} if detail else wins
+            first.append(x)
+    return {**wins, "why": why, "first": first} if detail else wins
 
 
 def side_by_side(a, b, out):

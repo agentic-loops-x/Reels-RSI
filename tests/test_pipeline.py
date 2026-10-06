@@ -191,3 +191,14 @@ def test_dub_maps_normalized_keys_back():
     from reels_rsi.pipeline import dub
     t = dub.match_keys({"底 = ?": "Base = ?", "?": "?", "已知(单位:厘米)": "Given (cm)"}, ["底 = ？", "？", "已知（单位：厘米）"])
     assert t == {"底 = ？": "Base = ?", "？": "?", "已知（单位：厘米）": "Given (cm)"}
+
+
+def test_compare_balances_positions(monkeypatch, tmp_path):
+    from reels_rsi.rsi import score
+    calls = []
+    monkeypatch.setattr(score, "sample_sheets", lambda p, out, per_sheet=None: [(tmp_path / "s.jpg", ["f1"])])
+    monkeypatch.setattr(score, "storyboard_digest", lambda p: "")
+    monkeypatch.setattr(score.llm, "complete_json", lambda spec, prompt, images=(), **kw: (calls.append(1), {"winner": "Y", "why": "second"})[1])
+    w = score.compare(tmp_path, tmp_path, "x:y", votes=3, detail=True)     # odd → rounded up to 4
+    assert len(w["first"]) == 4 and w["first"].count("A") == 2 and w["first"].count("B") == 2
+    assert w["A"] == 2 and w["B"] == 2                                        # a pure second-slot judge gets a tie, not a win
