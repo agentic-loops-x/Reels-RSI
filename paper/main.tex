@@ -48,17 +48,21 @@ harness can drive, and with self-improvement that happens at the program level r
 weights or prompts. Every revision pass of a reel is logged with a code snapshot; a retrospective
 pairs each check finding with the diff that fixed it and proposes lessons; a lesson that a static
 check can catch is \emph{compiled into a rule} that ships with a must-fail and a must-pass example,
-so the memory itself is unit-tested. Because reels are programs, a rule learned today can be run
+so the memory itself is unit-tested; and because reels are programs, a rule learned today can be run
 over everything made before it. A bounded, benchmark-gated step lets an agent rewrite the director's
 playbook, kept only when blind pairwise judgments on held-out topics prefer it; nothing enters memory
-without a human decision. In a release-testing field study (23 reels, 136 frames, one
-skill-evolution round), the one rule learned during the study found four latent defects in the 19
-frames authored before it existed and none in the 117 authored under it; a playbook rewrite that
-blind judges preferred 11--1 on training topics and 8--4 on held-out topics left the absolute
-rubric score unchanged ($75.3 \rightarrow 74.9$) and, on one history topic, dropped a fact the
-original stated. We document three distinct ways the preference signal misled the loop and the
-gate that caught each. The system, every rule with its examples, the lessons and the evolve report
-are public.
+without a human decision. We report a release-testing field study of 23 reels and one playbook
+evolution, a 2$\times$2 memory ablation of 16 more reels, and a judge-reliability study. The rule
+learned during the study found four latent defects in the 19 frames authored before it existed and
+none in the 117 authored under it; with every rule switched off, eight further reels contained no
+violation either---for this director the rules are an audit and a backstop (three firings in 58
+passes), not a guard that is often needed. The playbook rewrite that blind judges preferred 11--1 on
+training topics and 8--4 on held-out topics left the absolute rubric unchanged; re-judging showed the
+rubric stable but insensitive, the pairwise verdict repeatable but inflated by a position bias in our
+own vote design (judges picked the second-shown reel 62--81\% of the time), and the preferred scripts
+dropping thirteen baseline facts across six of eight topics. We document four failure modes of the
+preference signal, which check caught each, and the fixes. The system, rules, lessons, data and
+evolve report are public.
 \end{abstract}
 
 \section{Introduction}
@@ -95,23 +99,30 @@ another language. The contributions are what the program view makes possible on 
   admitted only if it passes both (L2). A benchmark-gated step lets an agent rewrite the director's
   playbook, kept only if blind pairwise judges prefer the result on training \emph{and} held-out
   topics (L3). Every tier is written by a check or by a person; the model only proposes.
-\item \textbf{Retroactive audit} (\S\ref{sec:audit}). A rule learned from reel $n$ is a program that
-  runs on reels $1 \ldots n-1$. The rule learned during our study found four latent defects in two
-  reels delivered and reviewed before the system existed---defects no one had noticed---and nothing
-  in the 21 reels made under it.
-\item \textbf{A documented account of the preference signal} (\S\ref{sec:evolve}). One evolution
-  round was accepted by blind pairwise judgment 11--1 on training topics and 8--4 on held-out topics
-  while the absolute rubric score did not move. The judge-preferred version of one history reel
-  also silently dropped a fact. We report three failure modes of the preference signal observed in
-  the study---a judge misreading that became a proposed lesson, a proposer writing for the judge's
-  sampling schedule, and craft bought with a fact---and which gate caught each.
+\item \textbf{Retroactive audit, and an honest account of the guard} (\S\ref{sec:audit},
+  \S\ref{sec:ablation}). A rule learned from reel $n$ is a program that runs on reels $1 \ldots n-1$.
+  The rule learned during our study found four latent defects in two reels delivered and reviewed
+  before the system existed---defects no one had noticed---and nothing in the 21 reels made under it.
+  The run logs and a rules-off ablation then show why the zero is cheap: for this director the rules
+  fired three times in 58 passes, and eight reels made with no rule active contain no violation. The
+  audit, not the guard, is what the program view buys a strong director; the guard is a backstop.
+\item \textbf{A measured account of the preference signal} (\S\ref{sec:evolve}--\S\ref{sec:reliability}).
+  One evolution round was accepted by blind pairwise judgment 11--1 on training topics and 8--4 on
+  held-out topics while the absolute rubric did not move. Re-judging 170 times shows the rubric stable
+  (within-reel SD 1.3) but insensitive, the pairwise verdict repeatable but leaning on a position bias:
+  three judge models pick the second-shown reel 62--81\% of the time, and our own three-vote
+  alternation gave the candidate the extra second slot. Position-balanced, the round still passes, but
+  three of eight topics are ties. Reading all sixteen scripts shows the preferred reels dropping
+  thirteen baseline facts over six topics while adding six. We report four failure modes of the
+  signal---a judge misreading that became a proposed lesson, a proposer writing for the sampling
+  schedule, craft bought with facts, and our own vote design---and the check that caught each.
 \end{enumerate}
 
 We are explicit about scale. This is a field study of one system during its own release testing:
-23 reels, one model family as director, judge and retrospective model, one evolution round, no human
-preference study. It establishes that the mechanisms work and what they catch, not effect sizes. A
-companion benchmark for explainer-reel systems, with outcome tests on the final video, is in
-preparation and is deliberately kept out of this paper.
+23 reels in the main study, 16 in the ablation, one model family as director, judge and retrospective
+model, one evolution round, no human preference study. It establishes what the mechanisms catch and
+what they miss, not effect sizes. A companion benchmark for explainer-reel systems, with outcome tests
+on the final video, is in preparation and is deliberately kept out of this paper.
 
 \section{Explainer reels as programs}
 \label{sec:modality}
@@ -519,7 +530,59 @@ names the alliance. The judge preferred the right 2--1 for its larger, animated 
 
 \subsection{Memory ablation}
 \label{sec:ablation}
-ABLATION-RESULTS-PENDING
+Does the memory change the reels? We made the four training topics four more times with the
+current (evolved) skill and the same director, crossing rules \{on, off\} with lessons \{on, off\}:
+\texttt{REELS\_RULES=off} removes every rule from \texttt{finalize} and \texttt{lint}; an empty
+\texttt{REELS\_HOME} removes the fifteen accepted lessons from the frame briefs. All sixteen reels
+rendered. Afterwards we ran all thirteen rules offline over every reel, whatever switch it was made
+with, and had the judge compare conditions pairwise, position-balanced (four votes per topic, each
+order twice). Table~\ref{tab:ablation} has the numbers.
+
+\begin{table}[t]
+\centering\small
+\begin{tabular}{lcc|cccc|cc}
+\toprule
+ & \multicolumn{2}{c|}{memory} & rule violations & finalize & renderer warn. & judge & \multicolumn{2}{c}{pairwise, 4 topics $\times$ 4 votes} \\
+Condition & rules & lessons & in the output & passes & at last pass & rubric & vs lessons off & vs rules off \\
+\midrule
+A & on & on & 0 & 17 & 0 & 58.7 & 8--8 (vs C) & 5--11 (vs B) \\
+B & off & on & 0$^\dagger$ & 10 & 0 & 60.5 & 7--9 (vs D) & --- \\
+C & on & off & 0 & 11 & 3 & 59.8 & --- & 5--11 (vs D) \\
+D & off & off & 0$^\dagger$ & 12 & 3 & 58.0 & --- & --- \\
+\bottomrule
+\end{tabular}
+\caption{The 2$\times$2 memory ablation, four training topics each, Sonnet directing. $^\dagger$The
+offline audit of the eight unguarded reels raised one finding, a counter-clockwise ring in a Red Cliffs
+map; the region renders correctly because that kit projects points into a plain SVG path, where ring
+direction is irrelevant, so it was a false positive of \texttt{polygon-winding}, which now fires only
+where a ring becomes GeoJSON and ships this kit's pattern as a must-pass example.}
+\label{tab:ablation}
+\end{table}
+
+\paragraph{The guard was not needed.} Eight reels made with no rule active contain no true violation
+of any of the thirteen rules. For this director, the mistakes the rules encode are ones it no longer
+makes---consistent with the three firings in 58 passes of \S\ref{sec:audit}. The one finding the audit
+did raise was a false positive, which is the other thing an audit over a corpus of programs finds:
+imprecise rules. It cost a two-line change to the rule's gate and a new must-pass example, after which
+every rule still passes its examples.
+
+\paragraph{Lessons left no trace the judge could see, and a small one the renderer could.} With rules
+on, the reels made with lessons and without split the pairwise votes 8--8; with rules off, 7--9. The
+rubric means are within two points. The only consistent difference is at the last finalize pass: both
+lesson-less conditions ended with three renderer warnings outstanding, both conditions with lessons
+with none, which is the kind of thing a brief about caption bands and label placement would affect.
+We read this as: fifteen lessons, most of them about chalk-board geometry reels, do not move a judge
+watching four science and history stills; a lesson earns its place on the reels it was learned from.
+
+\paragraph{Rules on were judged slightly worse.} Both rules-on conditions lost their pairwise
+comparison to the rules-off twin 5--11. With four topics we do not read a mechanism into it---no
+rule fired in any of these sixteen reels, so the switch changed nothing the agent saw except the
+absence of a check step---and with the second-shown reel still picked 58\% of the time even under the
+balanced design, 5--11 over four topics is within what position alone produces. It is, at least, not
+evidence that the guard improves craft.
+
+HAIKU-RESULTS-PENDING
+
 
 \subsection{Judge reliability}
 \label{sec:reliability}
@@ -626,31 +689,38 @@ proposer cannot edit, and a person at the end.
 
 \section{Limitations}
 \label{sec:limits}
-\emph{Scale.} Twenty-three reels, one evolution round, one model family as director, judge and
-retrospective model. The 11--1 and 8--4 votes come from one judge model; without a human preference
-study we cannot say whether its taste matches viewers', only that it diverges from correctness.
-\emph{No ablation.} We did not run the loop with lessons but no rules, or rules but no lessons; the
-study shows what each tier caught, not how much each contributes. \emph{What rules can see.} A rule
-checks program text. It cannot know that a topic requires naming an alliance, that a label is too
-small on a phone, or that a mood is wrong; those remain lessons (advice) or outcome tests (the
-companion benchmark). \emph{Rule provenance.} Twelve of thirteen rules were ported from the
-predecessor's checker, each from a real failure, but only one lesson-to-rule path was exercised in
-this study. \emph{Judge saturation.} The absolute rubric was flat across a change that pairwise
-judgment found decisive; with one reel per topic we cannot separate the judge's taste from run-to-run
-noise. \emph{Human cost.} A person triaged 56 lessons and one evolve report; we did not measure how
-that scales. \emph{Dependencies.} The free neural voices come from an unofficial endpoint;
-commercial use needs a licensed provider, which the pipeline supports.
+\emph{Scale and family.} Thirty-nine reels, one evolution round, four topics per ablation cell, and one
+model family (Claude) as director, judge and retrospective model; the three judges differ in size, not
+provenance. \emph{No human preference study.} We cannot say whether any judge's taste matches viewers';
+one author's eye agrees with the dissenting judges on one topic, which is an anecdote. \emph{Position
+bias remains.} Balancing the order cancels the second-slot preference in expectation but does not
+remove it: under the balanced design the second-shown reel was still picked 58\% of the time, so
+small margins in pairwise verdicts carry little information. \emph{Null results at $n=4$.} The
+ablation's ``lessons change nothing the judge sees'' and ``rules on are judged slightly worse'' are
+within what position alone produces; they rule out large effects, not small ones. \emph{What rules can
+see.} A rule checks program text. It cannot know that a topic requires naming an alliance or stating
+the perihelion, that a label is too small on a phone, or that a mood is wrong; those remain lessons
+(advice) or outcome tests (the companion benchmark). \emph{Rule provenance and precision.} Twelve of
+thirteen rules were ported from the predecessor's checker, each from a real failure; one
+lesson-to-rule path was exercised; one rule produced a false positive that the ablation exposed.
+\emph{Human cost.} A person triaged 56 lessons and one evolve report and read sixteen scripts by
+hand; we did not measure how that scales. \emph{Dependencies.} The free neural voices come from an
+unofficial endpoint; commercial use needs a licensed provider, which the pipeline supports.
 
 \section{Conclusion}
 An explainer reel rendered from a program is a different object from a generated video, and the
-difference is worth more than exact text: it makes the agent's own output something the agent can
-check, audit and learn from at the level of code. \sys{} turns that into a loop---log every pass,
-pair findings with fixes, propose lessons, compile the checkable ones into tested rules, rewrite the
-playbook under a gate it cannot move---and a release-testing study shows each tier doing something a
-prose memory could not. A rule found latent defects in reels made before it existed; scoped lessons
-stopped reaching reels they did not fit; and three failures of the preference signal were each caught
-by a deterministic check or a person before entering memory. The system, every rule with its
-examples, the lessons and the evolve report are public at
+difference is worth more than exact text: it makes the agent's own output something the agent, and
+its authors, can check, audit and learn from at the level of code. \sys{} turns that into a
+loop---log every pass, pair findings with fixes, propose lessons, compile the checkable ones into
+tested rules, rewrite the playbook under a gate it cannot move---and a release-testing study shows
+where each tier earns its place and where it does not. A rule found latent defects in reels made
+before it existed; the same rules were almost never needed while a strong director worked under them;
+scoped lessons stopped reaching reels they did not fit but did not move a judge; and the preference
+signal that accepted the one playbook rewrite turned out to be stable, repeatable, position-biased
+and blind to the thirteen facts the rewrite traded for craft. Each of those findings came from
+running a check over artifacts that already existed---reels, scripts, logs, votes---which is the
+practice this paper argues for. The system, every rule with its examples, the lessons, the ablation
+and reliability data and the evolve report are public at
 \url{https://github.com/agentic-loops-x/Reels-RSI}.
 
 \bibliographystyle{plainnat}

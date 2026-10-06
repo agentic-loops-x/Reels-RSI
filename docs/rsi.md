@@ -92,7 +92,11 @@ traced a broken 16:9 blackboard to a hard-coded canvas in `chalk-kit.js` — a c
 <sub>*Why do we have seasons?* — baseline skill (left) vs evolved skill (right), same topic, same model.</sub>
 
 What it shows: the absolute scores did not move, while side by side the judge preferred the new
-skill 11 to 1 on train — the reason the verdict is pairwise. The caveats: one reel per topic; every
+skill 11 to 1 on train — the reason the verdict is pairwise. A later reliability study (re-judging
+~170 times, three judge models) found that judges pick the *second-shown* reel 62–81 % of the time and
+that the round's three-vote alternation gave the candidate that slot twice per topic; position-balanced
+the round still passes (expected 10/12 train, 9/12 holdout) but three topics are ties. `compare` now
+uses an even number of votes with each order shown equally often. The caveats: one reel per topic; every
 holdout topic was a 2–1 split; and on 静夜思 a human might prefer the baseline's quieter mood (the
 new "hero ≥ half the frame" minimum suits science better than poetry). That judgment is why
 `evolve apply` is left to a person.
