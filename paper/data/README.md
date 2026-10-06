@@ -11,3 +11,5 @@
 
 Reels (videos, frame code, run logs) are not in the repository; the evolve report and side-by-side
 images are in `~/.reels/evolve/20261006-001942/` on the authors' machine and summarised in `docs/rsi.md`.
+| `learning-curve.json`, `learning-curve-topics.txt`, `run_curve.sh`, `curve_analysis.py` | 24 new topics made twice (lessons auto-accepted vs none): passes, renderer findings at first and last pass, rule firings |
+| `learning-curve-lessons/` | the 51 lessons the auto-accept arm had accumulated after reel 24 (as filed by the agents; not curated) |

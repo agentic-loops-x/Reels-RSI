@@ -52,7 +52,7 @@ so the memory itself is unit-tested; and because reels are programs, a rule lear
 over everything made before it. A bounded, benchmark-gated step lets an agent rewrite the director's
 playbook, kept only when blind pairwise judgments on held-out topics prefer it; nothing enters memory
 without a human decision. We report a release-testing field study of 23 reels and one playbook
-evolution, a 2$\times$2 memory ablation of 16 more reels, eight reels by a weaker director, and a judge-reliability study. The rule
+evolution, a 2$\times$2 memory ablation of 16 more reels, eight reels by a weaker director, a 48-reel learning curve, and a judge-reliability study. The rule
 learned during the study found four latent defects in the 19 frames authored before it existed and
 none in the 117 authored under it; with every rule switched off, eight further reels by the same director contained no violation
 either (three firings in 58 passes: an audit and a backstop), while a weaker director's four unguarded
@@ -121,7 +121,7 @@ another language. The contributions are what the program view makes possible on 
 \end{enumerate}
 
 We are explicit about scale. This is a field study of one system during its own release testing:
-23 reels in the main study, 16 in the ablation, 8 under a weaker director; one model family as director, judge and retrospective
+23 reels in the main study, 16 in the ablation, 8 under a weaker director, 48 in a learning curve; one model family as director, judge and retrospective
 model, one evolution round, no human preference study. It establishes what the mechanisms catch and
 what they miss, not effect sizes. A companion benchmark for explainer-reel systems, with outcome tests
 on the final video, is in preparation and is deliberately kept out of this paper.
@@ -619,6 +619,43 @@ rows pool the two lessons conditions.}
 
 
 
+\subsection{Does the memory grow? Forty-eight more reels}
+\label{sec:curve}
+The ablation compared four reels per cell with a fixed store of fifteen lessons. To ask whether the
+L1 tier \emph{accumulates}, we wrote 24 new topics (six each of science, history, worked problem and
+English explainer, in that repeating order), and made each twice with the same director (Sonnet, 30-s
+draft, rules on): once in an arm whose lesson store starts empty and \emph{auto-accepts} every
+\texttt{doc}, \texttt{kit} and \texttt{taste} lesson the agent files after each reel, so reel $k$ sees
+what reels $1 \ldots k-1$ taught; once in an arm where the same lessons are filed but never accepted.
+The auto-accept arm is an explicit departure from the human gate, labelled as such, because a curve
+needs a loop that closes without a person. All 48 reels rendered, in 4.3 hours for \$37.25; no rule
+fired in the lessons arm, four times in the other (each fixed); the offline audit finds no violation in
+any of the 48. The store grew from 3 lessons after the first reel to 51 after the last.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/curve.png}
+\caption{Per reel, in order: renderer findings at the first finalize pass, finalize passes to a clean
+build, and rule firings; lessons accumulating (blue) against none (orange). Topics cycle science,
+history, problem, English, which is the period in the orange spikes.}
+\label{fig:curve}
+\end{figure}
+
+\paragraph{Lessons lower the review cost; they do not keep lowering it.} Paired by topic, the arm
+with lessons needed fewer finalize passes (2.62 vs 3.21; fewer on 12 topics, more on 5, equal on 7;
+sign-flip permutation $p=0.069$) and had fewer renderer findings at its first pass (errors 1.04 vs
+2.21, warnings 1.38 vs 2.83; both heavy-tailed and not significant at $n=24$, $p=0.29$ and $0.41$).
+The gap sits almost entirely in the history reels, the ones with maps: 3.67 vs 4.50 passes and
+2.67 vs 5.83 first-pass errors, against no difference on the worked problems or the English
+explainers. But the curve is flat (Fig.~\ref{fig:curve}): within the lessons arm, passes and first-pass
+findings show no trend over the 24 reels (Spearman $\rho = +0.03$, $-0.01$, $-0.02$) while the store
+grew seventeenfold. Whatever a brief of lessons buys, it buys with the first handful; the fortieth
+bullet adds nothing the agent acts on. Reading the 51 accumulated lessons says why: four of them are
+narration-speed budgets that disagree with one another (3.7 and 3.9 characters per second, 2.5 and
+3.0 words per second), several restate the same map-label rule from different reels, and none was
+compiled into a check. Auto-acceptance grows a store; it does not grow a memory. That is the case for
+the human gate and for L2 over L1: curation removes the duplicates and the contradictions, and only a
+lesson turned into a rule is enforced on the fiftieth reel as surely as on the second.
 \subsection{Judge reliability}
 \label{sec:reliability}
 The round's verdict rests on one judge model voting once. To learn how much of it is the judge, we
@@ -730,7 +767,7 @@ proposer cannot edit, and a person at the end.
 
 \section{Limitations}
 \label{sec:limits}
-\emph{Scale and family.} Forty-seven reels, one evolution round, four topics per ablation cell, and one
+\emph{Scale and family.} Ninety-five reels, one evolution round, four topics per ablation cell, and one
 model family (Claude) as director, judge and retrospective model; the three judges differ in size, not
 provenance. \emph{No human preference study.} We cannot say whether any judge's taste matches viewers';
 one author's eye agrees with the dissenting judges on one topic, which is an anecdote. \emph{Position
