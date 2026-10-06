@@ -7,9 +7,11 @@
 
 [English](README.md) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
-<a href="docs/assets/reels-rsi-promo.mp4"><img src="docs/assets/reels-rsi-promo-poster.jpg" width="880" alt="Reels-RSI 宣传片，点击播放"></a>
 
-<sub>宣传片（57 秒，<a href="docs/assets/reels-rsi-promo.mp4">点击观看有声版</a>）本身就是用 Reels-RSI 做的，里面每个画面都是真实产出：工具做过的片子、用 <code>reels dub</code> 配成六种语言的同一节课、第一轮技能进化的结果。</sub>
+https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6
+
+
+<sub>宣传片（57 秒，<a href="https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6">点击观看有声版</a>）本身就是用 Reels-RSI 做的，里面每个画面都是真实产出：工具做过的片子、用 <code>reels dub</code> 配成六种语言的同一节课、第一轮技能进化的结果。</sub>
 
 </div>
 
