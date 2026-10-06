@@ -337,6 +337,12 @@ rendered at the time of writing and are excluded.}
 \label{tab:corpus}
 \end{table}
 
+\paragraph{Compute.} Everything in this paper was made on one laptop and one consumer subscription.
+The 89 headless reels across the benchmark, evolution, ablation, weaker-director and learning-curve
+runs cost \$68.74 in metered agent time (\$0.35--1.45 per 30-s reel); the two reviewed reels were made
+in an interactive session and the roughly 400 judge calls ran on the subscription, unmetered. No
+experiment needed more than one night.
+
 \subsection{Within a reel, the review loop converges}
 Every reel reached zero check errors before render. The two reviewed reels needed 7 and 5 finalize
 passes; their warning counts went $5 \rightarrow 12 \rightarrow 2 \rightarrow 2 \rightarrow 1
@@ -403,8 +409,10 @@ The guard side of the same table is the zero, and it needs a caveat the run logs
 the renderer's own checks fired 184 times (30 errors, 154 warnings). The agents that wrote the 117
 frames rarely made the mistakes the rules encode. So the zero is mostly the model's doing, and the
 rules are a backstop that was needed three times---the ablation in \S\ref{sec:ablation} measures what
-appears when the backstop is removed. The retroactive audit is the stronger claim: it does not depend
-on how often a mistake is made, only on the corpus being code.
+appears when the backstop is removed. Over every reel with a log---92 reels, 260 finalize passes---the thirteen rules fired 25 times, 18 of
+them in one weak-director reel (\S\ref{sec:ablation}); nine rules, \texttt{visible-from-state} among
+them, never fired while a reel was being authored. The retroactive audit is the stronger claim: it
+does not depend on how often a mistake is made, only on the corpus being code.
 
 \subsection{One evolution round}
 \label{sec:evolve}
