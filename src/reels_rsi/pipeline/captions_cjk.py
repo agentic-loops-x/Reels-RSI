@@ -6,7 +6,8 @@ Chinese scripts: a patched copy of the faceless-explainer captions builder is wr
   * cap a group by character count (≤ --max-chars, punctuation excluded) instead of word count
   * no inter-word spaces; trailing punctuation stripped from the displayed text
   * frame.md's display family + Noto Serif SC as the caption font stack
-English scripts (audio_meta.json "language": "en"): the stock builder runs unchanged.
+Japanese scripts take the same path (no spaces between words). English and Korean scripts
+(word-spaced, audio_meta.json "language": "en" / "ko"): the stock builder runs unchanged.
 
 Bilingual (auto when SCRIPT.md has `**EN:**` lines): under each Line's spoken block write
     **EN:** First clause | second clause | third clause
@@ -149,9 +150,11 @@ def main(argv=None):
     project = Path(a.project).resolve()
     meta = json.loads((project / "audio_meta.json").read_text("utf-8"))
     lang = meta.get("language", "zh")
+    from reels_rsi import langs
+    spaced = langs.get(lang)["captions"] == "spaced"          # en, ko: words separated by spaces
     args = ["build", "--storyboard", "./STORYBOARD.md", "--audio-meta", "./audio_meta.json",
             "--hyperframes", ".", "--out", "./caption_groups.json"]
-    if lang == "en":
+    if spaced:
         subprocess.run(["node", str(UPSTREAM / "captions.mjs"), *args], cwd=project, check=True)
         # reels presets' skins are tuned for Chinese (no inter-word gap) — restore word spacing
         html_path = project / "compositions" / "captions.html"

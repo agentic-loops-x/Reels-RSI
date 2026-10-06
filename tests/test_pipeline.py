@@ -168,3 +168,20 @@ def test_reels_from_before_the_rename_are_migrated(tmp_path):
     ph = tmp_path / "f.html"
     ph.write_text("<!-- evofilm:placeholder -->\n<template></template>")
     assert is_placeholder(ph)
+
+
+def test_srt_rejoins_japanese_cut_mid_clause():
+    from reels_rsi.pipeline import srt
+    g = [{"start": 0, "end": 1, "text": "空気の分子にぶつかって散らばり"}, {"start": 1.05, "end": 1.6, "text": "ます"}]
+    script = "太陽の光は空気の分子にぶつかって散らばります。"
+    assert srt.merge(g, script)[0][2] == "空気の分子にぶつかって散らばります"
+    zh = [{"start": 0, "end": 1, "text": "直角三角形ABC"}, {"start": 1.1, "end": 2, "text": "AC长两厘米"}]
+    assert srt.merge(zh, "直角三角形ABC，AC长两厘米。")[0][2] == "直角三角形ABC AC长两厘米"
+
+
+def test_language_detection():
+    from reels_rsi import langs
+    assert langs.detect("하늘은 왜 파란색일까요?") == "ko"
+    assert langs.detect("なぜ空は青いのでしょうか") == "ja"
+    assert langs.detect("天空为什么是蓝的") == "zh"
+    assert langs.detect("Why is the sky blue?") == "en"

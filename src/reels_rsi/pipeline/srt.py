@@ -9,6 +9,7 @@ Usage: reels srt --project <dir>
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 
@@ -29,7 +30,7 @@ def cjk(text):
     return any("\u3000" <= c <= "\u9fff" or "\uff00" <= c <= "\uffef" for c in text)
 
 
-def merge(groups):
+def merge(groups, script=""):
     """On-screen caption groups are short (2-3 English words for karaoke). A subtitle file wants
     reading-sized cues: join consecutive groups until a sentence ends, a pause (> 0.5 s) or a
     length cap (42 Latin / 18 CJK characters) — the usual subtitle limits."""
@@ -39,7 +40,10 @@ def merge(groups):
         if cues:
             a, b, prev = cues[-1]
             zh = cjk(prev + text)
-            joined = prev + " " + text          # caption groups carry no clause punctuation; zh subtitles separate clauses with a space
+            # caption groups drop their clause punctuation: CJK clauses are separated by a space, but a
+            # group cut mid-clause (Japanese, long Chinese clauses) is rejoined without one
+            tight = zh and script and (prev[-4:] + text[:4]) in script
+            joined = prev + ("" if tight else " ") + text
             ends = prev.rstrip()[-1:] in ".?!。？！…"
             if not ends and g["start"] - b <= 0.5 and len(joined) <= (18 if zh else 42):
                 cues[-1] = (a, g["end"], joined)
@@ -60,7 +64,9 @@ def main(argv=None):
         write(out / "subtitles.en.srt", [(g["start"], g["end"], g.get("en", "")) for g in groups])
         write(out / "subtitles.zh-en.srt", [(g["start"], g["end"], g["text"] + ("\n" + g["en"] if g.get("en") else "")) for g in groups])
     else:
-        write(out / "subtitles.srt", merge(groups))
+        script = project / "SCRIPT.md"
+        spoken = "".join(re.findall(r"^    (.+)$", script.read_text("utf-8"), re.M)) if script.exists() else ""
+        write(out / "subtitles.srt", merge(groups, re.sub(r"\s+", "", spoken)))
     print("✓ subtitles → renders/")
 
 

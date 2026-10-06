@@ -26,6 +26,8 @@ One sentence in → a narrated, captioned, scored explainer reel out — rendere
 And it is **Chinese-first**: per-word TTS timing for karaoke captions, CJK line breaking, bilingual
 中英 subtitles, font subsetting so the headless renderer never shows tofu, a history mode with maps
 and period images, and a solve mode for school problems (math, physics, chemistry, 语文, stroke order).
+Reels speak **中文 · English · 日本語 · 한국어** — write the script in a language and the voice, captions,
+fonts and subtitles follow (`reels voice --lang ja`; Noto JP / KR download on first use).
 
 ## Quick start
 

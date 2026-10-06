@@ -8,6 +8,7 @@ You are directing a reel with Reels-RSI, headless. Nobody will answer questions:
 
    - target length: about {{length}} seconds
    - aspect: {{aspect}}
+   - language: {{language}} (narration, on-screen text and captions)
    - style preset: {{style}}
    - project directory: {{dir}}   (create it with `reels new {{dir}} …`)
 3. Run every Reels-RSI step with the `reels` command on PATH. If your harness cannot spawn

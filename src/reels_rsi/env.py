@@ -139,6 +139,12 @@ def cmd_install(argv):
     print("✓ done — in Claude Code: /reels 做一个讲…的视频 · in other agents: \"use the reels skill to make a video about …\"")
 
 
+def language_of(a):
+    from reels_rsi import langs
+    code = langs.detect(a.topic) if a.lang == "auto" else a.lang
+    return f"{code} ({langs.get(code)['name']})"
+
+
 def cmd_make(argv):
     ap = argparse.ArgumentParser(prog="reels make", description="One sentence in, a rendered reel out (headless agent).")
     ap.add_argument("topic")
@@ -146,6 +152,7 @@ def cmd_make(argv):
     ap.add_argument("--length", type=int, default=60)
     ap.add_argument("--aspect", default="16:9", choices=["16:9", "9:16", "1:1"])
     ap.add_argument("--style", default="your choice")
+    ap.add_argument("--lang", default="auto", help="zh · en · ja · ko (auto = the language of the topic)")
     ap.add_argument("--quality", default="high", choices=["draft", "standard", "high"])
     ap.add_argument("--harness", default=None, help="claude | codex | gemini | opencode")
     ap.add_argument("--model", default=None, help="passed to the harness (e.g. opus, sonnet, gpt-5.1, deepseek/deepseek-chat)")
@@ -161,7 +168,7 @@ def cmd_make(argv):
         if input(f"{harness} ({model}) will work in {Path.cwd()} with full tool permissions. Continue? [y/N] ").lower() != "y":
             return
     prompt = agents.render_prompt("make", skill=paths.skill_dir(), topic=a.topic, length=a.length, aspect=a.aspect,
-                                  style=a.style, dir=proj, quality=a.quality)
+                                  style=a.style, dir=proj, quality=a.quality, language=language_of(a))
     print(f"▶ {harness} ({model}) is directing: {a.topic}\n  project: {proj}", flush=True)
     proj.parent.mkdir(parents=True, exist_ok=True)
     res = agents.run(harness, model, prompt, cwd=Path.cwd(), log_path=proj.parent / f"{proj.name}.make.log")

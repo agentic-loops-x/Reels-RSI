@@ -34,7 +34,7 @@ Ask only what the request leaves open, in one message, each with a recommended d
 题目 & 角度 (one-line thesis) · 时长 (60–90 s; ≈ 4.5–5 字/秒) · 画幅 (16:9 B站/YouTube · 9:16 抖音/视频号)
 · 风格 (preset above, or a named look from styles.md) · 配音 (zh-CN-YunxiNeural 男声活泼 ·
 XiaoxiaoNeural 女声温暖 · YunjianNeural 浑厚 · en-US-AndrewNeural; ElevenLabs if `ELEVENLABS_API_KEY`)
-· 字幕 (中文 · 中英双语 · none) · 音乐 (user track in `assets/music/`, else a mood) · 审阅 (**yes**: plan → look-dev → final).
+· 语言 (中文 · English · 日本語 · 한국어 — narration, on-screen text and captions all in it; `reels voice` detects it from SCRIPT.md, default voices in `reels_rsi/langs.py`) · 字幕 (same language · 中英双语 · none) · 音乐 (user track in `assets/music/`, else a mood) · 审阅 (**yes**: plan → look-dev → final).
 "直接做 / don't ask" ⇒ take every default, state them in one line, no gates.
 A photo of a problem (练习册拍照) → solve.md "Problem from a photo": transcribe it and restate it at the plan gate.
 

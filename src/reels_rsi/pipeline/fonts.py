@@ -2,7 +2,8 @@
 
 The render machine is a clean headless Chrome: any family a frame names must ship as a file.
   · Noto Serif SC / Noto Sans SC (~20 MB each) are subset to exactly the characters the project
-    shows — rerun after ANY copy change (SCRIPT.md, STORYBOARD.md, compositions/).
+    shows — rerun after ANY copy change (SCRIPT.md, STORYBOARD.md, compositions/). Japanese and
+    Korean reels are cut from Noto JP / KR instead (downloaded on first use) under the same names.
   · Instrument Serif / Archivo are converted whole when frame.md or a frame references them.
 JetBrains Mono, Inter, Montserrat… are pre-bundled by HyperFrames and need nothing.
 
@@ -10,8 +11,10 @@ Usage: reels fonts --project <dir>
 """
 
 import argparse
+import json
 import subprocess
 import sys
+import urllib.request
 from pathlib import Path
 
 from reels_rsi import paths
@@ -38,10 +41,42 @@ def subset(src, out, text=None):
     subprocess.run(args, check=True)
 
 
+def language(project):
+    meta = project / "audio_meta.json"
+    if meta.exists():
+        lang = json.loads(meta.read_text("utf-8")).get("language")
+        if lang:
+            return lang
+    from reels_rsi import langs
+    script = project / "SCRIPT.md"
+    return langs.detect(script.read_text("utf-8")) if script.exists() else "zh"
+
+
+def source_fonts(lang):
+    """The serif + sans Noto files whose glyphs this language needs; JP/KR download on first use."""
+    from reels_rsi import langs
+    from reels_rsi.env import FONT_BASE
+    family = langs.FONT_FILES[langs.get(lang)["font"]]
+    out = {}
+    for style, (name, rel) in family.items():
+        path = paths.fonts() / name
+        if not path.exists():
+            print(f"  downloading {name} (once, ~10 MB, SIL OFL) …", flush=True)
+            try:
+                with urllib.request.urlopen(FONT_BASE + rel, timeout=300) as r:
+                    data = r.read()
+            except OSError as e:
+                sys.exit(f"✗ could not download {name} ({e}) — put it in {paths.fonts()} by hand")
+            path.write_bytes(data)
+        out[style] = path
+    return out
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", default=".")
     project = Path(ap.parse_args(argv).project).resolve()
+    lang = language(project)
     out = project / "assets" / "fonts"
     out.mkdir(parents=True, exist_ok=True)
 
@@ -52,16 +87,25 @@ def main(argv=None):
     text = "".join(sorted(c for c in chars if c.isprintable()))
     if not (paths.fonts() / "NotoSansSC-VF.ttf").exists():
         sys.exit("✗ fonts missing — run `reels setup` first")
-    for src, dst in CJK.items():
-        subset(paths.fonts() / src, out / dst, text)
+    # The subsets keep the family names "Noto Serif SC" / "Noto Sans SC" that presets, caption skins and
+    # frames already use; for ja / ko they are cut from Noto JP / KR, so kanji take Japanese forms and
+    # Hangul exists at all. font-faces.css also registers the real names (Noto Sans JP …).
+    src = source_fonts(lang)
+    subset(src["serif"], out / CJK["NotoSerifSC-VF.ttf"], text)
+    subset(src["sans"], out / CJK["NotoSansSC-VF.ttf"], text)
     for family, faces in LATIN.items():
         if family in corpus:
             for src, dst in faces.items():
                 subset(paths.fonts() / src, out / dst)
-    (out / "font-faces.css").write_text(FACE_CSS, "utf-8")
+    faces = FACE_CSS
+    fam = {"ja": "JP", "ko": "KR"}.get(lang)
+    if fam:
+        faces += (f'@font-face {{ font-family: "Noto Serif {fam}"; src: url("assets/fonts/NotoSerifSC-Subset.woff2") format("woff2"); font-weight: 200 900; }}\n'
+                  f'@font-face {{ font-family: "Noto Sans {fam}"; src: url("assets/fonts/NotoSansSC-Subset.woff2") format("woff2"); font-weight: 100 900; }}\n')
+    (out / "font-faces.css").write_text(faces, "utf-8")
     for f in sorted(out.glob("*.woff2")):
         print(f"  {f.name}: {f.stat().st_size / 1024:.0f} KB")
-    print(f"✓ fonts: {len(text)} chars subset → assets/fonts/")
+    print(f"✓ fonts ({lang}): {len(text)} chars subset → assets/fonts/")
 
 
 if __name__ == "__main__":

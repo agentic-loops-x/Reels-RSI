@@ -18,7 +18,8 @@ Never follow the source article's paragraph order. Thesis lands by frame 2; ever
 
 ## Narration rules
 
-- Speaking rate with edge-tts ≈ 4.5–5 汉字/秒. 60 s ≈ 270–300 字; 90 s ≈ 420 字. Budget per frame.
+- Speaking rate with edge-tts: 中文 ≈ 4–4.5 字/秒 (60 s ≈ 250–270 字) · English ≈ 2.6 words/s · 日本語 ≈ 5 字/秒
+  (kanji + kana) · 한국어 ≈ 4 syllables/s. Budget per frame; `reels voice` writes the real durations back.
 - 1–2 short sentences per frame; break into **cues** with ，—— so each visual reveal has a word to land on.
 - Concrete over abstract: name the object the viewer will see ("一束白光撞上三棱镜").
 - Numbers spoken the way they are shown: on screen `450 nm`, spoken "四百五十纳米".
@@ -89,8 +90,12 @@ Only the 4-space-indented block is spoken. Frames without narration are simply l
 (clauses split at ，。？！；：——). `reels captions` shows each group's English under it and
 `reels srt` writes zh / en / zh-en SRTs.
 
-**English reels:** write SCRIPT.md in English; `reels voice` detects it (voice en-US-AndrewNeural by
-default) and the stock caption builder is used.
+**English, Japanese and Korean reels:** write SCRIPT.md — and every on-screen word — in that language;
+`reels voice` detects it (Hangul → ko, kana → ja) and picks the voice (en-US-AndrewNeural,
+ja-JP-KeitaNeural, ko-KR-InJoonNeural; `--voice` for another). Japanese captions are cut like Chinese
+(no spaces), English and Korean by words. `reels fonts` cuts the glyphs from Noto JP / KR for ja / ko
+(downloaded once) under the usual family names, so presets and skins need no change; use
+`"Noto Sans SC"` / `"Noto Serif SC"` in frames as usual (or the real names `"Noto Sans KR"` …).
 
 **Music mood** comes from the storyboard frontmatter `music:` — keywords map to ambient
 (科普/calm), cinematic (历史/纪录/庄重), epic (战/史诗/激昂), upbeat (轻快/产品), or `none`.

@@ -45,3 +45,11 @@ def test_wheel_ships_the_skill(tmp_path):
                  "reels_rsi/bench/topics.toml", "reels_rsi/prompts/retro.md"):
         assert need in names, need
     assert not [n for n in names if n.endswith(".test.mjs") or "__pycache__" in n]
+
+
+def test_make_and_bench_prompts_fill_every_placeholder():
+    from pathlib import Path
+    from reels_rsi.rsi import bench
+    for t in bench.topics():
+        text = bench.make_prompt(t, Path("/tmp/x"), Path("/tmp/skill"), "draft")
+        assert "{{" not in text and "language:" in text

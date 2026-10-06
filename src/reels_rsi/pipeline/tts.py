@@ -14,12 +14,13 @@ Music bed (--bgm):
   none   no music
   <path> a specific file
 
-Language: --lang auto detects Chinese vs English from SCRIPT.md. English default voice
-en-US-AndrewNeural (also good: en-US-AvaNeural, en-GB-RyanNeural).
+Language: --lang auto detects it from SCRIPT.md (Hangul → ko, kana → ja, Han → zh, else en); the
+default voice per language and good alternatives are in reels_rsi/langs.py (zh-CN-YunxiNeural,
+en-US-AndrewNeural, ja-JP-KeitaNeural, ko-KR-InJoonNeural …).
 
 Then writes the real voice durations into STORYBOARD.md (`- duration:` per frame).
 
-Usage: reels voice --project <dir> [--provider auto|edge|elevenlabs] [--voice ...] [--rate +0%] [--bgm auto] [--lang auto|zh|en]
+Usage: reels voice --project <dir> [--provider auto|edge|elevenlabs] [--voice ...] [--rate +0%] [--bgm auto] [--lang auto|zh|en|ja|ko]
 """
 
 import argparse
@@ -34,9 +35,10 @@ import sys
 import urllib.request
 from pathlib import Path
 
+from reels_rsi import langs as LANGS_MOD
 from reels_rsi.pipeline import music
 
-PUNCT = "，。？！；：、—…,.?!;:「」“”"
+PUNCT = "，。？！；：、—…,.?!;:「」『』“”"
 
 
 def parse_script(text):
@@ -72,7 +74,7 @@ def attach_punct(words, source):
 
 
 # ── providers ────────────────────────────────────────────────────────────────
-DEFAULT_VOICE = {"zh": "zh-CN-YunxiNeural", "en": "en-US-AndrewNeural"}
+DEFAULT_VOICE = {code: spec["voice"] for code, spec in LANGS_MOD.LANGS.items()}
 
 
 async def edge_synth(text, voice, rate, mp3, lang="zh", attempts=4):
@@ -188,7 +190,7 @@ async def _main(argv=None):
     ap.add_argument("--rate", default="+0%", help="edge only, e.g. +8%%")
     ap.add_argument("--bgm", default="auto")
     ap.add_argument("--only", default=None, help="comma list of frame numbers to re-voice")
-    ap.add_argument("--lang", default="auto", choices=["auto", "zh", "en"])
+    ap.add_argument("--lang", default="auto", choices=["auto", *LANGS_MOD.LANGS])
     a = ap.parse_args(argv)
 
     from reels_rsi.project import require_project
@@ -202,7 +204,7 @@ async def _main(argv=None):
     only = {int(x) for x in a.only.split(",")} if a.only else None
 
     lines = parse_script((project / "SCRIPT.md").read_text("utf-8"))
-    lang = a.lang if a.lang != "auto" else ("zh" if any("\u4e00" <= ch <= "\u9fff" for _, t in lines for ch in t) else "en")
+    lang = a.lang if a.lang != "auto" else LANGS_MOD.detect(" ".join(t for _, t in lines))
     voices = []
     for frame, text in lines:
         if only is not None and frame not in only and frame in old:
