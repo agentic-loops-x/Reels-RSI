@@ -1,0 +1,306 @@
+[
+ {
+  "pair": "A-C",
+  "what": "lessons (rules on)",
+  "topic": "sci-rainbow",
+  "A": 4,
+  "C": 0,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "A: Reel X shows each step happening on screen (the ray bending through the drop, the 42° and 40° angles drawn side by side, a point-cloud cone that fills into a ring, the ground darkening before the camera lifts to the plane). Reel Y has a larger hero rainbow but looks cluttered: its cone scene is clipped at the frame edge, and the ring runs into the caption in the horizon and plane scenes.",
+   "A: Y shows each step of the cause→effect happening on screen: the ray enters the drop, reflects and splits into colours, the 42°/40° angles are drawn against the sun's opposite direction, a point-cloud cone builds into a ring, and the camera lifts to the plane. X's hero visuals are flatter, and its cone step is mostly lines and labels.",
+   "A: Reel X shows the mechanism happening on screen: a white ray enters the drop, bends, reflects and splits into colour, then the 42° and 40° angles are compared and a dotted cone builds into the ring. Reel Y's frames are less clear, since the drop is covered by a rainbow ring and the cone is drawn with abstract arcs.",
+   "A: Y shows the mechanism happening on screen: the ray enters the raindrop and splits into colours, the 42° angle is drawn from the sun's anti-direction, and a 3D point-cloud cone resolves into a ring. It also has more varied camera and layout changes across the samples, and its captions don't collide with the hero visuals (X's caption overlaps the rainbow ring in the horizon and plane frames)."
+  ]
+ },
+ {
+  "pair": "A-C",
+  "what": "lessons (rules on)",
+  "topic": "hist-chibi",
+  "A": 2,
+  "C": 2,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y's hero visuals are larger and its camera moves between samples (the army column pushes down to Chibi, and the shot pulls back to the three-way split). Its mechanisms also visibly play out: the grid squares turn grey from plague, fire boats sail in along curved paths, and the 曹军 versus 孙刘 strength bars sit side by side. Reel X's first scene is nearly empty at the 30% sample, and its camera stays mostly static.",
+   "A: Reel Y shows the cause→effect happening on screen: the 军心 morale bar drains as the soldier dots turn green with plague, and the 东南风 arrows push fire boats into the chained Cao fleet, which then burns. Its three samples also differ more in camera and build-up. X's allies frame is a bar-chart comparison, and its 30% frames are sparser.",
+   "B: Y shows the cause and effect on screen. Its blocks turn grey one by one from plague, the fire-boat arcs run into the Cao ships with the wind arrow, and an army-size comparison bar sits beside the fleets. Its camera also changes more between samples, and its heroes are larger and fill more of the frame. X has the same story beats but smaller visuals, and its fire scene shows less of the attack path.",
+   "A: Reel Y shows each cause happening on screen: dots turn green as plague spreads while a 军心 morale bar drains, and the wind arrows push the fire boats into the chained Cao fleet. It also has a clear hero in each scene, a camera that shifts between samples, and a Huarong retreat route, while X relies on labels, a bar-chart box and a crowded 曹军 label near the top."
+  ]
+ },
+ {
+  "pair": "A-C",
+  "what": "lessons (rules on)",
+  "topic": "solve-chicken-rabbit",
+  "A": 0,
+  "C": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y opens with a chick and a rabbit hero drawing, with 2-foot and 4-foot labels, so the foot difference is visible. Its heads grow from a sparse 30% sample into a full grid with feet. It then turns 12 heads into rabbits with ears and pink feet, and circles the 23 chicks. X uses only plain circles and stick feet, with its 30% sample sparse and its pink feet crowded.",
+   "B: Reel X has the richer hero (a chick and a rabbit with faces, beak and ears, plus a grid of faced figures), and its mechanism is clearly visible: pink feet are added to the heads, they sprout ears, and the 23 chickens are circled. Reel Y's plain circle-and-leg grid is sparser, and its top row crowds the header.",
+   "B: Reel Y's heads become recognisable chicks and rabbits (ears, beaks, a 2-foot versus 4-foot legend), its first frames already show a drawn hero and a build-up, and it shows the 12 rabbits being picked out and the 23 chicks circled. Reel X is just plain circles, and its first-row frames are mostly empty or near-identical.",
+   "B: Reel X opens with a detailed chalk chicken and rabbit hero, and its three samples differ in content: the first shows the problem, the second the full grid with feet, and the third the finished rabbits and a bigger-feet figure. Its rabbits get visible ears and pink feet that turn them into rabbits, and the final check ends in a clear answer box. Reel Y has a clean count-up mechanism, but its 30% sample is sparse and its feet and ears are thin, and the pink feet on the heads barely differ from the plain ones, so it looks flatter."
+  ]
+ },
+ {
+  "pair": "A-C",
+  "what": "lessons (rules on)",
+  "topic": "en-seasons",
+  "A": 2,
+  "C": 2,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y's glossy 3D globe and Sun fill the frame, and the camera and layout change between samples (zoomed Sun, then a top-down orbit, then a pulled-back year path). It shows the mechanism too: the Earth moves to the January point, light rays reach the tilted globe, and the four seasonal positions light up in turn. X is clean and consistent, but it is flatter, its frames change mostly by adding labels, and its tilt-toward-the-Sun cause is less clear.",
+   "B: Reel X has a detailed, nearly half-frame globe with graticule, axis arc and a lit hemisphere, and its camera visibly changes between samples (orbit view, globe growing, pull-back to the full-year path), with a consistent palette and no clipping. Reel Y's 30% samples are sparse, its orbit is cut off at the left edge, and its 60% and 92% payoff frames are nearly the same.",
+   "A: Reel X shows the cause and effect on screen, with red light rays hitting the tilted Earth, a crossed-out thermometer, and a Jan/Jul distance comparison. Reel Y's rays are faint, and the Earths in its seasons scene are small and mostly labelled. Y's hero Earth is more detailed, but in the orbit scene its 'No.' text collides with the orbit line and the Earth.",
+   "A: Reel Y shows the mechanism happening on screen (red rays hitting the tilted Earth steeply in summer, blue glancing rays in winter, a marker-drawn orbit with the Jan/Jul distances, a crossed-out thermometer) and closes on a big TILT vs crossed-out distance payoff, while Reel X's stills mostly add labels, its orbit sequence shows no tilt or light effect, and it puts the label 'No.' on top of the orbit line."
+  ]
+ },
+ {
+  "pair": "B-D",
+  "what": "lessons (rules off)",
+  "topic": "sci-rainbow",
+  "B": 3,
+  "D": 1,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y shows the mechanism happening: the rainbow's lower half fades in, rays visibly converge into a cone of colored droplets, a horizon cuts the ring and a plane lifts to reveal the full circle, whereas X mostly labels static diagrams, and its 92% frame is almost identical to 60% in several scenes.",
+   "A: Y shows each step of the mechanism happening: the drop gets a larger refract–reflect–refract path that fans out into seven colours, the 42°/40° rays are drawn with red outside purple, and the cone builds into a ring. Y also changes the camera and framing across samples and has a cleaner layout, while X clips the rainbow and plane at the frame edges, overlaps the '看得见' label with the arc, and leaves the drop small with large empty areas.",
+   "A: Reel X's raindrop is large and centred, its white ray visibly splits into seven colours, and its framing stays clean. Reel Y has clipped elements (the rainbow at the top edge, the plane at the top), a tiny drop pushed into a corner, and rings that crowd the captions.",
+   "A: Y builds each step visibly: the drop shows the ray path and the colours fanning out at the third step, a separate angle diagram shows red at 42° outside violet at 40°, and the arc becomes a full ring as the view lifts into the air. X's hero frames have clipping and collisions (rainbow cut off at the top of frame, plane clipped and overlapping the ring), and it has a large empty dark area in the horizon scene, though its cone scene is richer."
+  ]
+ },
+ {
+  "pair": "B-D",
+  "what": "lessons (rules off)",
+  "topic": "hist-chibi",
+  "B": 4,
+  "D": 0,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "A: Reel X's hero visuals are large and detailed. A soldier block turns grey and gets plague crosses, the ships get chained, and blue boats then sail on the wind into the red fleet as fire spreads from ship to ship. Its camera also changes between samples, from a map to a close-up of the river to a pull-back. Reel Y's scenes are smaller and sparser, and in its fire scene the fleet is already chained at 30% and the burning ships fill the strip with flames that cover the labels.",
+   "A: Reel Y shows the cause→effect happening in the frame: soldiers go grey and sprout plague crosses, ships get chained with a gold line, and blue fire boats sail downwind into the chained fleet until it burns, with a large hero visual and a clearly changing camera. Reel X's fire scene is a flat row of identical ships that ends in a repeated flame sprite, and its map frames are small and sparse.",
+   "A: Reel X's large, detailed hero visuals show each cause→effect on screen: soldiers turn grey and sprout plague crosses, the ships get chained, then fire spreads along the line and the sky warms. Its three samples also differ clearly in camera and content. Reel Y's fire scene has overlapping flame blobs that hide the ships, and its alliance scene is a small, cluttered map.",
+   "A: Reel Y has large, detailed hero visuals that fill about half the frame (soldiers turning grey with plague crosses, a gold chain locking the ships, blue fire-ships sailing into the red fleet), and the camera and content change clearly between the 30%, 60% and 92% samples. Reel X's ships are small and spread thin, and its fire scene is a block of flame sprites hiding the ships."
+  ]
+ },
+ {
+  "pair": "B-D",
+  "what": "lessons (rules off)",
+  "topic": "solve-chicken-rabbit",
+  "B": 0,
+  "D": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y opens with large chicken and rabbit characters and later turns individual heads into ear-and-foot rabbits as 24÷2=12 is spoken, so the mechanism is visible; Reel X shows only plain circle heads with colored feet and no character hero.",
+   "B: Reel X opens with a large chicken and rabbit hero, and its rabbits visibly grow ears and pink feet one by one as the 24÷2=12 step is narrated. Reel Y shows the same step only as pink feet added to a stick-figure grid, with no animal characters and a grid that looks the same in every sample.",
+   "B: Reel Y draws a chick and a rabbit with beak, ears and different leg counts, and its 35 figures read as chickens. It then shows the 24-foot gap boxed in pink and rabbits growing ears and extra legs one by one, so the \"rabbits have 2 more feet\" reasoning is visible. Reel X mostly adds colored feet to identical stick-figure grids.",
+   "B: Reel X opens with a large, detailed chicken and rabbit hero and shows the mechanism directly: 12 heads visibly grow pink feet and ears and turn into rabbits. Reel Y stays a static grid of small identical stick figures, where the rabbits are marked only by yellow and pink recoloring."
+  ]
+ },
+ {
+  "pair": "B-D",
+  "what": "lessons (rules off)",
+  "topic": "en-seasons",
+  "B": 0,
+  "D": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y has a richer, shaded Earth hero, and its camera moves between close-ups and orbit views. It shows the cause visibly, with light beams that spread on the ground patch and four Earths whose parallel axes point at Polaris. Reel X's flat doodles mostly sit still and only label the cause.",
+   "B: Reel X's hero is a large, detailed shaded Earth that fills about half the frame, and its camera and framing change from sample to sample (Earth moves from small to large, a top-down orbit view, then Earth zoomed in with rays). Its mechanism is visible as steep rays on the summer side and a wider, slanted, dimmer beam on the winter side. Reel Y is clean and consistent, but it uses flat, small, static doodles that change little between samples.",
+   "B: Reel Y's shaded, glowing Earth fills about half the frame. Its steep-versus-slanted light footprint on the ground shows why tilt changes the seasons. Its camera and layout shift between samples, and the Earth moves along its orbit. Reel X's flat doodles mostly just label the cause, and its last scene is a static Earth with a TILT word.",
+   "B: Reel X has large, detailed shaded Earths that fill about half the frame. It shows the cause visibly, with rays streaming from the sun, a lit patch on the tilted Earth and steep versus slanted light patches. Its camera and layout change across samples, and its dark palette stays consistent. Reel Y is flatter, with small sketch globes and a smaller hero."
+  ]
+ },
+ {
+  "pair": "A-B",
+  "what": "rules (lessons on)",
+  "topic": "sci-rainbow",
+  "A": 3,
+  "B": 1,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y shows the cause→effect more clearly: its raindrop splits the white ray into seven fanned colors, the 42° cone is drawn as a 3D wireframe that cuts into a ring, and the camera pans and zooms between samples. X's point-cloud cone is cluttered, and its 30% frames are sparse.",
+   "A: Y shows the mechanism happening on screen: the ray enters the drop and splits into colors, a point-cloud cone sweeps out into a ring, and the ground darkens as the camera lifts to reveal the full circle. X's cone scene is a flat ellipse with sparse dots, and its angle scene clips the 42° label and arcs at the frame edge in the last sample.",
+   "A: Reel X shows the mechanism happening: raindrops form a point-cloud cone that fills into a rainbow ring, and the camera visibly pulls out and lifts to reveal the full circle. Its three samples also differ more from each other. Reel Y's 30% and 60% samples are nearly identical in the first and last scenes, its cone is a flat diagram, and its angle scene is clipped at the bottom.",
+   "A: Y shows the mechanism happening across its three samples: the ray visibly refracts, reflects and splits in the drop, a 3D droplet point-cloud cone builds into the ring, and the ground drops away as the camera lifts to reveal the full circle. X mostly relies on static diagrams and labels, and its angle scene clips at the frame edge in the last sample."
+  ]
+ },
+ {
+  "pair": "A-B",
+  "what": "rules (lessons on)",
+  "topic": "hist-chibi",
+  "A": 0,
+  "B": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y's hero visuals are larger and more detailed (soldier figures turning grey with plague crosses, chained warships, fire particles with a warm sky tint), and its camera changes between samples, while X's reel is mostly small icons and dot grids on a flat beige map.",
+   "B: Reel X's hero visuals are richer and fill more of the frame: detailed soldier figures, chained warships, and a burning fleet with sparks and a sunset glow. Its mechanism is also visible: the army turns grey, the ships are chained together, then they burn. The camera framing changes between samples. Reel Y is cleaner but sparser: abstract dots and thin flames on a mostly empty beige background, with an empty first frame.",
+   "B: Reel Y's hero visuals are larger and more detailed: figures turn grey with plague crosses, the ships are chained with a gold line, and fire with sparks spreads across them. Its camera and framing change from shot to shot. Reel X has clean dot-grid and flame icons, but its hero elements are small and its first scene is nearly empty at the 30% sample.",
+   "B: Reel X's hero visuals are larger and more detailed (a labelled army column marching down the route, soldiers turning grey with plague crosses, gold-chained warships, a burning fleet under a sunset glow), its camera zooms and shifts between samples, and its 30% frames are never empty, while Reel Y has sparse, mostly empty early frames and its hero elements are small and abstract (dot grid, tiny flames)."
+  ]
+ },
+ {
+  "pair": "A-B",
+  "what": "rules (lessons on)",
+  "topic": "solve-chicken-rabbit",
+  "A": 2,
+  "B": 2,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y's framed board has faces on the heads and visibly recolors the 12 rabbits yellow, with pink added feet, against 23 blue chickens, so the feet-adding step and the final split can be seen. Reel X's final frames barely tell rabbits from chickens, and its first scene is mostly empty at the 30% sample.",
+   "A: Y's larger grid fills the left half of the frame, and its live counters (脚 0→48→70, 补 0→21→24) show the feet being drawn and then handed out, so the cause→effect is visible. X is smaller and more static, and its 30% and 92% samples differ little. Y's weaknesses are that the bottom feet nearly touch the captions and the rabbit/chicken heads aren't colour-separated in the stills.",
+   "A: In X the cause→effect is visibly happening, with the foot counter running 0→48→70 and the pink 补 counter running 0→21→24 while feet are added to the heads. Its build-up also differs clearly across the 30%, 60% and 92% samples, and its text is cleaner. Y has a richer boxed grid with faces and a clearer chicken/rabbit colour split at the end. But several of its samples are near-duplicates (the 60% and 92% samples of its 02-draw row differ only by the added 35×2=70 line), and it has cut-off text such as '12 只免' and '23×2+1'.",
+   "B: Reel X's hero grid is richer (smiley-faced heads in a chalk frame), and the mechanism is visible: pink feet are added and 12 heads turn yellow for rabbits while 23 stay blue for chickens. Reel Y's grid is plain circles that never change colour into rabbits and chickens, so its answer relies mostly on text counters."
+  ]
+ },
+ {
+  "pair": "A-B",
+  "what": "rules (lessons on)",
+  "topic": "en-seasons",
+  "A": 0,
+  "B": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y shows the mechanism better, with two Earths that have day/night shading and steep rays on the summer one against slanted rays on the winter one, and it has a bigger payoff globe, though its HOT/COLD labels and the payoff sun clip at the frame edges.",
+   "B: Reel X shows the cause and effect in motion: Earth travels the orbit with distance labels, four Earths keep parallel axes, and the two tilted Earths have day/night shading with a steep-versus-slanted ray fan, while Reel Y mostly labels the same ideas and has colliding elements in its seasons frames.",
+   "B: Reel Y actually shows the mechanism: day/night shading, steep rays on the tilted-toward Earth against slanted spread rays on the tilted-away one, and four Earths with parallel axis arrows. Reel X mostly labels the seasons with near-identical parallel rays, though X is cleaner and has less clipping than Y.",
+   "B: Reel X shows the cause and effect on screen: Earths with lit and dark halves, rays steep on the summer side and fanned out on the winter side, red and blue arcs marking the hemisphere, and four orbit positions with parallel axes. Reel Y has a richer hero Earth and more camera movement, but its summer/winter stage is a cramped two-sun strip with overlapping rays and no day/night shading, so the mechanism is harder to follow."
+  ]
+ },
+ {
+  "pair": "C-D",
+  "what": "rules (lessons off)",
+  "topic": "sci-rainbow",
+  "C": 4,
+  "D": 0,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "A: Reel X's hero visuals are larger and more detailed (a big glowing drop with the ray visibly refracting, reflecting and splitting into colours, then a wireframe cone), and its camera and scene change between samples. Reel Y's drop is small and pushed to the side, its rainbow and plane are clipped at the top edge, and its labels collide with the arc.",
+   "A: Y's hero visuals are larger and more detailed: a thick arch with a camera push-in, and a drop that fills the frame with its rays and rainbow halo. Its three samples also differ more, for example the circle being drawn in and the horizon line cutting the lower half with a dashed remainder. X has a clearer raindrop cone, but its drop is small, its plane is clipped at the top, and its captions collide with the red ray.",
+   "A: Reel X has the stronger hero visuals (a thick rainbow arch over mountain silhouettes, a centred glowing droplet), a clearer camera and scene progression, and mostly clean framing. Reel Y explains the cone geometry well with its sun, 背日方向 label and coloured dots, but it clips the rainbow at the top of the frame, crops the plane, and overlaps labels in the horizon scene.",
+   "A: Y's hero visuals are larger and richer (a big glossy droplet with a ray that bends, reflects and fans into colours, a cone drawn as growing ellipses, and a horizon cutting the ring with dashed hidden half), and its samples change more across frames. X's 42° cone is neat but its droplet is small and off to one side, its plane is clipped at the top, and its horizon and plane frames collide with captions."
+  ]
+ },
+ {
+  "pair": "C-D",
+  "what": "rules (lessons off)",
+  "topic": "hist-chibi",
+  "C": 1,
+  "D": 3,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y shows the cause→effect happening: soldiers marching along a route past Xiangyang, a boat fleet linked by gold chains, and fire spreading across the chained ships until the whole river glows red. Its camera changes from a map to a river-level view, and its 30%/60%/92% samples differ in more than added labels. X is a set of flat diagrams in which grey squares and a fire row stand in for the mechanism, and its early frames leave a lot of empty space.",
+   "B: Reel X has the richer hero visuals, with a landscape of ships, mountains and water. Its chain and fire sequences visibly happen (ships get linked by gold chains, then the fire spreads and the whole frame turns red), and the camera and scene change across samples. Reel Y is clearer on the plague and troop-count comparison, but it relies on flat icons, its fire stays a row of flat flames, and its three samples differ mostly by added elements.",
+   "B: Reel Y changes camera between scenes, going from a map to a close-up river view with detailed ships. It shows the mechanism happening: ships get chained together, then fire spreads along the chain and the whole river turns red. Reel X relies on flat icons and labels, and its fire scene is just a few flames over small boats.",
+   "A: Reel Y shows each cause→effect as it happens (a 40+ block army grid turning grey from plague, a big-versus-small army comparison, fire jumping from boat to boat along the chained line), and its 30% and 60% frames are not empty. Reel X's river scenes are pretty, but its plague markers and chain links are small, and its map shots barely change between samples."
+  ]
+ },
+ {
+  "pair": "C-D",
+  "what": "rules (lessons off)",
+  "topic": "solve-chicken-rabbit",
+  "C": 0,
+  "D": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Reel Y shows the mechanism happening on screen: the 12 heads turn into pink-eared rabbits one after another and the 24÷2=12 line builds beside them, then the chickens and rabbits are split by color. It also has a clearer 6-step build, a green answer box and check marks, and a cleaner hierarchy, while reel X's 'adding feet' step is barely visible and its caption badly overlaps the bottom row of the grid.",
+   "B: Reel X shows the mechanism on screen: pink feet are added to 12 heads, which grow ears and become rabbits, and the chickens and rabbits are then split by colour. Its hero characters are clear, its grid sits well against the captions, and its palette stays consistent. Reel Y's grid is similar, but the rabbits show up all at once, its answer box clips at the edge, and the hero characters are less rich.",
+   "B: Reel Y shows the mechanism happening on screen (feet are added to 12 heads, which turn into pink rabbits, and the 94−70=24 gap is boxed). It also has a larger hero with a question mark and a full verification row. Reel X's rabbits are small and cluttered, its hero is a thin line drawing, and its final check frame has text colliding with the answer box.",
+   "B: Reel X's hero frames are richer and fill more of the frame: a large chicken and rabbit with a question mark. Its mechanism is also visibly shown, because the pink feet and ears appear on 12 heads one at a time while 24÷2=12 is written beside them. Reel Y's rabbits barely differ from the chickens, its 92% frame is crowded with small text, and its answer box overlaps the bottom-right corner."
+  ]
+ },
+ {
+  "pair": "C-D",
+  "what": "rules (lessons off)",
+  "topic": "en-seasons",
+  "C": 0,
+  "D": 4,
+  "first": [
+   "A",
+   "B",
+   "A",
+   "B"
+  ],
+  "why": [
+   "B: Y shows the mechanism directly, with steep versus slanted light beams and ray patches on a lit, shaded Earth, and it adds a parallel-axis orbit view pointing at Polaris. Its hero Earth is larger and more detailed, and its camera and layout change from frame to frame. X mostly labels summer and winter with small Earths and rays, and the same Earth hero looks nearly identical across its samples.",
+   "B: Reel X shows the cause and effect on screen: amber rays hit a tilted Earth, and a side diagram compares a tight steep patch with a wide dim slanted one. Reel Y's season section is a nearly static pair of Earths whose three samples barely change. Y is cleaner and its globe is nicer, but X's tilt, orbit and light views also change between samples, which outweighs its minor clipping and overlap in the hook and orbit frames.",
+   "B: Reel Y shows the mechanism happening on screen: parallel axes at four orbit points all aimed at Polaris, then a ray beam that hits steeply and bright in summer and spreads dim and slanted in winter, with a camera and elements that change across the samples. Reel X mostly labels its seasons, and its orbit and tilt frames are plainer.",
+   "B: Reel X shows the cause and effect on screen: amber rays cross to a tilted Earth, a tight steep patch is set against a wide dim slanted one, and SUMMER and WINTER are labelled, whereas Reel Y's season scene has small globes with barely visible rays and mostly text labels. Reel Y has the richer hero globe and cleaner composition, but that doesn't outweigh the clearer mechanism in X."
+  ]
+ }
+]

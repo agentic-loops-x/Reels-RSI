@@ -1,0 +1,24 @@
+{
+  "id": "20261007-045637",
+  "accepted": true,
+  "checks": {
+    "position-robust topics: candidate wins more than it loses (4 won, 0 lost, 0 tied; raw votes 14–2)": true,
+    "no topic −10": true,
+    "renders ≥": true,
+    "holdout: position-robust topics, candidate wins ≥ loses (2 won, 2 lost, 0 tied; raw votes 8–8)": true
+  },
+  "base": "evolve-20261007-045637-base",
+  "cand": "evolve-20261007-045637-cand",
+  "holdout": [
+    76.5,
+    73.8
+  ],
+  "votes": [
+    14,
+    2
+  ],
+  "holdout_votes": [
+    8,
+    8
+  ]
+}

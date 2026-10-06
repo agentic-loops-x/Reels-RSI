@@ -1,0 +1,76 @@
+# Evolve 20261007-045637 — ACCEPTED
+
+harness claude/sonnet · judge claude-cli:sonnet
+
+| | baseline | candidate |
+|---|---|---|
+| train mean | 73.8 | 77.2 |
+| holdout mean | 76.5 | 73.8 |
+
+worst topic delta: +1.8
+
+checks: position-robust topics: candidate wins more than it loses (4 won, 0 lost, 0 tied; raw votes 14–2) ✓, no topic −10 ✓, renders ≥ ✓, holdout: position-robust topics, candidate wins ≥ loses (2 won, 2 lost, 0 tied; raw votes 8–8) ✓
+
+### Train
+
+| topic | composite base → cand | votes base : cand |
+|---|---|---|
+| sci-rainbow | 73.8 → 77.5 | 1 : 3 |
+| hist-chibi | 75.5 → 77.3 | 0 : 4 |
+| solve-chicken-rabbit | 71.6 → 76.0 | 0 : 4 |
+| en-seasons | 74.4 → 78.0 | 1 : 3 |
+
+**sci-rainbow** — candidate: Y shows the mechanism happening on screen: the drop gets red 42° and violet 40° angle arcs, a droplet cloud builds into a 3D ring around the sun-shadow axis, and the horizon rises and falls over the full circle. Its camera and layout change from sample to sample, and the hero visuals fill the frame. X leans on static labels and a large title word over the rainbow, and its cone step is a sparse dot scatter. · baseline: Y's raindrop frames show the mechanism: white light enters, splits into a spectrum inside the drop, reflects off the back wall and leaves as a red-to-violet fan, labelled 折射/反射/再折射. Its rainbow scenes also stay clean, with the camera pulling back and a cloud layer on the plane shot. X's drop shows mostly white rays, and its rainbow circle has a checkerboard artifact in the lower half. · candidate: Y's drop frames show the cause→effect, with the ray splitting into colours and the 42°/40° arcs drawn live. Its cone scene fills the frame with a rainbow-coloured droplet ring that builds across the samples. Its horizon scene changes camera and elements from sample to sample, with the horizon, a plane and a closing full circle, while X's cone is a sparse diagram of dots and angle lines. · candidate: Reel X's cone scene fills the frame with thousands of coloured droplets that sweep into a full ring, so you see the cone form, and its horizon and plane scenes change camera view across samples. Reel Y's cone scene is a sparse dot field with a small angle diagram, and its circle scene ends back on an arc.
+
+![sci-rainbow: baseline left, candidate right](compare/train-sci-rainbow.jpg)
+
+**hist-chibi** — candidate: Reel Y shows each cause happening on screen: plague circles spread over the camp and ships and the strength bar drops, Huang Gai's blue boats slip in among the chained ships, and flames climb the ship line under the southeast-wind streaks. Reel X shows the same beats as abstract ship grids and fire blobs. Y also changes camera between map, close river view and retreat, and has richer terrain and a clearer hierarchy. · candidate: Reel X shows the cause and effect on screen. Plague circles spread over the camp and ships, the blue fire-boats sail into the chained line while flames spread ship by ship under a red sky, and the retreat leads into the three-way split. Its camera and scenes change across samples, and it has more depth, with a minimap, a power bar and terrain. Reel Y's chained-ship grid and its flames are flatter and stiffer, and its fire boat sits at the edge of the frame. · candidate: Y shows the cause→effect happening (plague circles spreading over camp and ships, blue Huang Gai boats slipping into the chained line, fire spreading ship by ship, a retreat arrow drawn back north), and its camera, layers and build-up change between samples, while X is mostly a flat top-down ship grid with labels. · candidate: Reel X shows more of each cause→effect happening on screen: plague circles spread over the camp and ships, fire creeps along the linked ship chain, and the map camera shifts between samples. Reel Y's opening frame is almost empty and its 92% fire frame is a smeared orange blob.
+
+![hist-chibi: baseline left, candidate right](compare/train-hist-chibi.jpg)
+
+**solve-chicken-rabbit** — candidate: Reel Y has a richer hero (a cage with a chicken and a rabbit, and a grid of chicken and rabbit characters). It also shows the mechanism: 12 heads visibly turn into pink rabbits and the other 23 stay green chickens. Reel X is a grid of tiny circles with stick legs, and its final frame has a clipped answer box and a broken '46+48=9' line. · candidate: Reel X draws recognizable chicken and rabbit characters with a cage illustration, and shows rabbits turning pink as they gain legs. It also keeps a clear layout with a readable answer box. Reel Y has small, tangled, hard-to-read heads and legs, and its answer box is misplaced and overlaps the text. · candidate: Y shows the mechanism happening on screen: pink rabbits replace chicken heads one by one as the 24 spare legs are assigned, then green chickens are highlighted and a check mark appears. It also has a larger caged chicken-and-rabbit hero, and its build-up is spread across the whole reel. X only draws plain circles with legs, and the pink legs added to the 12 rabbits are small and hard to see. · candidate: Reel X's cage with a chicken and a rabbit sets up the problem, and its large heads-and-legs grid visibly changes into pink rabbits and green chickens as the narration says. Reel Y's heads and legs are tiny and cramped, and its answer box collides with the label text.
+
+![solve-chicken-rabbit: baseline left, candidate right](compare/train-solve-chicken-rabbit.jpg)
+
+**en-seasons** — candidate: Reel Y's hero Earth is richer (continents, glow, a day/night terminator). Its camera visibly pans and pulls back across the three samples. Its rays show the direct-versus-thin-light mechanism in both June and December, while Reel X's planets are plain blue spheres and several of its scenes barely change between samples. · baseline: Y shows the cause→effect happening on screen: the orbit ellipse with a dashed distance line disproves the distance myth, a large detailed tilted globe carries the axis and angle arc, and direct vs glancing ray bundles hit the globe before the hemispheres swap. X's Earths are small and its camera barely moves between samples. Y's hero globe fills about half the frame, and its framing changes between samples (orbit, push-in, side-on, wide). · candidate: Reel Y's hero Earth is more detailed, with continents, a glow and a tilt arc, and it fills about half the frame. Its camera visibly pans and re-frames between samples, and it shows the mechanism directly: rays hit the globe head-on in June and slant and thin out in December, then four parallel tilts show the same Sun at a different angle. Reel X's globes are plain spheres with no continents, and its scenes change mostly by adding labels. Y's "ANGLE" title crowds its caption slightly, but that is minor. · candidate: Reel X has the richer hero, an Earth with continents, a glowing axis and a 23.5° arc. It shows the mechanism by moving Earth between June and December, with rays visibly direct and then slanted and thin, and its four-season view with parallel tilt lines makes the 'same Sun, different angle' point. Reel Y has a plainer, texture-less globe and a more cluttered layout.
+
+![en-seasons: baseline left, candidate right](compare/train-en-seasons.jpg)
+
+### Holdout
+
+| topic | composite base → cand | votes base : cand |
+|---|---|---|
+| sci-tides | 76.0 → 69.2 | 4 : 0 |
+| hist-silk-road | 75.2 → 73.1 | 0 : 4 |
+| solve-buoyancy | 76.0 → 76.4 | 3 : 1 |
+| poem-jingyesi | 78.8 → 76.5 | 1 : 3 |
+
+**sci-tides** — baseline: Reel X's hero is a large, layered Earth with a glowing halo and visible water bulges, and it adds on-screen payoffs the narration describes (near/far arrow lengths, the observation flag passing through both bulges, the tilted bulge with a 50 min label), while Reel Y's Earth stays small with thin arrows and its far-side and sun beats show little of what the narration claims. · baseline: Reel Y shows the cause→effect happening on screen: the water layer stretches into two bulges, the flag-marked coast rotates through both bulges, and the bulges shift with the moon's orbit to produce the 50 min delay, while its hook zooms in and the hero stays large with glow rings. Reel X keeps a static camera and a small, flat Earth. It has cleaner framing than Y, whose moon overlaps the title and whose arrows clip at the right edge, but it explains less. · baseline: Reel X shows the cause and effect in frame: it draws a clear two-bulge ellipse and a graded near/far arrow comparison, then a flag marker rotating through both bulges and the moon shifting to show the 50-minute delay. Reel Y has a larger Earth but a vaguer far-side bulge, a moon clipped at the frame edge, and several near-empty or near-identical samples. · baseline: Y's Earth fills about half the frame with a glowing ocean layer. It shows the two bulges forming and an observation flag crossing them for the two high tides. It also shows the bulge shifting with the moon's orbit to explain the 50 min delay. X has a smaller globe, and its arrows and sun frame are mostly labels, with little change in camera or build-up.
+
+![sci-tides: baseline left, candidate right](compare/holdout-sci-tides.jpg)
+
+**hist-silk-road** — candidate: Y shows the mechanism on screen: the camera pushes into the Tarim basin, the route visibly splits into thick north and south branches around a stippled desert and rejoins at Kashgar, and the 92% frames have real camera moves and a labelled Rome-to-Chang'an goods flow. X has thin lines and a sparse 30% frame, and its small pyramid-like Pamir icons collide with the labels. · candidate: Reel X has a richer, more detailed map (borders, mountain hachures, desert stipple, labelled routes, a thick gold route with large markers), and its camera and route build clearly differ across the three samples in each scene. Reel Y's frames are sparser, with a mostly empty map, thin lines, a cluttered pyramid-like Pamir marker, and routes that run off the frame edge. · candidate: Reel Y has a richer map, with desert stipple, mountain hachures, borders and thick gold routes. Its camera moves differ clearly between samples, and its two-way fork around the Tarim Basin and the cargo labels along the route show the narrated path being drawn. Reel X has a sparse map, a small crude mountain icon cluster, and a first sample that is nearly empty. · candidate: Reel X draws a richer, cleaner map (a tidy north–south loop around the basin, mountain hachures, labelled cities, a full-route panorama with goods labels) and its camera and route build-up differ clearly across each sample. Reel Y's frames are sparse and crude: a thin line on a mostly empty map, a clumsy sand polygon and pyramid-like pamir icons, and a 92% frame with an oversized "相连" that crowds the route.
+
+![hist-silk-road: baseline left, candidate right](compare/holdout-hist-silk-road.jpg)
+
+**solve-buoyancy** — candidate: Reel Y changes more across its three samples, with the F浮 arrow, the displaced-water beaker and the hollow-ship comparison appearing in the frames, and the ship fills a large part of the frame in the closing scenes. Reel X is mostly small tanks that stay in a fixed position, with a long empty gap in its 30% samples. · baseline: Reel Y shows the mechanism happening on screen: the same 1 kg iron becomes a boat, the yellow displaced-water volume grows from 127 mL to 1 L, and the blue F浮 bar lengthens until it matches the pink G bar. Its hero visuals are also larger and richer than Reel X's thin chalk outlines. · baseline: Reel X shows the mechanism happening on screen: the ship descends into the water, the yellow displaced-water volume appears, and the blue buoyancy bar grows until it matches the pink weight bar. It also has a clean layout, a consistent palette, and no collisions with the captions. Reel Y is mostly labels and static diagrams, and it has a clipped label ('F水少') and small, thin hero visuals. · baseline: Reel Y's hero visuals are larger and more detailed, and the mechanism visibly happens on screen: the boat lowers into the tank, 1 L of water is highlighted, and the blue F浮 bar grows until it matches the pink G bar. Reel X mostly labels the idea with small arrows and text, and its tiny nail and thin line-drawn ship leave much of the frame empty.
+
+![solve-buoyancy: baseline left, candidate right](compare/holdout-solve-buoyancy.jpg)
+
+**poem-jingyesi** — candidate: Reel Y's samples differ by camera (the window and bed pan across the frame, the moon scales up and then pulls back with rays) and it shows the narrated effects happening (a moonlight beam turns into frost crystals, the house window lights up). Its large, detailed moon fills the frame as the hero. Reel X is a mostly static layout whose bed is clipped at the right edge and whose frost is a thin strip. · baseline: Reel Y shows the mechanism happening on screen: a moonbeam slants from the window onto the floor and frost sparkles appear, a dashed gaze line runs up to the moon, and a thought bubble fills with a house. Its three samples also build up evenly, from the title to the full poem joined by a chalk line, whereas Reel X's closing frames are a near-static moon with little change between samples. · candidate: Reel Y's mechanism is visibly happening: the moonlight beam sweeps across the floor and turns into frost crystals, the person looks up and the pink line to a house with a lit window shows the homesickness, and the moon grows, zooms and radiates in the closing frames. The camera also moves between samples, with a big hero moon and the window cropped and reframed. Reel X is more static and label-driven: it holds a flat moon in the same position, adds mostly text and a strip of blue frost, and its 30% frames are sparse. · candidate: Reel X has a large, textured moon that fills about half the frame, and its camera visibly pans and pushes in. In the frost scene, snowflake crystals form on the floor under the slanting moonlight, so the cause→effect is shown rather than labelled. Reel Y is tidier, but its moon is small and flat, its camera barely moves, and its frost is only a thin blue strip.
+
+![poem-jingyesi: baseline left, candidate right](compare/holdout-poem-jingyesi.jpg)
+
+
+## Proposed changes
+
+- **frame-worker.md: new "Hero build recipes" section** (~15 lines). Sizes heroes from the final camera state, ≥60 px strokes with glow, ≥110 px varied crowd icons, perspective layers, camera that keeps moving to the last word and never returns to its start, soft-feathered masks, and cause→effect as a visible sequence. Evidence: all four reels' top issues (tiny/flat heroes, static camera, 60%/92% near-identical, hard rectangular mask in sci-rainbow 02, empty fire frame in hist-chibi). Moves R1, R2, R3, R5.
+- **solve.md: counting-figure and answer-box rules.** Centre grids, heads ≥90 px, legs ≥8 px, rabbits distinct by shape not tint, labels ≥48 px, rows keep growing through the last sum, large answer box ≥80 px from edges. Evidence: solve-chicken-rabbit (grid in left third, tiny labels, answer box overlapping text, content_overlap finding). Moves R1, R3, R5 and the content_overlap finding.
+- **No third edit made**: the existing quality-bar rubric already states the same targets. The gap was build recipes, not scoring criteria.
+
+
+## Patch
+
+```diff
+{diff}
+```
