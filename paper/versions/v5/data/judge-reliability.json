@@ -1,0 +1,3157 @@
+{
+ "absolute": {
+  "base/sci-rainbow": [
+   {
+    "judge_score": 56.6,
+    "frames": {
+     "01-circle": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-drop": [
+      2,
+      4,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-angle": [
+      2,
+      3,
+      1,
+      3,
+      3,
+      3
+     ],
+     "04-cone": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      3
+     ],
+     "05-full": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      null
+     ]
+    }
+   },
+   {
+    "judge_score": 57.3,
+    "frames": {
+     "01-circle": [
+      3,
+      3,
+      3,
+      4,
+      3,
+      4
+     ],
+     "02-drop": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-angle": [
+      2,
+      2,
+      1,
+      3,
+      2,
+      3
+     ],
+     "04-cone": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      3
+     ],
+     "05-full": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 51.3,
+    "frames": {
+     "01-circle": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-drop": [
+      2,
+      3,
+      1,
+      2,
+      2,
+      4
+     ],
+     "03-angle": [
+      2,
+      2,
+      1,
+      2,
+      2,
+      3
+     ],
+     "04-cone": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      3
+     ],
+     "05-full": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "cand/sci-rainbow": [
+   {
+    "judge_score": 59.1,
+    "frames": {
+     "01-arch@30": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "01-arch@60": [
+      4,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "01-arch@92": [
+      4,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-circle@30": [
+      2,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "02-circle@60": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "02-circle@92": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "03-drop@30": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "03-drop@60": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "03-drop@92": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-ring@30": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-ring@60": [
+      3,
+      4,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-ring@92": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "05-horizon@30": [
+      2,
+      2,
+      1,
+      2,
+      3,
+      4
+     ],
+     "05-horizon@60": [
+      2,
+      2,
+      2,
+      2,
+      3,
+      4
+     ],
+     "05-horizon@92": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 62.7,
+    "frames": {
+     "01-arch": [
+      4,
+      3,
+      3,
+      4,
+      4,
+      4
+     ],
+     "02-circle": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-drop": [
+      3,
+      4,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-ring": [
+      4,
+      3,
+      2,
+      4,
+      3,
+      3
+     ],
+     "05-horizon": [
+      2,
+      3,
+      3,
+      2,
+      3,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 60.7,
+    "frames": {
+     "01-arch@30": [
+      4,
+      3,
+      3,
+      4,
+      3,
+      4
+     ],
+     "01-arch@60": [
+      4,
+      3,
+      3,
+      4,
+      3,
+      4
+     ],
+     "01-arch@92": [
+      4,
+      2,
+      3,
+      3,
+      2,
+      3
+     ],
+     "02-circle@30": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-circle@60": [
+      4,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "02-circle@92": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "03-drop@30": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      3
+     ],
+     "03-drop@60": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      3
+     ],
+     "03-drop@92": [
+      3,
+      4,
+      2,
+      3,
+      3,
+      3
+     ],
+     "04-ring@30": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      3
+     ],
+     "04-ring@60": [
+      4,
+      4,
+      2,
+      4,
+      3,
+      3
+     ],
+     "04-ring@92": [
+      4,
+      3,
+      2,
+      3,
+      3,
+      3
+     ],
+     "05-horizon@30": [
+      2,
+      2,
+      2,
+      2,
+      3,
+      4
+     ],
+     "05-horizon@60": [
+      2,
+      2,
+      3,
+      2,
+      3,
+      4
+     ],
+     "05-horizon@92": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "base/hist-chibi": [
+   {
+    "judge_score": 57.8,
+    "frames": {
+     "01-south": [
+      2,
+      3,
+      3,
+      2,
+      3,
+      4
+     ],
+     "02-host": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-weak": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-allies": [
+      2,
+      2,
+      2,
+      3,
+      2,
+      3
+     ],
+     "05-fire": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "06-aftermath": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 57.8,
+    "frames": {
+     "01-south": [
+      2,
+      3,
+      4,
+      3,
+      3,
+      4
+     ],
+     "02-host": [
+      2,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-weak": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      3
+     ],
+     "04-allies": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      3
+     ],
+     "05-fire": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "06-aftermath": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 59.4,
+    "frames": {
+     "01-south": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      5
+     ],
+     "02-host": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      5
+     ],
+     "03-weak": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-allies": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      3
+     ],
+     "05-fire": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "06-aftermath": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "cand/hist-chibi": [
+   {
+    "judge_score": 59.2,
+    "frames": {
+     "01-question": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-chains": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "03-fire": [
+      4,
+      4,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-retreat": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 60.0,
+    "frames": {
+     "01-question": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-chains": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-fire": [
+      4,
+      4,
+      2,
+      4,
+      3,
+      4
+     ],
+     "04-retreat": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 60.8,
+    "frames": {
+     "01-question": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "02-chains": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-fire": [
+      4,
+      4,
+      2,
+      4,
+      3,
+      4
+     ],
+     "04-retreat": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      3
+     ]
+    }
+   }
+  ],
+  "base/solve-chicken-rabbit": [
+   {
+    "judge_score": 60.0,
+    "frames": {
+     "01-problem": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-draw": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-add": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-check": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      null
+     ]
+    }
+   },
+   {
+    "judge_score": 61.8,
+    "frames": {
+     "01-problem": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-draw": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "03-add": [
+      3,
+      4,
+      3,
+      4,
+      2,
+      null
+     ],
+     "04-check": [
+      3,
+      3,
+      3,
+      2,
+      2,
+      null
+     ]
+    }
+   },
+   {
+    "judge_score": 65.0,
+    "frames": {
+     "01-problem": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-draw": [
+      4,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "03-add": [
+      4,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "04-check": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      3
+     ]
+    }
+   }
+  ],
+  "cand/solve-chicken-rabbit": [
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-problem": [
+      2,
+      2,
+      2,
+      3,
+      2,
+      4
+     ],
+     "02-draw": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "03-swap": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-check": [
+      3,
+      3,
+      2,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 61.7,
+    "frames": {
+     "01-problem": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-draw": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-swap": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-check": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 61.7,
+    "frames": {
+     "01-problem": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-draw": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-swap": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-check": [
+      3,
+      3,
+      3,
+      2,
+      2,
+      4
+     ]
+    }
+   }
+  ],
+  "base/en-seasons": [
+   {
+    "judge_score": 52.8,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-january": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-tilt": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-summer": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "05-winter": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      3
+     ],
+     "06-callback": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 52.2,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-january": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-tilt": [
+      2,
+      3,
+      2,
+      2,
+      2,
+      4
+     ],
+     "04-summer": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "05-winter": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      3
+     ],
+     "06-callback": [
+      2,
+      1,
+      2,
+      2,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 52.2,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-january": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-tilt": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-summer": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "05-winter": [
+      3,
+      2,
+      1,
+      3,
+      2,
+      3
+     ],
+     "06-callback": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      3
+     ]
+    }
+   }
+  ],
+  "cand/en-seasons": [
+   {
+    "judge_score": 62.0,
+    "frames": {
+     "01-closer": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-tilt": [
+      4,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-orbit": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-direct": [
+      4,
+      4,
+      2,
+      2,
+      3,
+      4
+     ],
+     "05-swap": [
+      3,
+      3,
+      2,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 61.3,
+    "frames": {
+     "01-closer": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-tilt": [
+      4,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-orbit": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "04-direct": [
+      4,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "05-swap": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 60.0,
+    "frames": {
+     "01-closer": [
+      3,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-tilt": [
+      4,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "03-orbit": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      null
+     ],
+     "04-direct": [
+      4,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-swap": [
+      2,
+      3,
+      3,
+      2,
+      2,
+      4
+     ]
+    }
+   }
+  ],
+  "base/sci-tides": [
+   {
+    "judge_score": 52.0,
+    "frames": {
+     "01-hook": [
+      2,
+      1,
+      1,
+      2,
+      2,
+      4
+     ],
+     "02-bulges": [
+      2,
+      3,
+      1,
+      2,
+      2,
+      4
+     ],
+     "03-near-far": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-rotation": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "05-interval": [
+      2,
+      4,
+      3,
+      4,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-hook": [
+      3,
+      2,
+      2,
+      3,
+      2,
+      4
+     ],
+     "02-bulges": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "03-near-far": [
+      3,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-rotation": [
+      3,
+      3,
+      2,
+      2,
+      2,
+      4
+     ],
+     "05-interval": [
+      3,
+      4,
+      3,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      2,
+      4
+     ],
+     "02-bulges": [
+      2,
+      3,
+      2,
+      2,
+      2,
+      4
+     ],
+     "03-near-far": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-rotation": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "05-interval": [
+      3,
+      4,
+      4,
+      4,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "cand/sci-tides": [
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-hook": [
+      3,
+      2,
+      2,
+      3,
+      2,
+      3
+     ],
+     "02-gravity": [
+      2,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "03-near": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-far": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "05-spin": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      2,
+      3
+     ],
+     "02-gravity": [
+      2,
+      3,
+      2,
+      2,
+      2,
+      4
+     ],
+     "03-near": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-far": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "05-spin": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 54.7,
+    "frames": {
+     "01-hook": [
+      3,
+      2,
+      2,
+      3,
+      2,
+      3
+     ],
+     "02-gravity": [
+      2,
+      2,
+      2,
+      3,
+      2,
+      4
+     ],
+     "03-near": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "04-far": [
+      3,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "05-spin": [
+      3,
+      3,
+      3,
+      2,
+      2,
+      4
+     ]
+    }
+   }
+  ],
+  "base/hist-silk-road": [
+   {
+    "judge_score": 60.7,
+    "frames": {
+     "01-intro": [
+      3,
+      2,
+      3,
+      2,
+      3,
+      4
+     ],
+     "02-changan": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-corridor": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-pamir": [
+      3,
+      3,
+      4,
+      3,
+      2,
+      4
+     ],
+     "05-civilization": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 61.3,
+    "frames": {
+     "01-intro": [
+      3,
+      2,
+      3,
+      2,
+      3,
+      4
+     ],
+     "02-changan": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-corridor": [
+      3,
+      4,
+      3,
+      3,
+      2,
+      4
+     ],
+     "04-pamir": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      4
+     ],
+     "05-civilization": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 57.7,
+    "frames": {
+     "01-intro": [
+      3,
+      2,
+      3,
+      2,
+      3,
+      5
+     ],
+     "02-changan": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      null
+     ],
+     "03-corridor": [
+      3,
+      4,
+      3,
+      3,
+      2,
+      null
+     ],
+     "04-pamir": [
+      3,
+      3,
+      4,
+      3,
+      2,
+      null
+     ],
+     "05-civilization": [
+      3,
+      3,
+      3,
+      2,
+      3,
+      null
+     ]
+    }
+   }
+  ],
+  "cand/hist-silk-road": [
+   {
+    "judge_score": 59.3,
+    "frames": {
+     "01-changan": [
+      2,
+      2,
+      3,
+      2,
+      3,
+      4
+     ],
+     "02-hexi": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-split": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-west": [
+      2,
+      3,
+      4,
+      3,
+      3,
+      4
+     ],
+     "05-link": [
+      3,
+      3,
+      2,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 58.7,
+    "frames": {
+     "01-changan": [
+      2,
+      2,
+      2,
+      2,
+      3,
+      4
+     ],
+     "02-hexi": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-split": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-west": [
+      2,
+      3,
+      4,
+      3,
+      3,
+      4
+     ],
+     "05-link": [
+      3,
+      3,
+      2,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 58.7,
+    "frames": {
+     "01-changan": [
+      2,
+      2,
+      2,
+      2,
+      3,
+      4
+     ],
+     "02-hexi": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-split": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-west": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-link": [
+      3,
+      3,
+      2,
+      2,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "base/solve-buoyancy": [
+   {
+    "judge_score": 58.0,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-sink": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "03-hollow": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-float": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-takeaway": [
+      2,
+      2,
+      3,
+      3,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 54.0,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-sink": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-hollow": [
+      2,
+      2,
+      2,
+      3,
+      3,
+      4
+     ],
+     "04-float": [
+      3,
+      3,
+      3,
+      2,
+      3,
+      4
+     ],
+     "05-takeaway": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      3
+     ]
+    }
+   },
+   {
+    "judge_score": 58.6,
+    "frames": {
+     "01-hook": [
+      2,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-sink": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-hollow": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "04-float": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-takeaway": [
+      3,
+      2,
+      3,
+      3,
+      2,
+      null
+     ]
+    }
+   }
+  ],
+  "cand/solve-buoyancy": [
+   {
+    "judge_score": 60.8,
+    "frames": {
+     "01-nail-ship": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-buoyancy": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "03-compare": [
+      2,
+      4,
+      3,
+      3,
+      2,
+      4
+     ],
+     "04-float": [
+      3,
+      3,
+      4,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 58.3,
+    "frames": {
+     "01-nail-ship": [
+      2,
+      2,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-buoyancy": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-compare": [
+      2,
+      3,
+      3,
+      2,
+      3,
+      4
+     ],
+     "04-float": [
+      3,
+      3,
+      3,
+      2,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": null,
+    "frames": {}
+   }
+  ],
+  "base/poem-jingyesi": [
+   {
+    "judge_score": 64.7,
+    "frames": {
+     "01-title": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-moonlight": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-frost": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      3
+     ],
+     "04-look-up": [
+      3,
+      4,
+      4,
+      4,
+      3,
+      4
+     ],
+     "05-home": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 67.6,
+    "frames": {
+     "01-title": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-moonlight": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ],
+     "03-frost": [
+      3,
+      3,
+      4,
+      4,
+      2,
+      null
+     ],
+     "04-look-up": [
+      4,
+      4,
+      4,
+      4,
+      3,
+      4
+     ],
+     "05-home": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 65.5,
+    "frames": {
+     "01-title": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "02-moonlight": [
+      3,
+      4,
+      3,
+      4,
+      3,
+      4
+     ],
+     "03-frost": [
+      2,
+      3,
+      3,
+      3,
+      2,
+      null
+     ],
+     "04-look-up": [
+      3,
+      4,
+      4,
+      4,
+      3,
+      4
+     ],
+     "05-home": [
+      3,
+      4,
+      3,
+      3,
+      3,
+      4
+     ]
+    }
+   }
+  ],
+  "cand/poem-jingyesi": [
+   {
+    "judge_score": 57.3,
+    "frames": {
+     "01-f1": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-f2": [
+      2,
+      4,
+      2,
+      3,
+      2,
+      4
+     ],
+     "03-f3": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      4
+     ],
+     "04-f4": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-f5": [
+      2,
+      3,
+      3,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 56.7,
+    "frames": {
+     "01-f1": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-f2": [
+      2,
+      4,
+      2,
+      3,
+      2,
+      4
+     ],
+     "03-f3": [
+      2,
+      3,
+      2,
+      2,
+      3,
+      4
+     ],
+     "04-f4": [
+      3,
+      3,
+      3,
+      3,
+      2,
+      4
+     ],
+     "05-f5": [
+      2,
+      3,
+      3,
+      2,
+      2,
+      4
+     ]
+    }
+   },
+   {
+    "judge_score": 54.0,
+    "frames": {
+     "01-f1": [
+      3,
+      3,
+      2,
+      3,
+      3,
+      4
+     ],
+     "02-f2": [
+      2,
+      3,
+      2,
+      3,
+      2,
+      3
+     ],
+     "03-f3": [
+      2,
+      3,
+      2,
+      2,
+      2,
+      3
+     ],
+     "04-f4": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      4
+     ],
+     "05-f5": [
+      2,
+      3,
+      3,
+      2,
+      2,
+      3
+     ]
+    }
+   }
+  ]
+ },
+ "pairwise": [
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "sci-rainbow",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y has a rain-filled opening scene with a large rainbow hero, and its droplets light up one by one around the 42° ring, so the viewer sees the cause→effect happen. X's cone scene is thin, and its drop diagram stays small and mostly static.",
+    "A: Reel Y shows the mechanism happening on screen: white light splits into a color fan inside the drop, the 42°/40° arcs are drawn, and a cone with the eye at its tip is built. It also uses more varied camera moves, including the horizon sinking so the full circle appears, while Reel X leans on static labelled diagrams and a 30% frame that is mostly empty.",
+    "B: Y shows the mechanism happening on screen: the ray refracts and reflects through the drop, the 42° and 40° angles are drawn side by side, and rain-drop dots light up one by one into a ring. Y also has more depth, with rain, a horizon and a plane view, and its 30% samples are fuller. X's cone is a flat ellipse that is hard to read, and its drop frames barely change across the three samples."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "hist-chibi",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y's heroes are larger, with the chained fleet, the fire and the plague each filling about half the frame, and the cause→effect is visibly happening: the burning ships and the spreading plague blobs. Its pans and zooms differ across the three samples. Reel X's small map icons sit in a mostly empty frame and are repeated, so its fire is only a small cluster.",
+    "B: Reel X's heroes are large and detailed (the full-width chained fleet, the big burning fireball, the 疫病 cluster, the 魏蜀吴 zones), and the fire visibly spreads along the linked ships from 60% to 92%. Reel Y's camera moves more, but its ships, fire and armies are small and sit in a lot of empty map.",
+    "B: Reel Y fills the frame with large heroes (a big chain of ships, a fire that spreads along the whole line, a disease cluster) and shows each cause→effect happening, while reel X's heroes are small and its fire is a thin strip with labels doing much of the explaining."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "solve-chicken-rabbit",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the mechanism as it happens: a live foot counter climbs from 70 to 74 to 94 while chickens turn into rabbits one by one, with the 24 gap shown. Reel X only labels the swap. Reel Y also has a stronger hero title and a clearer build-up across its three samples.",
+    "A: Reel Y's mechanism is easier to follow: pink legs are added to the heads one by one, the 12 converted rabbits are highlighted, and the 23 chickens turn green, with the caged chicken and rabbit as a hero visual. Reel X's rabbit conversion does show the leg count rising 70→74→94, but its title-card hero is plain and its 92% frame leaves a clipped '全当成鸡' text line.",
+    "B: Y shows the mechanism happening on screen, with a circled chicken turning into a rabbit while the foot counter climbs 70→74→94 and the \"还差 24\" gap stays visible, and its large title and big chicken and rabbit give a stronger hero; X only recolours the heads and its 24÷2 caption reads as truncated, so the build-up is less clear."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "en-seasons",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the mechanism happening on screen, with a large lit Earth, a fixed tilted axis, Earth moving along the orbit from JUN to DEC, and direct versus thinning rays, and its camera changes from frame to frame, whereas Reel X is mostly flat sketches with small Earths and its winter frame draws the rays running between Earth and Sun the wrong way round.",
+    "B: Reel X's hero visuals are large, shaded Earths and Suns that fill about half the frame, and its camera changes from sample to sample (close-up tilt, oblique orbit, side view with rays streaming at the planet, pull-back to the orbit). Reel Y's flat doodles mostly add labels and leave large empty areas, and its callback frames show a small Earth with sparse text.",
+    "B: Reel Y's hero visuals are large and detailed (a lit Earth with a shaded terminator and an oblique orbit), and its camera changes between samples, from wide to close-up to a pulled-back orbit. It also shows the mechanism happening: the Earth moves along the orbit with its axis fixed, and the rays strike the hemisphere. Reel X is clean but flat, and most of its frames only add labels."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "sci-tides",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y's camera actually moves, from the moon and sea to a push-in on the near side, a pan to the far side and a pull-back, and its Earth fills about half the frame. It also shows the mechanism happening: the water layer visibly swells at the near and far points, the geocenter is marked, and a coast marker crosses both bulges. X keeps a small, static, centred Earth with an empty lower half in most frames, and mostly labels the effect.",
+    "B: Reel X's camera moves between samples (the moon-lit sea, then a push-in on the near side, a shift to the far side and a pull-back), and the earth fills much more of the frame. You can watch the water bulge grow on both sides and a shore marker pass through both bulges. Reel Y keeps a static, smaller earth in every scene, and its 强/弱 labels float away from the arrows they describe.",
+    "B: Y shows the mechanism with real camera moves (the moon-over-sea hook, then push-ins to the near and far sides) and a visible cause→effect, where the water bulges and the 地心 (Earth's centre) is pulled ahead of the far-side water; X keeps one fixed centred Earth with overlays and arrows added."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "hist-silk-road",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y draws the route as it is described (Yumen Pass, the north and south roads around a textured Taklamakan, Kashgar, Pamir, Antioch) and pans the camera between samples, so the three samples differ in more than added elements. It ends with clear east-west arrows, while Reel X's 30% frames are sparse and its small flow labels sit on the route.",
+    "B: Reel X shows more of the mechanism happening on screen: the terrain is drawn in (the desert is a stippled region with mountain ranges), the route visibly splits around the desert and merges at Kashgar, and eastbound and westbound goods arrows cross the whole map. Reel Y has a clean look and a good Zhang Qian beat, but its map is sparser, the desert is a faint hatched oval, and the Rome-to-Chang'an line is drawn as a plain path with little terrain.",
+    "B: Y shows the mechanism on the map itself: the route is drawn through the Hexi corridor, then splits into north and south branches around a detailed textured Taklamakan with mountain ranges, and the camera pans and zooms differently in each sample. X has a flatter hero, a sparse 30% frame, and a Taklamakan outline with no real terrain."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "solve-buoyancy",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y shows the mechanism happening on screen: the displaced water fills in pink and the F浮 arrow grows as the hollow boat sits next to the sinking solid block, and there is a G排 bucket. X mostly places labels on a static tank, and its ending shows a boat on a bare line that doesn't match the tank diagram.",
+    "A: Y shows the mechanism happening on screen (the iron block sinks, the bowl-shaped hull fills with displaced water, the 10N arrows balance, and the closing shot has a ship at sea), and its build-up and layout change across the three samples. X is mostly static labels, and its first row has a stray pink circle that repeats in the later frames.",
+    "B: Reel Y's tanks are larger and more detailed, and its pink displaced-water fill, F浮 and G arrows and F浮=G box build up over the frames. Reel X has smaller tanks, a clipped '127 cm³' label, and sparse early samples."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 0,
+   "topic": "poem-jingyesi",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y has a much larger, more detailed hero moon and a visible slanted light beam that falls on the bed. Its camera tilts up to the moon and back down to the house, and the frost crystals form on the ground. X is cleaner and evenly paced, but its heroes are small and its camera stays mostly fixed.",
+    "A: Y shows the narrated cause→effect happening on screen (moonlight spreads from the window onto the floor and then turns into frost, the figure looks up at the moon and then lowers their head to a thought bubble with a house), and the camera and figure change between samples, whereas X's moon-and-window beats mostly stay static and its first sample is mostly a bare moon.",
+    "B: Reel Y's hero moon fills about half the frame and its camera visibly moves (the moon rises out of frame, the view pans up and down). It also shows the mechanism, a light beam from the window landing on the bed, whereas Reel X's small heroes sit in a mostly static layout; Y's captions do collide with the bed and ground line in places."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "sci-rainbow",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Reel Y has a larger, richer hero. It has a rain-streaked sky and a horizon, and the rainbow is drawn at large scale. Its mechanism is also shown happening: a ring of raindrops lights up at 42° around the anti-solar point, and the horizon cuts the circle down to an arch. The camera and layers change across samples. Reel X's cone and ring scenes are thinner and more diagrammatic, and its 60% and 92% samples are near-identical in several scenes.",
+    "A: Y shows the mechanism happening: the ray visibly refracts, reflects and refracts again, then fans out into colors, with 42°/40° arcs drawn and a 3D cone with the eye at its tip. Its camera also changes, as the horizon sinks and the view rises to reveal the full circle. X's drop shows only a purple ray and its dot-ring and horizon scenes add less.",
+    "B: Y shows the mechanism happening on screen: the white ray bends through the drop with the 40° and 42° angles marked against the anti-solar line, and raindrops light up one by one around the 42° ring, so the circle is built rather than just stated. Its three samples also differ more, with a rain-and-horizon scene, a drop close-up and an observer-view ring, and the horizon and plane finale is staged more clearly. X's cone diagram is a flat ellipse that is hard to read, and its three samples often differ only by added labels."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "hist-chibi",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y fills the frame with large, detailed heroes: a chained fleet, a burning fleet with dense fire particles, and a plague cluster. Its cause→effect plays out on screen, and the camera pans and zooms between samples. Reel X's heroes are small, with a lot of empty map around them, and its fire scene is a sparse patch.",
+    "B: Reel X's hero visuals are large and fill about half the frame (the chained fleet with a target ring, then the burning ships with dense fire particles), and the 30%, 60% and 92% samples show clear cause→effect progress: ships link up, a ring marks the weak point, fire spreads, disease spreads and the army retreats. Reel Y's hero elements are small and sit in the middle of the frame, and its fire and fleet shots are sparse. Its camera also drifts less, so its samples read more as labels being added than as a mechanism playing out.",
+    "B: Reel Y shows each cause happening on a large, bold hero map: the chained ships get a target ring, the fire spreads across the whole line in a dense particle burst, and plague dots swarm the camp. The samples also shift in framing from one to the next. Reel X's small, sparse map elements and its near-identical 60% and 92% samples show far less of the mechanism."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "solve-chicken-rabbit",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the mechanism happening on screen: chickens are swapped for rabbits one by one while a live foot counter climbs from 70 to 74 to 94. It also has a bigger title and hero characters, and a 30% sample that is already populated. Reel X mostly labels the idea, and its cage hero is small and only half the frame.",
+    "B: Reel X's mechanism is visible as it happens: the hero opens on a chalk chicken and rabbit, the count ticks 70→74→94 as rabbits replace chickens, and its 30% frame is already full; Y has a similar build-up but is flatter, with a small caged hero and a plain 30% frame.",
+    "B: Y shows the swap mechanism happening: the foot counter climbs 70→74→94 as chickens turn into rabbits, with the 'still short 24' gap beside it. X mostly adds labels and colors rabbits without a running count. Y's hero is also larger and better framed, with a big title and a big chicken and rabbit."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "en-seasons",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y has a large, richly shaded hero (Earth with a tilted axis, an orbit with moving Earth, and sunlight rays hitting the lit hemisphere) and its camera changes from a distance shot to a close-up to an oblique orbit view. X's flat, small doodles mostly sit still, and its closing frame is a mostly empty label card.",
+    "B: Reel X has a large, shaded Earth hero and a changing camera (close-ups, then pull-back to the orbit). It shows the mechanism by having Earth move along the orbit while its axis stays fixed, and it has direct rays hitting a bright patch. Reel Y is flat doodles that mostly just label things, and its Earth is sometimes small or pushed to the edge.",
+    "B: Y has large, detailed lit-Earth heroes and clear camera changes (distance view, close-up, orbit view, side view), and it shows the cause→effect with parallel rays hitting a steep patch and the tilted Earth moving from June to December. X is flatter and mostly adds labels to near-static flat doodles, and its 30% frames are often sparse."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "sci-tides",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y shows the mechanism happening: the water layer visibly deforms into a lopsided bulge, the near and far sides each get their own camera move and callout, and the scene changes from a moonlit sea to close-ups to a pull-back with the shore marker crossing both bulges. X mostly repeats the same centered globe in nearly the same framing, and in its arrow frames the 强/弱 labels and arrows sit partly outside the globe and get clipped at the frame edge.",
+    "B: Reel X shows the cause→effect happening, with the water layer visibly swelling into a near-side bulge, then a far-side bulge, then a shore marker passing through both; its camera also moves from a moonlit sea to the near side, the far side and a pulled-back view, whereas Reel Y keeps the same static centered Earth in nearly every frame with only labels and arrows added.",
+    "B: Reel Y moves the camera between samples (zoom to the near side, pan to the far side, pull back) and fills the frame with a large, detailed Earth. It also shows the cause→effect by drawing the water layer bulge as the arrows and the 地心 marker appear, while Reel X keeps a small, mostly static Earth with lots of empty space and only adds labels."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "hist-silk-road",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y has a richer hero map (textured desert, mountain ranges, labeled waypoints), and its camera pans across the route in every scene. The route visibly splits around the Taklamakan and then rejoins, and the closing arrows show goods moving in both directions. Reel X is a flatter map with a thin line and tiny labels, and its 30% frames are often nearly empty.",
+    "B: Reel X's map is richer, with a stippled Taklamakan desert, mountain ranges and a labelled terrain. Its camera pans clearly across the frames, and the route visibly splits into north and south branches around the desert and rejoins at Kashgar. Reel Y's map is flatter, with a hatched desert outline and few terrain features, and some of its 30% samples show little more than a dot or empty map.",
+    "B: Reel Y's camera pans and zooms across clearly different regions in each sample, and the route visibly draws through named waypoints (武威→敦煌→玉门关, then the north and south branches around a detailed textured desert with mountain ranges). Reel X's samples barely differ in camera or detail, and its 30% frames are sparse and empty, with an unlabeled still map and a lone dot."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "solve-buoyancy",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y's tanks and ship are larger and more detailed, and it shows the mechanism directly: a side-by-side solid block and hollow hull, pink displaced water growing, and F浮 and G arrows that visibly reach equal length. X is sparser, with small tanks and a lot of empty space. X also has weaker pacing, with a text-only formula scene and a clipped 'F浮 :' label.",
+    "A: Y shows the mechanism happening on screen: a 1.3 N arrow against a 10 N arrow, the hollow hull filling with displaced water up to 1000 cm³, and the arrows growing to equal length. The camera also changes, with a final pull-back to a ship on the sea. X mostly labels static diagrams, with a small hero and a lot of empty space.",
+    "B: Reel Y's hero visuals are larger and more detailed: a full ship, a side-by-side solid-versus-hollow comparison, and pink displaced-water fills. Its buoyancy and float stages visibly build up, with the displaced-water bucket and F浮 = G arrows appearing across the three samples. Reel X mostly shows small tanks and empty space, and its last scene is cramped by the formula text."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 1,
+   "topic": "poem-jingyesi",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Reel Y moves the camera and changes the picture across its three samples: the moonbeam sweeps onto the bed, the frame tilts up to a huge moon, then down to a house with a glowing window. Its build-up also stays spread across the frame. Reel X mostly stays static, adds small elements, and has a title that collides with the moon and the bed.",
+    "A: Reel Y shows each narrated cause→effect happening: moonlight fills the floor and bed, dots turn into frost crystals, the figure looks up at a lit moon, and a thought bubble with a house appears over the lowered head. Its layers are cleaner, with a mountain silhouette and a vertical verse column, and nothing collides with the captions. Reel X has bigger moons and some camera tilt, but its moon is clipped at the top edge in several frames and its captions overlap the bed and ground lines.",
+    "B: Y's hero visuals are larger and more detailed (a huge moon, a moonlight beam slanting onto the bed, frost crystals forming on the floor), and its camera visibly tilts up and down between samples. X keeps small, mostly static elements, though its composition is cleaner than Y's, where a caption overlaps the bed and the moon is clipped at the top."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "sci-rainbow",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y shows the cause→effect happening: its rain-and-horizon opener, a drop diagram with the 42° and 40° angles side by side, and 42° droplets lighting up one after another into a ring. X mostly labels these ideas with a flat cone diagram and a plain 40°/42° angle sketch, and Y's three samples differ more by camera and scene (rain and horizon, drop, ring, plane view).",
+    "A: Y shows the cause→effect happening on screen: the ray visibly splits into a red-to-violet fan inside the drop, the 42°/40° arcs are drawn out one after the other, and the eye-and-cone diagram changes viewpoint, while X's ring of dots and static drop diagram mostly just label the idea.",
+    "B: Reel Y has a richer hero (a large rainbow arch under falling rain, then a ring of lit droplets), and its frames change more between samples: the camera pushes in, the horizon rises, and the droplets light up one by one around the 42° circle. It also shows the ray path continuing out to the observer with both angles, while reel X's cone diagram is a flat schematic."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "hist-chibi",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y's hero visual is large and fills the frame, and it shows the mechanism happening: chained ships get a target ring, then the fire spreads along the chain with a particle burst driven by the wind, and then the plague cluster appears in the camp. Reel X mostly uses small icons on a static map with little camera movement, and its fire frame is small.",
+    "B: Reel X's hero visuals are large and detailed (a long chained fleet that visibly catches fire under big particle flames, spreading plague markers, and the full-frame 魏蜀吴 split), so cause→effect plays out on screen. Reel Y has more camera movement, but its heroes are small on a mostly empty map, its fire scene is tiny and pushed to the top, and 曹操 is clipped at the frame edge.",
+    "B: Y's heroes are large and fill about half the frame (the chained fleet, the burning ships, the plague-struck camp), and the cause→effect plays out on screen: the fleet is linked, a target ring appears, then fire spreads along the chain on the wind. X's heroes are small and mostly labelled, with a tiny fleet and a weak fire, and several frames are nearly empty or barely change."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "solve-chicken-rabbit",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the mechanism happening on screen: the foot counter climbs from 70 to 74 to 94 as chickens turn into yellow rabbits one by one while \"还差 24\" stays visible. Its large chicken and rabbit hero opens the reel, and its build-up is spread evenly across the three samples. Reel X mostly labels the 70, 24 and 12 steps and has a clipped line of text in its last row.",
+    "B: Reel X shows the mechanism happening: a live foot counter climbs 70→74→94 while yellow rabbits (ears and extra legs) replace chickens one by one, and its blackboard hero with the title and the big chicken and rabbit is more prominent than Y's small cage in the corner.",
+    "B: Reel Y shows the swap happening on screen: a head is circled, the foot counter goes 70→74→94, and chicken heads turn into yellow rabbits one by one. Its larger title and character hero fill the top of the frame. Reel X mostly labels the 24 leftover feet, and its rabbit-ification is less clear."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "en-seasons",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y has big, detailed lit-Earth heroes and real camera changes (a close-up, an orbit view and a side view) that show the tilt and sunlight mechanism, while X is flat, sparse doodles with static framing and some empty frames.",
+    "B: Reel X has large, detailed shaded Earths that fill about half the frame, and its camera changes between samples (zoom, orbit view, close-up). Its sunlight rays visibly hit the tilted Earth, and its palette stays consistent. Reel Y is flat doodles with mostly static layouts, and its labels sit close to the captions.",
+    "B: Y has richly shaded, large hero Earths and a cinematic camera that moves between wide, close and orbit views. It shows the Earth moving along the orbit with its axis fixed and sunlight rays hitting the lit hemisphere, in one consistent dark palette. X is flat doodles with small, static, mostly identical framing."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "sci-tides",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y moves the camera between samples (moonlit sea, then zoomed gravity arrows, then the near side, far side and pulled-back views) and shows the mechanism. Its near-side water bulge forms visibly, and its far-side frames show the earth's centre sitting closer to the moon than the water. Reel X keeps a static, centred, same-size globe in nearly every frame with mostly label changes, and it never shows why the far side bulges.",
+    "B: Reel X has a larger hero and a real camera: it pushes in on the near side, pans to the far side, then pulls back. Its water layer visibly grows into the bulges as the narration describes them. Reel Y keeps a small, static Earth in nearly every frame, its hook frame at 30% is mostly empty, and its bulges just appear or are labelled.",
+    "B: Reel Y changes camera framing in every scene (moon and sea, then a close-up of the near side, then the far side, then a pull-back), and the water bulge visibly grows on both sides as the narration describes. Reel X mostly repeats a static top-down Earth, and its near and far bulges are less clearly linked to the arrows."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "hist-silk-road",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y has a richer hero map, with a textured desert, mountain ranges and city nodes. Its camera pans and zooms differently in each sample, and the route is visibly drawn step by step through Wuwei, Dunhuang, the Jade Gate and the north/south split around the desert. It ends on clear west and east trade arrows, while Reel X has a flatter map, tiny labels and a nearly identical 60% and 92% sample in several scenes.",
+    "B: Reel X's route is drawn progressively across the 30/60/92% samples, so the viewer sees it grow from Chang'an to Dunhuang, split around the desert and reach the Mediterranean. It has a richer hero map (a textured desert, mountain ranges, a legible camera pan and zoom) and shows the east-west trade with directional arrows, while Reel Y's route is already drawn in its first frames and its labels and borders are fainter.",
+    "B: Reel Y draws a richer parchment map with a textured Taklamakan desert, mountain ranges and many place labels, and its camera pans to follow the route. It shows the north and south roads going around the desert, and it uses clear directional arrows for the goods. Reel X has a flatter map, some route labels that collide or get clipped, and a 30% sample in the first scene that is nearly empty."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "solve-buoyancy",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y's tanks and boat fill most of the frame, and its pink displaced-water region fills the hull while the F浮 and G arrows change length. X's tank is small and leaves large empty areas, especially at the 30% samples.",
+    "A: Reel Y shows the cause→effect happening: the iron block sinks, the boat hull fills with blue displaced-water volume, the arrows grow to 10N vs 10N, and the final scene changes camera to a ship on the open sea. Reel X is mostly static labels in two side-by-side tanks, with an empty first frame and little change between its 60% and 92% samples.",
+    "B: Reel Y's tank and ship fill much more of the frame and show the mechanism directly: the displaced water appears in pink, the solid and hollow iron sit side by side with their F浮 and G arrows, and the build-up is spread over all three samples. Reel X's tank is small, and its labels are clipped (\"127 cm\" and \"F浮 =\")."
+   ]
+  },
+  {
+   "judge": "claude-cli:sonnet",
+   "repeat": 2,
+   "topic": "poem-jingyesi",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Y's heroes are much larger (full moon, light beam, frost crystals), the camera visibly pans up to the moon and back down to the house, and the moonlight beam from window to bed shows the cause→effect, whereas X's visuals are small and mostly static, with elements added in place.",
+    "A: Y shows the poem's cause→effect happening on screen (moonlight slowly fills the floor and turns into frost specks, the figure lifts their head toward a glowing moon, then a thought bubble fills with the home), and it builds across all three samples with a stable bed-and-window setting and the vertical verse kept clear of the captions. X mostly labels and enlarges static elements, with a bare gray-disc moon, and its text and lines sometimes crowd the captions.",
+    "B: Reel Y's hero moon fills about half the frame, a diagonal beam visibly carries light from the window to the bed, frost crystals form on the ground, and the camera pans up and down between the look-up and look-down lines, while Reel X is smaller and mostly static within each scene."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "sci-rainbow",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Reel Y's particle-ring visualization directly shows the mechanism (water droplets illuminating at 42°) rather than labeling it geometrically, with superior pacing in the progressive buildup (sparse → filled ring), richer atmospheric composition (rain visible, depth), and more cinematic camera motion that grounds the explanation in physical reality.",
+    "A: Reel Y excels in camera variety and composition: it progresses from drawing animation to water drop to angle mechanics to cone-from-observer's-eye perspective to final rainbow, showing distinct viewpoints each frame rather than repetitive angles; simultaneously its layouts avoid visual clutter while maintaining mechanistic clarity.",
+    "B: Reel Y visibly shows the mechanism through progressive point illumination forming the ring (frame 4), making causation tangible rather than schematic, while also adding atmospheric depth with falling rain and clearer camera motion via the horizon line revealing the full circle."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "hist-chibi",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y visibly demonstrates the causal chain (chained ships as vulnerability → fire spreading with wind → plague particles), uses more dynamic camera work (full map → zoomed river → fire detail → camp), and paces distinct visual transformations across samples, while Reel X relies more on label additions atop static geography.",
+    "B: Reel X shows the causal mechanism visually—chained ships catching fire from wind-blown fire boats—rather than labeling it, uses varied camera movements (zoom, pan, pull-back) versus Reel Y's static map-view, and maintains stronger composition with layered depth (ships in foreground, river, map background) while keeping captions clear of visual elements.",
+    "B: Reel Y explicitly visualizes cause→effect for each mechanism (chained ships attract fire, fire spreads with wind arrows, disease forces retreat), while Reel X primarily labels factors on a static map."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "solve-chicken-rabbit",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    false
+   ],
+   "why": [
+    "B: Reel Y uses color-coded visual transformation (pink chicken → gold rabbits) and character design as the hero element, making the mechanism visibly clear while maintaining stronger composition and pacing across the three samples.",
+    "A: Y's caged chicken-rabbit hero visual is richer and more engaging as a still, and the circle-to-figure progression with cage framing creates more visual variety and life across the three samples than X's incremental grid-building approach.",
+    "B: Reel Y's distinct chicken and rabbit character designs establish visual anchors from the opening, enabling better depth layering, compositional variety across samples, and clearer progressive pacing than Reel X's static grid-based approach."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "en-seasons",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y's multiple orbital positions and dynamic camera angles make the cause-and-effect mechanism visibly clear—how the fixed tilt interacts with Earth's changing position to alter the sun's angle—whereas Reel X mainly labels the same diagrams, leaving the reader to infer the motion.",
+    "B: Reel X uses dynamic 3D cinematography with varied camera angles, detailed hero visuals, and sophisticated depth composition, while Reel Y's static sketchy approach, though clear, lacks visual richness and camera variety.",
+    "B: Reel Y's glowing, richly-rendered Earth and Sun, combined with varied camera angles and visible light-ray transformations across each frame's progression, convey the mechanism more dynamically and compellingly than Reel X's flat schematic approach."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "sci-tides",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "B",
+    "B",
+    "A"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    true
+   ],
+   "why": [
+    "B: ",
+    "B: It demonstrates cause→effect as dynamic visual processes (water visibly bulging, Earth rotating through tides) across distinct visual stages with pedagogical pacing, rather than mostly schematic force diagrams.",
+    "A: Reel X shows the causal mechanism dynamically through camera perspective shifts and arrow-based force visualization, while Reel Y relies more on static overhead views with labels, making X more effective for mechanistic understanding."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "hist-silk-road",
+   "base": 2,
+   "cand": 1,
+   "picks": [
+    "A",
+    "A",
+    "B"
+   ],
+   "picked_first_shown": [
+    true,
+    false,
+    false
+   ],
+   "why": [
+    "A: Reel X's detailed parchment map provides far richer geographic context and city labels that substantially improve understanding of the actual historical route and regional relationships, outweighing Reel Y's more stylized illustration approach.",
+    "A: Reel Y anchors the route to specific historical actors and causality (张骞's embassy), creates a stronger hero opener with the China-Rome connection, and uses clearer visual progression from detailed maps to abstract cultural exchange, making the mechanism vivid rather than merely labeled.",
+    "B: Reel Y renders the actual geography (Taklimakan desert, mountains, water) that the route must navigate, making geographic cause→effect visibly apparent rather than merely labeled; Reel X is a simpler schematic that lacks this environmental context."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "solve-buoyancy",
+   "base": 1,
+   "cand": 2,
+   "picks": [
+    "A",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    true,
+    true,
+    false
+   ],
+   "why": [
+    "A: Reel X progressively visualizes the key transformation mechanism (solid iron → hollow ship → increased water displacement → floating) with better pacing spread across frames, cleaner composition, and a more intuitive cause-and-effect narrative than Reel Y's conceptual explanation.",
+    "B: Reel X visualizes the physical mechanism—water displacement transforming buoyancy—through visible shape change and force arrows, whereas Reel Y relies more on labeled diagrams; X's nail-versus-boat opener is also more visually striking.",
+    "B: Reel Y makes the mechanism visible through explicit left-right comparison of solid vs. hollow iron's buoyancy, demonstrating cause→effect rather than just labeling states."
+   ]
+  },
+  {
+   "judge": "claude-cli:haiku",
+   "repeat": 0,
+   "topic": "poem-jingyesi",
+   "base": 2,
+   "cand": 1,
+   "picks": [
+    "B",
+    "A",
+    "A"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    true
+   ],
+   "why": [
+    "B: Reel Y has a dominant, richly detailed moon that fills the frame as a compelling hero visual, better camera dynamics with perspective shifts, and more dramatic visual progression of the frost transformation across the three samples.",
+    "A: Reel Y's superior composition (clear depth layers, uncluttered frame), consistent visual language (restrained palette, coherent typography), and polished hero visuals (beautifully rendered moon, cleaner line-work) create a more elegant and memorable interpretation of the poem that aids understanding, outweighing Reel X's more dynamic mechanism visualization that gets compromised by label clutter.",
+    "A: Reel X's varied camera angles and layered composition (moon/bed/floor depth) clarify the spatial progression better, while Y's oversized hero moon crowds the frame and reduces camera dynamism."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "sci-rainbow",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the cause more clearly: in the ring scene, raindrops light up one by one at 42° around a labeled anti-solar point (太阳正对面), and its raindrop diagram uses that same reference line, while X's cone and bare angle diagrams are sparser and less detailed, even though Y's horizon scene barely changes between its 30% and 60% stills.",
+    "B: X makes the cause visible on screen: rain-lit droplets at 42° around the antisolar point light up one by one until they form the full ring, and a horizon then rises to hide the lower half; Y explains the same steps mostly with bare line diagrams (a static angle frame and a sparse cone) and clips a plane at the left edge.",
+    "B: Reel Y's hero visuals carry the explanation better: the rainy arch with its slow push-in, the drop with the 42°/40° angles measured from the antisolar line, and the droplets lighting up one by one into a full ring around the '太阳正对面' point all fill the frame and show the cause and effect, while X's opening and 42° frames are sparse thin-line diagrams on empty sky."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "hist-chibi",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y explains the mechanism on screen: the chained Cao fleet fills the river band and is targeted, then Huang Gai's boats set it alight and the fire spreads ship by ship with the southeast wind, while X shows small fleets on a wide map, recolors its ships inconsistently (red to olive to brown), and fades the allied-camp frame to grey by 92%.",
+    "B: Reel X's hero scenes fill the river band, and you can watch the cause and effect happen: the chained fleet gets a 火攻 target ring, then catches fire ship by ship as wind-blown flames sweep across it, and finally plague dots spread under the retreat arrow before the map splits into three; Reel Y keeps a small fleet on a mostly empty map and shows causes like 不习水战/水土不服/疫病 only as labels and ship color changes.",
+    "B: Y keeps a large river-and-fleet visual across most of the frame and shows the whole cause and effect on screen: the chained ships are marked as a fire-attack target, then the fire spreads boat by boat along the chain with the southeast wind, while X's fleets and fire are small objects on a mostly empty map, and its allies frame fades into a washed-out, cramped cluster."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "solve-chicken-rabbit",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: In Y's swap scene, chicks visibly grow ears and legs into yellow rabbits one by one while a large running counter climbs 70→74→94, so you see each swap add two feet; X writes 94−70=24 before anything is converted and just labels the result.",
+    "B: In X's swap frame you can watch the cause and effect: each chicken that gets two more legs and becomes a rabbit pushes the live foot counter up (70→74→94), and the reel ends by stating the general rule (全当成鸡，差÷2=兔). Y adds the pink legs too, but its 24÷2=12 sits beside the drawing as a separate label and it never states the method as a rule.",
+    "B: In Y's swap scene you can watch the mechanism happen: chickens with combs turn into yellow rabbits with ears one by one while a live foot counter climbs from 70 to 74 to 94. X adds the pink legs without any running count, and its 12 'rabbits' look much like the chickens."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "en-seasons",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y keeps a large, detailed lit Earth or orbit in the middle of almost every frame, uses push-ins and pull-backs, and shows the June-to-December swap by moving Earth along its orbit with the axis held fixed; X's flat doodles mostly add labels to the same staging, and Y's flaws (Earth touching the 'roles swap' caption and a stray 'SPREAD THIN' label in the summer shot) are smaller than that gap.",
+    "B: Reel X has detailed heroes that fill about half the frame, real camera moves (a push-in from the Sun–Earth shot to a close-up Earth with rays, then a pull-back to the full orbit), and it shows direct rays against spread-thin light on one lit globe, while Reel Y uses small flat sketches on a static stage that mostly add labels, and its closing TILT frame is nearly empty at 30%.",
+    "B: Reel Y's lit-sphere Earth fills about half the frame and moves along a real orbit with its axis held fixed from JUN to DEC, so the fixed-tilt cause is actually shown happening (despite one frame where Earth overlaps the 'roles swap' caption), whereas reel X's flat doodles mostly add labels on a static stage, with near-empty 30% frames in the summer and callback beats."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "sci-tides",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Reel Y shows the mechanism happening on screen: the near-side water swells toward a larger, pushed-in Earth, and the far-side bulge forms with the Earth's centre marked as pulled ahead of the water. The camera also moves between a moonlit sea, close-ups of the near and far sides and a pull-back, while Reel X keeps nearly the same small static Earth-and-Moon shot through its first two scenes and relies on labels like '×2 ?' and '2 个鼓包'.",
+    "B: Reel X's frames visibly change: the camera pushes in and pulls out, and the near and far bulges grow from 30% to 92%, while in Reel Y's hook and bulge frames the 30% and 60% samples are almost identical static Earth-and-Moon shots, although X sometimes clips the moon at the right edge.",
+    "B: Reel Y's frames change from sample to sample: it pushes in on the near side, moves to the far side and pulls back out, and its Earth and water layer fill much more of the frame. You can watch each bulge grow from flat to swollen, and the 地心 marker shows the far-side bulge happening. Reel X keeps a small Earth fixed in the same spot, and its 30% and 60% samples are often almost identical (the hook and the first two bulge frames)."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "hist-silk-road",
+   "base": 0,
+   "cand": 3,
+   "picks": [
+    "B",
+    "B",
+    "B"
+   ],
+   "picked_first_shown": [
+    false,
+    true,
+    false
+   ],
+   "why": [
+    "B: Y's map has more detail and teaches more: stippled Taklamakan desert, mountain ranges (Qilian, Tianshan, Kunlun), and stops like Yumenguan, Hotan and Turpan make each frame a strong still and show why the route splits around the desert, while X's frames are sparser and its 30% samples (e.g. 01 and 02) are almost empty.",
+    "B: Reel X's map is richer, with mountain ranges, a textured Taklamakan and named oasis towns along the two routes, and its camera pans west scene by scene as the gold line draws; Reel Y uses a sparse, faint map, shows the whole route in its intro before tracing it again, and its Chang'an frame at 30% is almost empty.",
+    "B: Y's map has much more on it: a textured Taklamakan desert ringed by drawn mountain ranges (Tianshan, Kunlun, Pamir) and labelled waypoints such as Yumenguan, Kucha and Hotan, so you can see why the route splits around the desert, and the camera pans steadily west; X uses a thin hatched oval on a mostly empty map, and its 30% frame in the Chang'an scene shows no route at all."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "solve-buoyancy",
+   "base": 2,
+   "cand": 1,
+   "picks": [
+    "B",
+    "A",
+    "A"
+   ],
+   "picked_first_shown": [
+    false,
+    false,
+    true
+   ],
+   "why": [
+    "B: Reel Y makes the mechanism visible: a side-by-side solid-vs-hollow panel shows the small versus large pink displaced-water region with F浮/G arrows, and a displaced-water cup illustrates F浮=G排, all in fuller, cleaner frames; Reel X's diagrams are smaller, leave much of the frame empty, and its 92% samples show ghosted, half-faded leftovers (e.g. the faded block and tank lines in the hook and hollow frames).",
+    "A: Reel Y shows the cause and effect more clearly: the same 1 kg of iron goes from a 127 cm³ block with 1.3 N < 10 N, sinking, to a bowl whose displaced-water box visibly grows to 1000 cm³ with F浮 = G = 10 N, and it ends on a ship takeaway; reel X mostly adds labels to static tanks and its 30% frames are sometimes sparse (an empty right tank in the comparison scene, a bare first buoyancy frame).",
+    "A: Reel X makes the mechanism visibly happen and puts numbers on it: the iron block sinks as the 1.3 N vs 10 N arrows appear, the displaced-water box grows from 127 cm³ to 1000 cm³ when the iron becomes a boat, and the ending widens to a full ship on open sea. Reel Y's comparison frame has a half-empty right tank at 30%, its last frame barely changes between 60% and 92%, and its boat panels mostly add labels to the same picture."
+   ]
+  },
+  {
+   "judge": "claude-cli:opus",
+   "repeat": 0,
+   "topic": "poem-jingyesi",
+   "base": 3,
+   "cand": 0,
+   "picks": [
+    "A",
+    "A",
+    "A"
+   ],
+   "picked_first_shown": [
+    true,
+    false,
+    true
+   ],
+   "why": [
+    "A: In X you can see each line of the poem happen: the light from the window turns into speckled frost on the floor, a gaze line reaches the moon and a ring appears around it, and the figure lowers its head as a thought bubble shows the home cottage, all in one consistent palette; Y's camera moves crop the moon at the top of the frame in its later scenes, its figure never visibly lowers its head, and the final cottage and 乡 glyph crowd the caption band.",
+    "A: Y shows each line happening on screen: moonlight spreads from the window grid onto the floor, the same patch turns into speckled frost with a 霜 label, a sight-line runs from the poet on the bed to a moon that gets a gold ring, and a thought bubble fills with a house. It keeps one coherent bed-and-mountains scene with a vertical poem column that never touches the captions, while X's final frame stays mostly empty until the 92% mark and its title frame barely changes.",
+    "A: Reel X shows each line actually happening: the window's moonlight on the floor turns into speckled frost, and the seated figure looks up at the moon and then bows its head as a thought bubble of home appears, with a clean, consistent layout. Reel Y's stick figure barely changes pose, its moon is clipped at the top edge in the last three frames, and its frost is just snowflake marks dropped onto an empty shape."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,386 @@
+[
+ {
+  "i": 1,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 57.3,
+  "det": 100.0,
+  "composite": 74.4
+ },
+ {
+  "i": 1,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 54.0,
+  "det": 100.0,
+  "composite": 72.4
+ },
+ {
+  "i": 2,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 50.7,
+  "det": 90.0,
+  "composite": 66.4
+ },
+ {
+  "i": 2,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 58.0,
+  "det": 100.0,
+  "composite": 74.8
+ },
+ {
+  "i": 3,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 60.8,
+  "det": 100.0,
+  "composite": 76.5
+ },
+ {
+  "i": 3,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 58.3,
+  "det": 100.0,
+  "composite": 75.0
+ },
+ {
+  "i": 4,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 58.0,
+  "det": 90.0,
+  "composite": 70.8
+ },
+ {
+  "i": 4,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 58.7,
+  "det": 100.0,
+  "composite": 75.2
+ },
+ {
+  "i": 5,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 54.0,
+  "det": 100.0,
+  "composite": 72.4
+ },
+ {
+  "i": 5,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 55.3,
+  "det": 100.0,
+  "composite": 73.2
+ },
+ {
+  "i": 6,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 58.7,
+  "det": 97.0,
+  "composite": 74.0
+ },
+ {
+  "i": 6,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 58.7,
+  "det": 85.0,
+  "composite": 69.2
+ },
+ {
+  "i": 7,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 58.0,
+  "det": 100.0,
+  "composite": 74.8
+ },
+ {
+  "i": 7,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 58.3,
+  "det": 100.0,
+  "composite": 75.0
+ },
+ {
+  "i": 8,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 57.2,
+  "det": 100.0,
+  "composite": 74.3
+ },
+ {
+  "i": 8,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 56.0,
+  "det": 100.0,
+  "composite": 73.6
+ },
+ {
+  "i": 9,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 44.4,
+  "det": 100.0,
+  "composite": 66.6
+ },
+ {
+  "i": 9,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 56.1,
+  "det": 90.0,
+  "composite": 69.7
+ },
+ {
+  "i": 10,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 56.0,
+  "det": 97.0,
+  "composite": 72.4
+ },
+ {
+  "i": 10,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 53.8,
+  "det": 100.0,
+  "composite": 72.3
+ },
+ {
+  "i": 11,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 54.2,
+  "det": 97.0,
+  "composite": 71.3
+ },
+ {
+  "i": 11,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 57.3,
+  "det": 100.0,
+  "composite": 74.4
+ },
+ {
+  "i": 12,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 62.7,
+  "det": 100.0,
+  "composite": 77.6
+ },
+ {
+  "i": 12,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 58.0,
+  "det": 100.0,
+  "composite": 74.8
+ },
+ {
+  "i": 13,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 52.0,
+  "det": 90.0,
+  "composite": 67.2
+ },
+ {
+  "i": 13,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 55.3,
+  "det": 97.0,
+  "composite": 72.0
+ },
+ {
+  "i": 14,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 59.3,
+  "det": 100.0,
+  "composite": 75.6
+ },
+ {
+  "i": 14,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 56.0,
+  "det": 97.0,
+  "composite": 72.4
+ },
+ {
+  "i": 15,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 56.7,
+  "det": 97.0,
+  "composite": 72.8
+ },
+ {
+  "i": 15,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 55.0,
+  "det": 100.0,
+  "composite": 73.0
+ },
+ {
+  "i": 16,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 50.0,
+  "det": 100.0,
+  "composite": 70.0
+ },
+ {
+  "i": 16,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 57.3,
+  "det": 100.0,
+  "composite": 74.4
+ },
+ {
+  "i": 17,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 55.3,
+  "det": 100.0,
+  "composite": 73.2
+ },
+ {
+  "i": 17,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 53.3,
+  "det": 88.0,
+  "composite": 67.2
+ },
+ {
+  "i": 18,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 48.7,
+  "det": 100.0,
+  "composite": 69.2
+ },
+ {
+  "i": 18,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 50.7,
+  "det": 100.0,
+  "composite": 70.4
+ },
+ {
+  "i": 19,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 58.3,
+  "det": 100.0,
+  "composite": 75.0
+ },
+ {
+  "i": 19,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 58.0,
+  "det": 100.0,
+  "composite": 74.8
+ },
+ {
+  "i": 20,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 52.7,
+  "det": 100.0,
+  "composite": 71.6
+ },
+ {
+  "i": 20,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 56.7,
+  "det": 87.0,
+  "composite": 68.8
+ },
+ {
+  "i": 21,
+  "arm": "ON",
+  "genre": "sci",
+  "judge": 55.8,
+  "det": 100.0,
+  "composite": 73.5
+ },
+ {
+  "i": 21,
+  "arm": "OFF",
+  "genre": "sci",
+  "judge": 52.0,
+  "det": 100.0,
+  "composite": 71.2
+ },
+ {
+  "i": 22,
+  "arm": "ON",
+  "genre": "hist",
+  "judge": 56.7,
+  "det": 94.0,
+  "composite": 71.6
+ },
+ {
+  "i": 22,
+  "arm": "OFF",
+  "genre": "hist",
+  "judge": 55.9,
+  "det": 100.0,
+  "composite": 73.5
+ },
+ {
+  "i": 23,
+  "arm": "ON",
+  "genre": "solve",
+  "judge": 55.0,
+  "det": 100.0,
+  "composite": 73.0
+ },
+ {
+  "i": 23,
+  "arm": "OFF",
+  "genre": "solve",
+  "judge": 52.7,
+  "det": 100.0,
+  "composite": 71.6
+ },
+ {
+  "i": 24,
+  "arm": "ON",
+  "genre": "en",
+  "judge": 50.0,
+  "det": 100.0,
+  "composite": 70.0
+ },
+ {
+  "i": 24,
+  "arm": "OFF",
+  "genre": "en",
+  "judge": 50.0,
+  "det": 100.0,
+  "composite": 70.0
+ }
+]
