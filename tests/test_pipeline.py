@@ -185,3 +185,9 @@ def test_language_detection():
     assert langs.detect("なぜ空は青いのでしょうか") == "ja"
     assert langs.detect("天空为什么是蓝的") == "zh"
     assert langs.detect("Why is the sky blue?") == "en"
+
+
+def test_dub_maps_normalized_keys_back():
+    from reels_rsi.pipeline import dub
+    t = dub.match_keys({"底 = ?": "Base = ?", "?": "?", "已知(单位:厘米)": "Given (cm)"}, ["底 = ？", "？", "已知（单位：厘米）"])
+    assert t == {"底 = ？": "Base = ?", "？": "?", "已知（单位：厘米）": "Given (cm)"}

@@ -191,6 +191,9 @@ async def _main(argv=None):
     ap.add_argument("--bgm", default="auto")
     ap.add_argument("--only", default=None, help="comma list of frame numbers to re-voice")
     ap.add_argument("--lang", default="auto", choices=["auto", *LANGS_MOD.LANGS])
+    ap.add_argument("--fit", default=None, metavar="AUDIO_META",
+                    help="fit each line to the durations in another reel's audio_meta.json (dubbing: edge only, "
+                         "rate adjusted per line within -20%%..+35%%)")
     a = ap.parse_args(argv)
 
     from reels_rsi.project import require_project
@@ -205,25 +208,44 @@ async def _main(argv=None):
 
     lines = parse_script((project / "SCRIPT.md").read_text("utf-8"))
     lang = a.lang if a.lang != "auto" else LANGS_MOD.detect(" ".join(t for _, t in lines))
+    targets = {}
+    if a.fit:
+        targets = {v["frame"]: v["duration_s"] for v in json.loads(Path(a.fit).read_text("utf-8")).get("voices", [])}
+        if provider != "edge":
+            sys.exit("✗ --fit needs the edge provider (it adjusts the speaking rate per line)")
     voices = []
     for frame, text in lines:
         if only is not None and frame not in only and frame in old:
             voices.append(old[frame])
             continue
         mp3, wav = voice_dir / f"{frame:02d}.mp3", voice_dir / f"{frame:02d}.wav"
-        if provider == "elevenlabs":
-            words = elevenlabs_synth(text, a.voice, mp3)
-        else:
-            words = await edge_synth(text, a.voice, a.rate, mp3, lang)
+
+        async def synth(rate):
+            if provider == "elevenlabs":
+                w = elevenlabs_synth(text, a.voice, mp3)
+            else:
+                w = await edge_synth(text, a.voice, rate, mp3, lang)
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(mp3), "-ar", "44100", "-ac", "1",
+                            str(wav)], check=True)
+            mp3.unlink()
+            return w, probe(wav)
+
+        rate = a.rate
+        words, dur = await synth(rate)
+        target = targets.get(frame)
+        if target and abs(dur / target - 1) > 0.04:
+            # edge "+10%" speaks 10 % faster → duration ≈ dur / 1.1; aim for the target, keep it natural
+            base = int(re.sub(r"[^\d-]", "", a.rate) or 0)
+            pct = max(-20, min(35, round((1 + base / 100) * dur / target * 100 - 100)))
+            rate = f"{pct:+d}%"
+            words, dur = await synth(rate)
         words = attach_punct(words, text)
-        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(mp3), "-ar", "44100", "-ac", "1",
-                        str(wav)], check=True)
-        mp3.unlink()
         for i, w in enumerate(words):
             w["id"] = f"w{i}"
-        voices.append({"frame": frame, "path": f"assets/voice/{frame:02d}.wav", "duration_s": probe(wav),
-                       "words": words})
-        print(f"  frame {frame:02d}: {voices[-1]['duration_s']:.2f}s · {len(words)} words")
+        voices.append({"frame": frame, "path": f"assets/voice/{frame:02d}.wav", "duration_s": dur, "words": words,
+                       **({"rate": rate, "target_s": target} if target else {})})
+        fit = f" (target {target:.2f}s, rate {rate})" if target else ""
+        print(f"  frame {frame:02d}: {dur:.2f}s · {len(words)} words{fit}")
 
     total = sum(v["duration_s"] for v in voices)
     meta = {

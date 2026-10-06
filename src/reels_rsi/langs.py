@@ -1,6 +1,6 @@
 """Languages a reel can be narrated and captioned in — one table, read by voice, captions, fonts, srt.
 
-    zh 中文 · en English · ja 日本語 · ko 한국어      (+ zh-en bilingual captions via **EN:** lines)
+    zh 中文 · en English · ja 日本語 · ko 한국어 · es Español · fr Français   (+ zh-en bilingual captions)
 
 Per language: the default Edge voice (and good alternatives), how captions are cut (`cjk` = no spaces,
 grouped by character count; `spaced` = word groups with spaces), which Noto family ships the glyphs,
@@ -23,7 +23,16 @@ LANGS = {
     "ko": {"name": "한국어", "voice": "ko-KR-InJoonNeural",
            "voices": ["ko-KR-SunHiNeural", "ko-KR-HyunsuMultilingualNeural"],
            "captions": "spaced", "font": "KR", "rate": 4.0, "unit": "syllables"},   # measured: Hangul blocks
+    "es": {"name": "Español", "voice": "es-MX-JorgeNeural",
+           "voices": ["es-MX-DaliaNeural", "es-ES-AlvaroNeural", "es-ES-ElviraNeural"],
+           "captions": "spaced", "font": "SC", "rate": 2.8, "unit": "words"},
+    "fr": {"name": "Français", "voice": "fr-FR-HenriNeural",
+           "voices": ["fr-FR-DeniseNeural", "fr-FR-EloiseNeural"],
+           "captions": "spaced", "font": "SC", "rate": 2.7, "unit": "words"},
 }
+# Female teacher voices, for reels dubbed from a female-voiced original (reels dub picks the same gender).
+FEMALE = {"zh": "zh-CN-XiaoxiaoNeural", "en": "en-US-AvaNeural", "ja": "ja-JP-NanamiNeural",
+          "ko": "ko-KR-SunHiNeural", "es": "es-MX-DaliaNeural", "fr": "fr-FR-DeniseNeural"}
 
 # Noto families on Google Fonts (OFL). SC ships with `reels setup`; JP/KR download on first use.
 FONT_FILES = {
@@ -40,15 +49,24 @@ KANA = re.compile(r"[ぁ-ゖァ-ヺ]")
 HAN = re.compile(r"[一-鿿]")
 
 
+STOPWORDS = {"en": {"the", "is", "and", "of", "to", "what", "why", "how"},
+             "es": {"el", "la", "los", "las", "que", "es", "del", "por", "qué", "cómo", "una"},
+             "fr": {"le", "la", "les", "des", "est", "une", "que", "pourquoi", "comment", "du"}}
+
+
 def detect(text):
-    """Hangul → ko · kana → ja · Han → zh · otherwise en (a few kana or Hangul in a mostly-other text count)."""
+    """Hangul → ko · kana → ja · Han → zh · Latin → en / es / fr by common words (a few kana or
+    Hangul in a mostly-other text count)."""
     if len(HANGUL.findall(text)) >= 3:
         return "ko"
     if len(KANA.findall(text)) >= 3:
         return "ja"
     if HAN.search(text):
         return "zh"
-    return "en"
+    words = re.findall(r"[a-zà-ÿœ]+", text.lower())
+    score = {k: sum(w in v for w in words) for k, v in STOPWORDS.items()}
+    best = max(score, key=score.get)
+    return best if score[best] > score["en"] else "en"
 
 
 def get(code):

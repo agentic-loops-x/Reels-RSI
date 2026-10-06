@@ -22,6 +22,7 @@ COMMANDS = {
         ("render", "reels_rsi.project", "cmd_render", "render the MP4"),
         ("cover", "reels_rsi.pipeline.cover", "main", "cover / thumbnail"),
         ("srt", "reels_rsi.pipeline.srt", "main", "export subtitles (zh / en / bilingual)"),
+        ("dub", "reels_rsi.pipeline.dub", "main", "dub a finished reel into another language (voice, captions, on-screen text)"),
         ("concat", "reels_rsi.project", "cmd_concat", "join chapter projects into one long reel"),
     ],
     "assets": [
