@@ -7,7 +7,7 @@
 One sentence in → a narrated, captioned, scored explainer reel out — rendered from code, directed by
 *any* model, and a little smarter after every reel it makes.
 
-[中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [RRBench](docs/benchmark.md) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
+[中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
 <img src="docs/assets/yuan-frames.jpg" width="880" alt="Frames from 'How the Yuan dynasty fell' — a 96-second ink-wash history reel made with Reels-RSI">
 
