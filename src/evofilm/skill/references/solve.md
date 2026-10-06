@@ -104,3 +104,13 @@ Never use HanziWriter's own animator (requestAnimationFrame → breaks seek rend
 zh-CN-XiaoxiaoNeural (warm, teacher-like) or zh-CN-YunxiNeural; `--rate +0%` for 小学, `+6%` for 高中.
 Say numbers the way a teacher does ("三十五个头"). SFX: `tick` per written step, `chime` on the
 check mark, nothing louder.
+
+## Board legibility and step focus (R1/R3/R5 on solve films)
+
+- Size every SVG to the packet canvas (`ChalkKit.board()` reads it from the frame root; your own SVGs must too).
+- Grid/figure ≥ 50 % of the frame and its size/position changes per scene (zoom on the rows being worked);
+  maths text ≥ 56 px, check ticks ≥ 90 px green, right margin ≥ 80 px, answer box fully inside.
+- Spoken step singled out: previous steps dim to 35 % opacity; the heads/feet being worked get a pulsing ring
+  and thicker, brighter strokes (new feet in a contrasting colour at ≥ 2× stroke width). Count-ups (`35×2=70`) tick up.
+- Finish writing each line ≥ 0.4 s before the next spoken step, so the viewer never reads a half-written
+  `24÷2=1` while the voice has moved on.

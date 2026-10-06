@@ -29,6 +29,19 @@ first EvoFilm film against the viral Opus-made explainers: the framework was nev
 6. **Banned** (they read as template/AI slop): purple-blue gradients, lens flares, RGB splits,
    neon outlines, glossy cards with drop shadows, bokeh, stock icons, bouncy elastic easing everywhere.
 
+### Mechanism recipes (R2) — what "shown, not labelled" means
+
+- **Travel**: the agent (ray, fire boat, Earth on its orbit, arrow) moves along its visible path over ≥ 1.5 s;
+  it is somewhere else at the start, middle and end of the frame. A path that merely draws on is not travel.
+- **Effect on the target**: every label/cause attaches by a line to a visible change on the object
+  (sick icon, flames spreading item by item, footprint patch widening). A label alone scores ≤ 3.
+- **Compare, don't list**: two quantities (42° vs 40°, steep vs glancing, 数万 vs 八十万) are drawn side by
+  side at different sizes with each part in its own colour and clearly separated — never fused.
+- **Flat → volume**: use an oblique/3D view (Three.js or skew) rather than an edge-on ellipse.
+- After the FIRST finalize open the contact sheet before chasing layout warnings; a passing `check`
+  does not mean the hero is visible. Fix missing/tiny heroes first.
+- No greyed-out/washed overlay on the final sample; keep all labels fully inside the frame (≥ 60 px margin).
+
 ## Motion rules (HyperFrames "premium motion", applied)
 
 1. Nothing fully stops — holds idle (sine drift ≤ 2%, twinkle, flowing particles).

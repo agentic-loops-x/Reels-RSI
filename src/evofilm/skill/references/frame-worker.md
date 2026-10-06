@@ -72,6 +72,18 @@ tl.fromTo("#f04-far",   { x: 0 }, { x: -20, duration: D, ease: "none" }, 0);
 tl.fromTo("#f04-mid",   { x: 0 }, { x: -50, duration: D, ease: "none" }, 0);
 ```
 
+## Hero scale and camera — checkable minimums (the #1 judge complaint: hero too small, camera static)
+
+- Hero bounding box ≥ 900×540 px on 1920×1080 (≈ half the frame), centred in the y 0–900 band; if the
+  hero is a thin line-art object, draw it bigger, not more of it. Add fill (gradient + highlight/glow),
+  not outline only. Many-item heroes (raindrops, troops, ships) use ≥ 40 items, not 5.
+- The camera move must be visible in a still: scale 1.0→≥1.25 (or a pan ≥ 150 px, or orbit ≥ 25°) over the
+  frame, with the focus point set via `transformOrigin` on the thing being explained. Across the frame the
+  camera position visibly changes, not just the labels added. `1.0→1.08` above is the *idle* minimum only.
+- Ground layer is `inset:0` (never a negative inset); element ids start with a letter (`f4-…`), never a digit.
+- Keep labels out of the hero's bbox and the ray/line paths (≥ half the font height from any line).
+- Never let the last-frame SFX run past the end: cue closing chime/impact ≥ 1.7 s before the film ends.
+
 ## Seeded PRNG (use for every "random" layout)
 
 ```js
