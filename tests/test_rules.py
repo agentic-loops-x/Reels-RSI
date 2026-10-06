@@ -54,3 +54,13 @@ def test_broken_user_rule_is_skipped_not_fatal(isolated_home, capsys):
 def test_screen_shapes_are_not_maps():
     car = "const outline = wobble([[-62, -22], [-62, -60], [52, -66], [62, -22], [-62, -22]], 2, 21);"
     assert not lint.lint_docs([doc(car)])
+
+
+def test_code_shown_on_screen_is_not_linted():
+    from types import SimpleNamespace
+    html = ('<template><div class="pane">tl.fromTo(c, { opacity: 0.9 }, { opacity: 0 }, at);</div>\n'
+            '<script>const tl = gsap.timeline({ paused: true }); window.__timelines["x"] = tl;</script></template>')
+    view = lint.code_view(html)
+    assert "opacity: 0.9" not in view and "gsap.timeline" in view and view.count("\n") == html.count("\n")
+    rule = next(r for r in lint.load_rules() if r.RULE["id"] == "visible-from-state")
+    assert rule.check(SimpleNamespace(text=view, raw=html, rel="f.html", kind="frame")) == []

@@ -9,9 +9,9 @@ One sentence in → a narrated, captioned, scored explainer reel out — rendere
 
 [中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
-<img src="docs/assets/yuan-frames.jpg" width="880" alt="Frames from 'How the Yuan dynasty fell' — a 96-second ink-wash history reel made with Reels-RSI">
+<a href="docs/assets/reels-rsi-promo.mp4"><img src="docs/assets/reels-rsi-promo.gif" width="880" alt="Reels-RSI launch reel — a 3D wall of real reels made by Reels-RSI, then 'rendered from code.'"></a>
 
-<sub>「元朝是怎么灭亡的」— 96 s ink-wash history reel: hand-sketched maps (Natural Earth + d3-geo), a reel-wide year ruler, a public-domain portrait, karaoke captions, procedural score. Made with this pipeline.</sub>
+<sub>The launch reel (57 s, <a href="docs/assets/reels-rsi-promo.mp4">watch with sound</a>) was made with Reels-RSI, and every picture in it is real output: reels the tool made, one lesson dubbed into six languages with <code>reels dub</code>, the first self-evolution round.</sub>
 
 </div>
 
@@ -26,7 +26,7 @@ One sentence in → a narrated, captioned, scored explainer reel out — rendere
 And it is **Chinese-first**: per-word TTS timing for karaoke captions, CJK line breaking, bilingual
 中英 subtitles, font subsetting so the headless renderer never shows tofu, a history mode with maps
 and period images, and a solve mode for school problems (math, physics, chemistry, 语文, stroke order).
-Reels speak **中文 · English · 日本語 · 한국어** — write the script in a language and the voice, captions,
+Reels speak **中文 · English · 日本語 · 한국어 · Español · Français** — write the script in a language and the voice, captions,
 fonts and subtitles follow (`reels voice --lang ja`; Noto JP / KR download on first use).
 
 ## Quick start
@@ -59,9 +59,17 @@ reels make "Why do we have seasons?" --harness opencode --model deepseek/deepsee
 
 | | |
 |---|---|
-| <img src="docs/assets/yuan-cover.jpg" width="420"> | **History** — 朝代速览 · 战役 · 人物 · 路线. Ink, atlas and notebook styles; d3-geo maps with historical-accuracy rules (winding order, period rivers and coasts), a reel-wide timeline overlay, Wikimedia Commons images with automatic credits. |
-| <img src="docs/assets/solve-chalk.jpg" width="420"> | **Solve** — 题目讲解 from 小学 to 高中: blackboard preset, KaTeX formulas (mhchem for chemistry), stroke-order animation (`reels hanzi`), answers verified in code before a word is scripted, and the check shown on screen. |
-| <img src="docs/assets/sky-frame.jpg" width="420"> | **Science** — 科普讲解: Three.js / Canvas / SVG, deep-space and notebook styles, procedural particles, a scored review loop against a six-point rubric. |
+| <img src="docs/assets/ex-history.jpg" width="420"> | **History** — 朝代速览 · 战役 · 人物 · 路线. Ink, atlas and notebook styles; d3-geo maps with historical-accuracy rules (winding order, period rivers and coasts), a reel-wide timeline overlay, Wikimedia Commons images with automatic credits. |
+| <img src="docs/assets/ex-solve.jpg" width="420"> | **Solve** — 题目讲解 from 小学 to 高中: blackboard preset, KaTeX formulas (mhchem for chemistry), stroke-order animation (`reels hanzi`), answers verified in code before a word is scripted, and the check shown on screen. |
+| <img src="docs/assets/ex-science.jpg" width="420"> | **Science** — 科普讲解: Three.js / Canvas / SVG, deep-space and notebook styles, procedural particles, a scored review loop against a six-point rubric. |
+
+**One reel, six languages.** `reels dub <reel> --lang ja` translates the narration and every word on
+screen, then voices each line fitted to the original timing, so the same frames stay in step. A real
+textbook geometry problem photographed in Chinese, dubbed into 中文 · English · 日本語 · 한국어 · Español · Français:
+
+<img src="docs/assets/dub-languages.jpg" width="880" alt="The same frame of a geometry lesson in Chinese, English, Japanese, Korean, Spanish and French">
+
+<img src="docs/assets/gallery.jpg" width="880" alt="Frames from reels made with Reels-RSI: the Yuan dynasty map, the Red Cliffs fire attack, the Silk Road, the seasons, the rainbow ring, 静夜思">
 
 Also: wordless story shorts, long reels in chapters (`reels concat`), "make it look like this reference" (`reels analyze`), covers and SRT export.
 
@@ -136,6 +144,7 @@ src/reels_rsi/
 ├── config.py         which model plays which role (harness / judge / retro)
 ├── agents.py         model plug-in #1: hand a whole reel to an agent CLI (claude/codex/gemini/opencode)
 ├── llm.py            model plug-in #2: one-shot calls for judge + retro, 12 providers, stdlib HTTP
+├── langs.py          the languages: voice, caption mode, Noto family, speaking rate (zh en ja ko es fr)
 ├── project.py        reel lifecycle: new → packets → finalize → render (the deterministic conductor)
 ├── pipeline/         one file per production step
 │   ├── tts.py            narration + per-word timings + real durations → storyboard + music bed
@@ -143,6 +152,7 @@ src/reels_rsi/
 │   ├── fonts.py          subset fonts to the characters the reel uses
 │   ├── music.py sfx.py   procedural score / sound effects (offline, deterministic)
 │   ├── srt.py cover.py   subtitle export · cover image
+│   ├── dub.py            one reel into another language: translate, replace on-screen text, fitted voice
 │   ├── geo.py commons.py hanzi.py overlays.py   maps · Commons images · stroke order · reel-wide overlays
 │   └── frame_times.py gen_image.py              review timestamps · optional generated illustrations
 ├── rsi/              self-improvement

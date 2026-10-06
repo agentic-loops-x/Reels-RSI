@@ -140,12 +140,27 @@ def load_rules():
     return out
 
 
+def code_view(html):
+    """The frame as code: <script>, <style>, tags and attributes kept; text shown on screen blanked
+    (newlines kept, so line numbers stay true). A reel that shows code — `tl.fromTo(c, {opacity: 0.9} …)`
+    as an example on screen — must not trip the rules meant for its own animation code."""
+    out, pos = [], 0
+    for m in re.finditer(r"<script\b.*?</script>|<style\b.*?</style>|<[^>]*>", html, re.S | re.I):
+        out.append(re.sub(r"[^\n]", " ", html[pos:m.start()]))
+        out.append(m.group(0))
+        pos = m.end()
+    out.append(re.sub(r"[^\n]", " ", html[pos:]))
+    return "".join(out)
+
+
 def doc_for(path, root=None):
     path = Path(path)
     rel = str(path.relative_to(root)) if root else path.name
     kind = ("overlay" if "/overlays/" in f"/{rel}" else "frame" if "/frames/" in f"/{rel}" else
             "kit" if path.suffix == ".js" else "composition")
-    return SimpleNamespace(path=path, rel=rel, kind=kind, text=path.read_text("utf-8", errors="replace"))
+    raw = path.read_text("utf-8", errors="replace")
+    text = code_view(raw) if path.suffix in (".html", ".htm") else raw
+    return SimpleNamespace(path=path, rel=rel, kind=kind, text=text, raw=raw)
 
 
 def project_files(project, frame=None):
@@ -238,9 +253,11 @@ RULE = {{
 
 def check(doc):
     out = []
-    # doc.text, doc.rel, doc.kind · helpers: H.calls(text, "fromTo"), H.balanced, H.split_args, H.line_of
-    for m in __import__("re").finditer(r"TODO-pattern", doc.text):
-        out.append(H.Finding(RULE["id"], RULE["severity"], doc.rel, H.line_of(doc.text, m.start()), "TODO message"))
+    # doc.raw = the whole file · doc.text = its code view (HTML text shown on screen blanked — use it for
+    # rules about the animation code) · doc.rel, doc.kind · helpers: H.calls(text, "fromTo"), H.balanced,
+    # H.split_args, H.line_of
+    for m in __import__("re").finditer(r"TODO-pattern", doc.raw):
+        out.append(H.Finding(RULE["id"], RULE["severity"], doc.rel, H.line_of(doc.raw, m.start()), "TODO message"))
     return out
 '''
 

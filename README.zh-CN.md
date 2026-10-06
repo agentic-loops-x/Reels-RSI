@@ -7,9 +7,9 @@
 
 [English](README.md) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
-<img src="docs/assets/yuan-frames.jpg" width="880" alt="用 Reels-RSI 制作的《元朝是怎么灭亡的》画面">
+<a href="docs/assets/reels-rsi-promo.mp4"><img src="docs/assets/reels-rsi-promo.gif" width="880" alt="Reels-RSI 宣传片：真实作品组成的 3D 墙"></a>
 
-<sub>《元朝是怎么灭亡的》：96 秒水墨历史片，包含手绘疆域地图、贯穿全片的年代标尺、公版肖像、逐字高亮字幕和程序化配乐。</sub>
+<sub>宣传片（57 秒，<a href="docs/assets/reels-rsi-promo.mp4">点击观看有声版</a>）本身就是用 Reels-RSI 做的，里面每个画面都是真实产出：工具做过的片子、用 <code>reels dub</code> 配成六种语言的同一节课、第一轮技能进化的结果。</sub>
 
 </div>
 
@@ -25,7 +25,7 @@
 **中文优先**：
 - 配音给出逐字时间，字幕逐字高亮。
 - 中文断句、中英双语字幕。
-- 支持 **中文、英语、日语、韩语**：脚本用哪种语言写，配音、字幕、字体和 SRT 就自动跟着切换（也可以用 `reels voice --lang ko` 指定）。
+- 支持 **中文、英语、日语、韩语、西班牙语、法语**：脚本用哪种语言写，配音、字幕、字体和 SRT 就自动跟着切换（也可以用 `reels voice --lang ko` 指定）。
 - 字体按片子里实际用到的字裁剪打包，渲染时不会出现方块字。
 - 历史模式：地图，加上历史地理校验，比如多边形绕向、古代河道。
 - **解题模式**：小学到高中的数学、物理、化学、语文讲解，用板书风格，带公式和笔顺动画；答案先用代码算过，片子里会演示验算。
@@ -57,6 +57,12 @@ reels doctor     # 检查环境，看每个角色用的是哪个模型
 | 解题 | 板书风格；KaTeX 公式（化学方程式用 mhchem）；笔顺动画（`reels hanzi`）；先验算再写稿，片中演示验算 |
 | 科普 | Three.js / Canvas / SVG；深空和手账风格；按 6 项评分表审片 |
 | 其他 | 无台词故事短片、分章节长片、「照这个视频的风格做」、封面、SRT 字幕 |
+
+**一部片子，六种语言。** `reels dub <片子> --lang ja` 会翻译旁白和画面上的每个字，并按原片每一句的时长配音，画面无需改动就能对上。下面是一道拍照的真实课本几何题，从中文配成 中文 · English · 日本語 · 한국어 · Español · Français：
+
+<img src="docs/assets/dub-languages.jpg" width="880" alt="同一节几何课的同一个画面，六种语言">
+
+<img src="docs/assets/gallery.jpg" width="880" alt="用 Reels-RSI 做的片子：元朝地图、赤壁火攻、丝绸之路、四季、彩虹、静夜思">
 
 ## 自我改进的四层
 
@@ -106,6 +112,7 @@ reels.nosync/
 │   ├── config.py             哪个模型扮演哪个角色（导演 / 评审 / 复盘），读 config.toml 和环境变量
 │   ├── agents.py             模型接入方式一：把整部片子交给一个智能体 CLI（claude / codex / gemini / opencode）
 │   ├── llm.py                模型接入方式二：一次性问答调用（评审打分、复盘提经验），支持 12 家厂商
+│   ├── langs.py              语言表：每种语言的配音、字幕切分方式、字体、语速（中英日韩西法）
 │   ├── project.py            片子的生命周期：new → packets → finalize → render（确定性步骤的总调度）
 │   │
 │   ├── pipeline/             流水线上的每道工序，一个文件一件事
@@ -114,6 +121,7 @@ reels.nosync/
 │   │   ├── fonts.py            按片中实际用字裁剪字体，渲染时不出方块字
 │   │   ├── music.py · sfx.py   程序化配乐 / 音效（离线、免费、可复现）
 │   │   ├── srt.py              导出 SRT 字幕（中 / 英 / 中英）
+│   │   ├── dub.py              把一部片子配成另一种语言：翻译、替换画面文字、按原时长配音
 │   │   ├── cover.py            封面（可取某一镜头、不带字幕）
 │   │   ├── geo.py · commons.py 历史片：Natural Earth 地图数据 / 维基共享资源图片（自动署名）
 │   │   ├── hanzi.py            汉字笔顺数据

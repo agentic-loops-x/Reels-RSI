@@ -11,10 +11,11 @@ RULE = {
 
 
 def check(doc):
-    t = re.sub(r"<!--.*?-->", "", doc.text, flags=re.S)
+    raw = getattr(doc, "raw", doc.text)          # on-screen text lives in text nodes, not in the code view
+    t = re.sub(r"<!--.*?-->", "", raw, flags=re.S)
     t = re.sub(r"/\*.*?\*/|(?<![:\"'])//[^\n]*", "", t, flags=re.S)
     m = re.search(r"[\u4e00-\u9fff]", t)
     if m and not re.search(r"@font-face[^}]*Noto (?:Sans|Serif) SC", doc.text):
-        return [H.Finding(RULE["id"], RULE["severity"], doc.rel, H.line_of(doc.text, doc.text.find(m.group(0))),
+        return [H.Finding(RULE["id"], RULE["severity"], doc.rel, H.line_of(raw, raw.find(m.group(0))),
                           "Chinese text but no Noto SC @font-face in this composition")]
     return []

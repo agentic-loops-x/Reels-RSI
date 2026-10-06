@@ -24,6 +24,11 @@
   quota stops; the skill now actually ships in the wheel (a symlink dropped it); first real evolve round
   (11–1 train, 8–4 holdout); `ChalkKit.board` sized to the canvas (found by the evolve proposer).
 
+- Reels in Japanese, Korean, Spanish and French (`langs.py`; fonts download on first use) and
+  `reels dub`: one reel into another language — narration, captions and on-screen text, each line voiced
+  to the original timing. Rules now lint a code view of each frame (code shown on screen as content no
+  longer trips them). A launch reel made with Reels-RSI heads the README.
+
 ## 0.1.0 — 2026-10-05
 
 First public release.
