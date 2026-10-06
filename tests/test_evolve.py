@@ -37,3 +37,14 @@ def test_full_round_with_a_quota_pause(monkeypatch, isolated_home):
     assert result["accepted"] and result["votes"] == [8, 4] and result["holdout_votes"] == [8, 4]
     report = (evolve.evolve_root() / eid / "report.md").read_text()
     assert "ACCEPTED" in report and "labels ≥ 30 px" in report and "votes base : cand" in report
+
+
+def test_position_robust_verdict():
+    # a judge that always picks the second-shown reel: 2-2 raw, and a tie — not a win for either side
+    p = {"base": 2, "cand": 2, "picks": ["B", "A", "B", "A"], "first": ["A", "B", "A", "B"]}
+    assert evolve.robust(p) == "tie"
+    # the candidate also wins when shown first → candidate
+    p = {"base": 1, "cand": 3, "picks": ["B", "B", "B", "A"], "first": ["A", "B", "A", "B"]}
+    assert evolve.robust(p) == "cand"
+    # no positions recorded (old state files) → fall back to the count
+    assert evolve.robust({"base": 1, "cand": 2}) == "cand"

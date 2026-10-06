@@ -65,18 +65,41 @@ def require_complete(summary, what):
                  "its mean is not comparable. Fix the cause (quota, login, network) and rerun.")
 
 
+def robust(p):
+    """Position-robust topic verdict. Vision judges prefer the reel shown second (our reliability study:
+    sonnet 81 % of votes, saturating), so raw vote counts reward whoever took more second slots and a
+    balanced count still hands each side free votes. Judge each side only on the votes where it was shown
+    FIRST — its disadvantaged slot: the side with the higher first-slot win rate wins the topic, equal
+    rates are a tie. Returns "cand", "base" or "tie"; without per-vote positions, falls back to the count."""
+    picks, first = p.get("picks"), p.get("first")
+    if not picks or not first or len(picks) != len(first):
+        return "cand" if p["cand"] > p["base"] else "base" if p["base"] > p["cand"] else "tie"
+    cf = [pk == "B" for pk, f in zip(picks, first) if f == "B"]      # candidate shown first: did it win?
+    bf = [pk == "A" for pk, f in zip(picks, first) if f == "A"]      # baseline shown first: did it win?
+    rc = sum(cf) / len(cf) if cf else 0.0
+    rb = sum(bf) / len(bf) if bf else 0.0
+    return "cand" if rc > rb else "base" if rb > rc else "tie"
+
+
 def verdict(base, cand, pairs):
     b = {r["topic"]: r for r in base["rows"]}
     worst = min((r["composite"] - b[r["topic"]]["composite"] for r in cand["rows"] if r["topic"] in b), default=0)
     renders = (sum(1 for r in cand["rows"] if r.get("rendered")), sum(1 for r in base["rows"] if r.get("rendered")))
     cv, bv = votes(pairs)
-    checks = {f"pairwise: candidate wins more than half the votes ({cv}–{bv})": cv > bv, "no topic −10": worst > -10,
-              "renders ≥": renders[0] >= renders[1]}
+    w = [robust(p) for p in pairs.values()]
+    wins, losses, ties = w.count("cand"), w.count("base"), w.count("tie")
+    checks = {f"position-robust topics: candidate wins more than it loses ({wins} won, {losses} lost, {ties} tied; raw votes {cv}–{bv})": wins > losses,
+              "no topic −10": worst > -10, "renders ≥": renders[0] >= renders[1]}
     return all(checks.values()), checks, worst
 
 
 def votes(pairs):
     return sum(p["cand"] for p in pairs.values()), sum(p["base"] for p in pairs.values())
+
+
+def robust_tally(pairs):
+    w = [robust(p) for p in pairs.values()]
+    return w.count("cand"), w.count("base"), w.count("tie")
 
 
 def pairwise(root, st, tag, base, cand, n=4):
@@ -100,7 +123,8 @@ def pairwise(root, st, tag, base, cand, n=4):
             except llm.LLMError as e:
                 save_state(root, st)
                 stopped(root, f"pairwise judging ({str(e)[:120]})")
-            cache[t] = {"base": w["A"], "cand": w["B"],
+            cache[t] = {"base": w["A"], "cand": w["B"], "first": w.get("first", []),
+                        "picks": [x.split(":")[0] for x in w["why"]],
                         "why": [x.replace("A:", "baseline:", 1).replace("B:", "candidate:", 1) for x in w["why"]]}
         img = score.side_by_side(pb, pc, root / "compare" / f"{tag}-{t}.jpg")
         cache[t]["image"] = f"compare/{tag}-{t}.jpg" if img else None
@@ -226,8 +250,9 @@ def run_round(root, st):
         hold_pairs = pairwise(root, st, "holdout", hb, hc)
         hold = (hb["mean"], hc["mean"])
         hv = votes(hold_pairs)
-        checks[f"holdout: candidate wins ≥ half the votes ({hv[0]}–{hv[1]})"] = hv[0] >= hv[1]
-        ok = ok and hv[0] >= hv[1]
+        hw, hl, ht = robust_tally(hold_pairs)
+        checks[f"holdout: position-robust topics, candidate wins ≥ loses ({hw} won, {hl} lost, {ht} tied; raw votes {hv[0]}–{hv[1]})"] = hw >= hl
+        ok = ok and hw >= hl
     eid = st["id"]
     changes = (cand / "CHANGES.md").read_text("utf-8") if (cand / "CHANGES.md").exists() else "(no CHANGES.md)"
     bugs = (cand / "TOOL-BUGS.md").read_text("utf-8").strip() if (cand / "TOOL-BUGS.md").exists() else ""
