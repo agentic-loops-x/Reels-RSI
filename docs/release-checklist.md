@@ -37,7 +37,7 @@ For each: `reels voice` (real TTS run), `packets`, `finalize`, `render`, `cover`
 - [ ] judge on a non-Anthropic provider (e.g. `qwen:qwen-vl-max` or `gemini:…`)
 
 ## E. Publish
-- [ ] replace `OWNER` in README.md, README.zh-CN.md, install.sh, pyproject.toml URL
+- [x] repository URLs point at github.com/agentic-loops-x/Reels-RSI
 - [ ] README "Status" table updated with what B–D proved
 - [ ] demo video (the Yuan film) uploaded somewhere linkable; GIF/thumbnail in README
 - [ ] tag v0.1.0, optional PyPI publish (`uv build && uv publish`)
