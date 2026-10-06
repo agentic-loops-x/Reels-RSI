@@ -1,14 +1,14 @@
-EvoFilm
-Copyright 2026 EvoFilm contributors
+Reels-RSI
+Copyright 2026 Reels-RSI contributors
 Licensed under the Apache License, Version 2.0 (see LICENSE).
 
 This product includes software from HyperFrames (https://github.com/heygen-com/hyperframes),
 Copyright HeyGen, licensed under the Apache License, Version 2.0:
-  - src/evofilm/vendor/hyperframes/  — workflow scripts from the faceless-explainer skill
-    (assemble-index, build-frame, captions, transitions and lib/), vendored unmodified; EvoFilm
-    patches captions.mjs at run time (src/evofilm/pipeline/captions_cjk.py) and ports the
-    sync-durations step to Python (src/evofilm/pipeline/tts.py).
-  - src/evofilm/presets/*/caption-skin.html — derived from the HyperFrames biennale-yellow
+  - src/reels_rsi/vendor/hyperframes/  — workflow scripts from the faceless-explainer skill
+    (assemble-index, build-frame, captions, transitions and lib/), vendored unmodified; Reels-RSI
+    patches captions.mjs at run time (src/reels_rsi/pipeline/captions_cjk.py) and ports the
+    sync-durations step to Python (src/reels_rsi/pipeline/tts.py).
+  - src/reels_rsi/presets/*/caption-skin.html — derived from the HyperFrames biennale-yellow
     caption skin (modified: CJK tuning and palettes).
 
 Third-party material fetched at run time, not distributed in this repository:

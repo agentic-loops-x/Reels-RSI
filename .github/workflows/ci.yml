@@ -11,5 +11,5 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y ffmpeg libsndfile1
       - run: uv venv --python 3.12 && uv pip install -e ".[dev]"
       - run: uv run pytest -q
-      - run: uv run evofilm rules test
-      - run: cd src/evofilm/vendor/hyperframes && node --test
+      - run: uv run reels rules test
+      - run: cd src/reels_rsi/vendor/hyperframes && node --test

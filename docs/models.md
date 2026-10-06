@@ -1,12 +1,12 @@
 # Choosing models
 
-EvoFilm has three roles. Each can be a different model.
+Reels-RSI has three roles. Each can be a different model.
 
 | Role | Does | Needs | Set with |
 |---|---|---|---|
-| **director** | research, script, storyboard, frame code, review fixes | strong coding + tool use + some vision | the agent you run it in, or `evofilm config set agent.harness/agent.model` for headless `make`/`bench` |
-| **judge** | scores frames R1–R6 from samples | vision | `evofilm config set roles.judge provider:model` |
-| **retro** | turns a film's history into lessons | good reasoning, text only | `evofilm config set roles.retro provider:model` |
+| **director** | research, script, storyboard, frame code, review fixes | strong coding + tool use + some vision | the agent you run it in, or `reels config set agent.harness/agent.model` for headless `make`/`bench` |
+| **judge** | scores frames R1–R6 from samples | vision | `reels config set roles.judge provider:model` |
+| **retro** | turns a film's history into lessons | good reasoning, text only | `reels config set roles.retro provider:model` |
 
 ## Harnesses (director)
 
@@ -22,7 +22,7 @@ directs and reviews; frames are built in parallel by cheaper sub-agents (in Clau
 can run on a different model).
 
 Expect weaker models to need more review rounds — the rules catch the mechanical mistakes, and
-`evofilm bench` tells you how much quality you trade for cost. Please share bench results.
+`reels bench` tells you how much quality you trade for cost. Please share bench results.
 
 ## Providers (judge / retro)
 
@@ -32,7 +32,7 @@ Expect weaker models to need more review rounds — the rules catch the mechanic
 Custom endpoints:
 
 ```toml
-# ~/.evofilm/config.toml
+# ~/.reels/config.toml
 [providers.mylab]
 base_url = "https://llm.mylab.cn/v1"
 api_key_env = "MYLAB_KEY"

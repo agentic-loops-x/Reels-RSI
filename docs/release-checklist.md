@@ -3,13 +3,13 @@
 Tick every box on a clean setup before the first public push. ✅ = already verified during development.
 
 ## A. Install from scratch
-- [x] On a machine/user without ~/.evofilm: `uv tool install git+<repo>` (or `uv tool install -e .` from a clone)
-- [x] `evofilm setup` downloads fonts from Google Fonts (dev run copied them locally — the download path is unverified)
-- [ ] `evofilm install` → skill appears in Claude Code (`/evofilm` shows up)
-- [x] `evofilm doctor` all green
+- [x] On a machine/user without ~/.reels: `uv tool install git+<repo>` (or `uv tool install -e .` from a clone)
+- [x] `reels setup` downloads fonts from Google Fonts (dev run copied them locally — the download path is unverified)
+- [ ] `reels install` → skill appears in Claude Code (`/reels` shows up)
+- [x] `reels doctor` all green
 - [ ] CI passes on GitHub (Linux) — never run yet
 
-## B. One film per mode, made from zero inside an agent (`/evofilm …`)
+## B. One film per mode, made from zero inside an agent (`/reels …`)
 | Film | Checks |
 |---|---|
 | [ ] 科普 60 s, 16:9, deepspace | plan gate → look-dev gate → finalize clean → render → cover → SRT |
@@ -18,19 +18,19 @@ Tick every box on a clean setup before the first public push. ✅ = already veri
 | [~] English 30 s | English voice, word-gapped captions — voice → captions → SRT smoke-tested (placeholder frames) |
 | [~] bilingual 中英 | `**EN:**` lines, zh-en SRT — smoke-tested (placeholder frames), captions show EN under zh |
 
-For each: `evofilm voice` (real TTS run), `packets`, `finalize`, `render`, `cover` all via EvoFilm
-(✅ finalize/new/fonts/hanzi verified; voice, packets, render, cover not yet run through EvoFilm).
+For each: `reels voice` (real TTS run), `packets`, `finalize`, `render`, `cover` all via Reels-RSI
+(✅ finalize/new/fonts/hanzi verified; voice, packets, render, cover not yet run through Reels-RSI).
 
 ## C. Self-improvement loop
-- [x] Log in the standalone CLI (`claude` → /login) or set an API key; `evofilm doctor` now checks the login (the desktop app's login does not count)
-- [x] `evofilm score <film>` returns judge scores — fixed: portrait sheets were downscaled to ~200 px per frame; solve films get an eye-guiding R3. Judge pixel/proportion claims remain unreliable (human gate)
-- [x] `evofilm feedback` + `evofilm retro <film>` — model retro proposed 5 lessons on the textbook film (1 false, from a judge misreading → retro prompt now weighs evidence)
-- [x] accept doc lessons → digest appears in `.evofilm/packets/_role.md` (8 accepted)
+- [x] Log in the standalone CLI (`claude` → /login) or set an API key; `reels doctor` now checks the login (the desktop app's login does not count)
+- [x] `reels score <film>` returns judge scores — fixed: portrait sheets were downscaled to ~200 px per frame; solve films get an eye-guiding R3. Judge pixel/proportion claims remain unreliable (human gate)
+- [x] `reels feedback` + `reels retro <film>` — model retro proposed 5 lessons on the textbook film (1 false, from a judge misreading → retro prompt now weighs evidence)
+- [x] accept doc lessons → digest appears in `.reels/packets/_role.md` (8 accepted)
 - [x] lesson compiled into a rule (`visible-from-state`) — fires on 3 real bugs in older films
-- [x] `evofilm bench run --topics sci-rainbow --yes` — 1st try hit the account usage limit (now recorded as infra-error); 2nd try with `--model sonnet`: 28.5 s film, 0 check errors, composite 76.8 (scored via `bench rescore` after a sheet-grouping crash, fixed)
-- [x] `evofilm bench report` shows it
-- [x] `evofilm evolve --dry-run`, then one real round — accepted (pairwise 11–1 train, 8–4 holdout), paused once by quota and resumed; not applied (human gate)
-- [ ] `evofilm make "…" --yes` headless film completes
+- [x] `reels bench run --topics sci-rainbow --yes` — 1st try hit the account usage limit (now recorded as infra-error); 2nd try with `--model sonnet`: 28.5 s film, 0 check errors, composite 76.8 (scored via `bench rescore` after a sheet-grouping crash, fixed)
+- [x] `reels bench report` shows it
+- [x] `reels evolve --dry-run`, then one real round — accepted (pairwise 11–1 train, 8–4 holdout), paused once by quota and resumed; not applied (human gate)
+- [ ] `reels make "…" --yes` headless film completes
 
 ## D. Other models (optional for v0.1, but state the result in the README)
 - [ ] one film or bench topic with a non-Claude harness (OpenCode + DeepSeek/Qwen, or Codex)

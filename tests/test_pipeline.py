@@ -1,8 +1,8 @@
 import json
 
-from evofilm import project
-from evofilm.pipeline import music, srt, tts
-from evofilm.rsi import retro, runlog, score
+from reels_rsi import project
+from reels_rsi.pipeline import music, srt, tts
+from reels_rsi.rsi import retro, runlog, score
 
 STORYBOARD = """---
 format: 9:16
@@ -90,7 +90,7 @@ def test_require_project_fails_fast(tmp_path):
     import pytest
     with pytest.raises(SystemExit) as e:
         project.require_project(tmp_path)
-    assert "not an EvoFilm project" in str(e.value)
+    assert "not an Reels-RSI project" in str(e.value)
     assert not any(tmp_path.iterdir())          # nothing created
 
 
@@ -126,13 +126,13 @@ def test_packets_list_kit_and_approved_frames(tmp_path):
     (p / "hyperframes.json").write_text("{}")
     (p / "compositions/frames/01-hook.html").write_text("<template>real</template>")
     project.cmd_packets(["--project", str(p)])
-    role = (p / ".evofilm/packets/_role.md").read_text()
+    role = (p / ".reels/packets/_role.md").read_text()
     assert "film-kit.js" in role and "01-hook.html" in role and "02-flood.html" not in role
     assert "y > 1600" in role                       # 9:16 caption band from the canvas
 
 
 def test_judge_layout_and_mode():
-    from evofilm.rsi import score
+    from reels_rsi.rsi import score
     assert score.layout_for(1080, 1920)[1] == 2 and score.layout_for(1920, 1080)[1] == 4
     sb = "- route: solve/geometry · svg\n- route: solve/formula\n- route: kinetic-type\n"
     assert score.film_mode(sb) == "solve"
@@ -141,7 +141,7 @@ def test_judge_layout_and_mode():
 
 
 def test_bench_infra_errors_are_not_scores():
-    from evofilm.rsi import bench
+    from reels_rsi.rsi import bench
     assert bench.infra_error("You've hit your session limit · resets 10pm")
     assert bench.infra_error("Failed to authenticate: OAuth session expired")
     assert bench.infra_error("frame 03 failed lint: contrast") is None
@@ -150,8 +150,21 @@ def test_bench_infra_errors_are_not_scores():
 
 
 def test_judge_sheet_grouping():
-    from evofilm.rsi import score
+    from reels_rsi.rsi import score
     assert [len(g) for g in score.group_rows(list(range(5)), 4)] == [5]
     assert [len(g) for g in score.group_rows(list(range(9)), 2)] == [2, 2, 2, 3]
     assert [len(g) for g in score.group_rows(list(range(1)), 4)] == [1]
     assert [len(g) for g in score.group_rows(list(range(8)), 4)] == [4, 4]
+
+
+def test_films_from_before_the_rename_are_migrated(tmp_path):
+    from reels_rsi.rsi import runlog
+    from reels_rsi.project import is_placeholder
+    old = tmp_path / ".evofilm"
+    old.mkdir()
+    (old / "runs.jsonl").write_text('{"event": "finalize"}\n')
+    assert runlog.state(tmp_path) == tmp_path / ".reels" and not old.exists()
+    assert runlog.read(tmp_path)[0]["event"] == "finalize"
+    ph = tmp_path / "f.html"
+    ph.write_text("<!-- evofilm:placeholder -->\n<template></template>")
+    assert is_placeholder(ph)

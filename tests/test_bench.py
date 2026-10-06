@@ -1,4 +1,4 @@
-from evofilm.rsi import bench
+from reels_rsi.rsi import bench
 
 
 def test_quota_stop_then_resume(monkeypatch, tmp_path):

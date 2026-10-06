@@ -1,0 +1,67 @@
+# Reels-RSI Bench — the fixed topics every skill version and every model is scored on.
+# Short films (30 s) keep a full run affordable. `train` guides evolution; `holdout` is only used
+# to confirm a change generalizes — evolve never sees holdout notes.
+
+[[topic]]
+id = "sci-rainbow"
+split = "train"
+genre = "science"
+prompt = "为什么彩虹是弯的？中文科普讲解"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "hist-chibi"
+split = "train"
+genre = "history"
+prompt = "赤壁之战为什么曹操会输？中文历史简介（含地图）"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "solve-chicken-rabbit"
+split = "train"
+genre = "solve"
+prompt = "小学奥数：鸡兔同笼，头 35 个，脚 94 只，鸡兔各几只？用画图法讲解，答案必须正确"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "en-seasons"
+split = "train"
+genre = "science"
+prompt = "Why do we have seasons? A short English explainer"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "sci-tides"
+split = "holdout"
+genre = "science"
+prompt = "潮汐为什么一天两次？中文科普"
+length = 30
+aspect = "9:16"
+
+[[topic]]
+id = "hist-silk-road"
+split = "holdout"
+genre = "history"
+prompt = "丝绸之路是怎么走的？路线动画讲解"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "solve-buoyancy"
+split = "holdout"
+genre = "solve"
+prompt = "初中物理：铁比水重，为什么铁船不会沉？讲清浮力"
+length = 30
+aspect = "16:9"
+
+[[topic]]
+id = "poem-jingyesi"
+split = "holdout"
+genre = "solve"
+prompt = "小学语文：《静夜思》逐句讲解，水墨风"
+length = 30
+aspect = "16:9"

@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 
 import pytest
 
-from evofilm import llm
+from reels_rsi import llm
 
 SEEN = []
 
@@ -67,7 +67,7 @@ def test_openai_compatible_with_image(server, monkeypatch, tmp_path):
 
 def test_anthropic_native(server, monkeypatch, tmp_path):
     monkeypatch.setenv("ANTHROPIC_API_KEY", "ak-test")
-    monkeypatch.setenv("EVOFILM_ANTHROPIC_BASE_URL", server)
+    monkeypatch.setenv("REELS_ANTHROPIC_BASE_URL", server)
     assert llm.complete_json("anthropic:claude-test", "hi", images=[png(tmp_path)]) == {"ok": True, "n": 3}
     path, headers, body = SEEN[-1]
     assert headers["x-api-key"] == "ak-test" and body["messages"][0]["content"][0]["type"] == "image"

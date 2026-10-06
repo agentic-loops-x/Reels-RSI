@@ -1,6 +1,6 @@
 import pytest
 
-from evofilm.rsi import lessons, lint
+from reels_rsi.rsi import lessons, lint
 
 
 def test_add_dedupe_accept_digest():

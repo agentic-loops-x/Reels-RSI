@@ -2,14 +2,14 @@ import json
 
 import pytest
 
-from evofilm.rsi import bench, evolve, score
+from reels_rsi.rsi import bench, evolve, score
 
 
 def test_full_round_with_a_quota_pause(monkeypatch, isolated_home):
     state = {"quota_once": True}
 
     def fake_run(harness, model, prompt, cwd, log_path=None, env=None, timeout=0):
-        if "improving the EvoFilm skill" in prompt:            # the proposer edits the candidate copy
+        if "improving the Reels-RSI skill" in prompt:            # the proposer edits the candidate copy
             cand = cwd / "skill"
             (cand / "SKILL.md").write_text((cand / "SKILL.md").read_text() + "\nNew: label at least 30 px.\n")
             (cand / "CHANGES.md").write_text("- labels ≥ 30 px (judge: tiny labels)\n")

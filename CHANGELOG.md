@@ -2,7 +2,7 @@
 
 ## Unreleased — release testing
 
-- Renamed TakeLoop → EvoFilm.
+- Renamed TakeLoop → EvoFilm → Reels-RSI (package `reels-rsi`, command `reels`, skill `/reels`, state in `~/.reels`; an existing `~/.evofilm` and per-film `.evofilm/` are moved automatically).
 - From two from-scratch films (相遇问题, a textbook 燕尾模型 problem from a photo): 13 tool fixes —
   TTS retries, look-dev placeholders, project guard, non-fatal rules, rule false positive fixed,
   chalk caption contrast, caption band per canvas, packets list the shared kit + approved frames,
@@ -15,7 +15,7 @@
   (portrait frames were ~200 px), canvas + caption band in the judge prompt, solve-mode R3; retro prompt
   weighs evidence and refuses judge-sampling lessons; bench records quota/login failures as unscored and
   evolve refuses incomplete runs; readable SRT cues; `config set` keeps `[providers.*]`; agents get
-  `evofilm` on PATH; README code-structure sections.
+  `reels` on PATH; README code-structure sections.
 - Round 4: first headless benchmark film (sonnet, 28.5 s, composite 76.8); bench writes its summary as it
   goes, survives scoring crashes, `bench rescore`; lessons take `when` conditions (preset / aspect /
   mode) and packets get only the lessons that apply to the film; `lessons digest --project`.
