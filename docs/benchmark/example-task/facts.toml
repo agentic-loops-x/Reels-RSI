@@ -1,0 +1,18 @@
+# Verified facts. Narration is matched after Chinese numerals are normalized to digits (三十五 → 35).
+sources = ["人教版五年级上册 数学广角"]
+
+[answer]
+chickens = 23
+rabbits = 12
+
+[required]                      # id = regex on the normalized transcript
+assume_all_chickens = '70'                                   # 35 × 2 = 70 feet if all were chickens
+feet_gap = '24'                                              # 94 − 70
+per_swap = '(24.{0,8}(除以|÷|/)\s*2)|((多|补)(两|2)只)'        # each swap adds 2 feet
+rabbits = '12'
+chickens = '23'
+check = '(代回去|验算|检查|核对).{0,20}94'
+
+[forbidden]                     # misconceptions or off-audience methods — any hit fails
+equation = '(设\s*[xXyY])|(方程)|([xX]\s*[+=])'
+wrong_count = '(鸡|兔)[^。，,\s]{0,4}?(1[013-9]|2[0-24-9])只'   # a count other than 12 / 23 stated as a result

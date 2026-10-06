@@ -7,7 +7,7 @@
 One sentence in → a narrated, captioned, scored explainer film out — rendered from code, directed by
 *any* model, and a little smarter after every film it makes.
 
-[中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
+[中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [RRBench](docs/benchmark.md) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
 <img src="docs/assets/yuan-frames.jpg" width="880" alt="Frames from 'How the Yuan dynasty fell' — a 96-second ink-wash history film made with Reels-RSI">
 

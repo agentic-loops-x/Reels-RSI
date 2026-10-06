@@ -1,0 +1,14 @@
+# RRBench example task (see docs/benchmark.md §3). Format: Terminal-Bench-style — instruction + tests
+# on the final artifact + oracle + mutants. Kept at 16:9 / 30 s so it runs on Reels-RSI's bench films.
+id = "solve-chicken-rabbit"
+genre = "solve"
+language = "zh"
+aspect = "16:9"
+length = [25, 45]
+audience = "小学五年级，会乘除法，没学过方程"
+difficulty = "easy"
+inputs = []
+time_limit_min = 45
+instruction = """
+小学奥数：鸡兔同笼，头 35 个，脚 94 只，鸡兔各几只？用画图法讲解，答案必须正确。
+"""

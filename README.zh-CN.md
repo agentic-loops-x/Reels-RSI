@@ -5,7 +5,7 @@
 一句话进去，一部带配音、字幕、配乐的讲解视频出来。画面全部由代码渲染，任何模型都能当导演，
 而且**每拍一部，它就变强一点**。
 
-[English](README.md) · [自我改进原理](docs/rsi.md) · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
+[English](README.md) · [自我改进原理](docs/rsi.md) · [评测基准 RRBench](docs/benchmark.zh-CN.md) · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
 <img src="docs/assets/yuan-frames.jpg" width="880" alt="用 Reels-RSI 制作的《元朝是怎么灭亡的》画面">
 
