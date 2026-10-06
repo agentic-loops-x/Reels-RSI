@@ -58,8 +58,9 @@ none in the 117 authored under it; with every rule switched off, eight further r
 violation either---for this director the rules are an audit and a backstop (three firings in 58
 passes), not a guard that is often needed. The playbook rewrite that blind judges preferred 11--1 on
 training topics and 8--4 on held-out topics left the absolute rubric unchanged; re-judging showed the
-rubric stable but insensitive, the pairwise verdict repeatable but inflated by a position bias in our
-own vote design (judges picked the second-shown reel 62--81\% of the time), and the preferred scripts
+rubric stable but insensitive, and the pairwise verdict repeatable but made of a position bias in our
+own vote design (judges picked the second-shown reel 62--81\% of the time; shown first, the candidate
+won 8 of 12 training votes, $p=0.39$), and the preferred scripts
 dropping thirteen baseline facts across six of eight topics. We document four failure modes of the
 preference signal, which check caught each, and the fixes. The system, rules, lessons, data and
 evolve report are public.
@@ -111,8 +112,8 @@ another language. The contributions are what the program view makes possible on 
   held-out topics while the absolute rubric did not move. Re-judging 170 times shows the rubric stable
   (within-reel SD 1.3) but insensitive, the pairwise verdict repeatable but leaning on a position bias:
   three judge models pick the second-shown reel 62--81\% of the time, and our own three-vote
-  alternation gave the candidate the extra second slot. Position-balanced, the round still passes, but
-  three of eight topics are ties. Reading all sixteen scripts shows the preferred reels dropping
+  alternation gave the candidate the extra second slot. Judged from the disadvantaged slot the round still passes, but three of eight topics are ties and
+  the remaining margin is not significant ($p=0.39$ on train). Reading all sixteen scripts shows the preferred reels dropping
   thirteen baseline facts over six topics while adding six. We report four failure modes of the
   signal---a judge misreading that became a proposed lesson, a proposer writing for the sampling
   schedule, craft bought with facts, and our own vote design---and the check that caught each.
@@ -460,7 +461,7 @@ Failure & What the signal produced & Gate that caught it \\
 (a) Judge misreading & a proposed lesson asserting a non-existent render bug & human \texttt{accept}; then sample sheets sized per aspect, evidence ranked \\
 (b) Writing for the sampler & a playbook edit about ``the 30/60/92\,\% samples'' & human \texttt{apply}; then the proposer prompt forbids sampling-directed text \\
 (c) Craft bought with facts & preferred reels whose narration drops 13 baseline facts over 6 topics & none in the loop; found by reading the scripts \\
-(d) Position bias in our own vote design & a 3-vote alternation that gave the candidate the second slot twice; judges pick the second-shown reel 62--81\,\% of the time & the reliability study (\S\ref{sec:reliability}); votes now position-balanced \\
+(d) Position bias in our own vote design & a 3-vote alternation that gave the candidate the second slot twice; judges pick the second-shown reel 62--81\,\% of the time ($p<10^{-5}$ for the round's judge) & the reliability study (\S\ref{sec:reliability}); the gate now judges each side from its disadvantaged slot \\
 \bottomrule
 \end{tabular}
 \caption{Four failure modes of the judge signal observed around one round, and where each stopped.}
@@ -494,8 +495,9 @@ per topic can, which is what the companion benchmark adds and why we keep it sep
 
 \paragraph{(d) Our own vote design leaned on the judge's position bias.} \S\ref{sec:reliability}: the
 judge picks the second-shown reel four times in five, and the three-vote alternation handed the
-candidate that slot twice per topic. The verdict survives position balancing, but three topics
-it reported as wins were ties. Caught by re-running the judging; fixed in the harness.
+candidate that slot twice per topic. Judged only from the disadvantaged slot, three of the eight topics it reported as wins are ties and
+the remaining preference is not significant at this size. Caught by re-running the judging; the gate
+now uses the position-robust rule.
 
 \begin{table}[t]
 \centering\small
@@ -567,7 +569,8 @@ imprecise rules. It cost a two-line change to the rule's gate and a new must-pas
 every rule still passes its examples.
 
 \paragraph{Lessons left no trace the judge could see, and a small one the renderer could.} With rules
-on, the reels made with lessons and without split the pairwise votes 8--8; with rules off, 7--9. The
+on, the reels made with lessons and without split the pairwise votes 8--8; with rules off, 7--9
+(pooled 15--17, $p=0.86$). The
 rubric means are within two points. The only consistent difference is at the last finalize pass: both
 lesson-less conditions ended with three renderer warnings outstanding, both conditions with lessons
 with none, which is the kind of thing a brief about caption bands and label placement would affect.
@@ -575,7 +578,7 @@ We read this as: fifteen lessons, most of them about chalk-board geometry reels,
 watching four science and history stills; a lesson earns its place on the reels it was learned from.
 
 \paragraph{Rules on were judged slightly worse.} Both rules-on conditions lost their pairwise
-comparison to the rules-off twin 5--11. With four topics we do not read a mechanism into it---no
+comparison to the rules-off twin 5--11 (pooled 10--22, $p=0.05$). With four topics we do not read a mechanism into it---no
 rule fired in any of these sixteen reels, so the switch changed nothing the agent saw except the
 absence of a check step---and with the second-shown reel still picked 58\% of the time even under the
 balanced design, 5--11 over four topics is within what position alone produces. It is, at least, not
@@ -603,13 +606,19 @@ judge gave the candidate 8 of 8 topics every time, with 10--11 of 12 training vo
 held-out votes. But the breakdown by position (Table~\ref{tab:position}) shows that the judge picked
 the candidate 48 of 48 times when it was shown \emph{second} and 14 of 24 times when it was shown
 \emph{first}; over all votes it picked the second-shown reel 81\% of the time, and the two other judges
-67\% and 62\%. Our vote design---three votes, order alternating from a fixed start---gave the candidate
-the second slot twice per topic, which inflated its margin. Position-balanced, the candidate's win rate
-is 0.83 on the training topics and 0.75 on the held-out ones (an expected 10 and 9 of 12 votes under a
-balanced four-vote design): the round still passes its gate, but three of the eight topics (rainbow,
-buoyancy, the poem) are ties that position alone resolved. The harness now uses an even number of votes
-with each order shown equally often, and the gate requires strictly more than half.
-
+67\% and 62\%. Our vote design---three votes, order alternating from a fixed start---gave the candidate the second
+slot twice per topic, which inflated its margin. Because the second-slot preference saturates (every
+second-shown candidate won), the informative votes are the ones where the candidate was shown first:
+8 of 12 on the training topics (two-sided binomial $p=0.39$) and 6 of 12 on the held-out ones
+($p=1.0$), against 24 of 24 in the second slot ($p<10^{-6}$). The absolute rubric agrees: averaged
+over re-scores and the eight topics the candidate is $+0.8$ points ahead, sign-flip permutation
+$p=0.70$. There is no statistically supported evidence that the rewrite is better; the round's 11--1
+was the slot. Balancing the vote count is not enough when the bias saturates---it still hands each side
+two free votes per topic---so the harness now judges each side only on the votes where it was shown
+first, its disadvantaged slot: the side with the higher first-slot win rate takes the topic, equal rates
+tie. Under that rule the round is three topics won and one tied on train, two won and two tied on
+holdout: it still passes its gate, with the uncertainty now visible in the ties rather than hidden in a
+vote total.
 \begin{table}[t]
 \centering\small
 \begin{tabular}{lccc|cc}
@@ -693,9 +702,9 @@ proposer cannot edit, and a person at the end.
 model family (Claude) as director, judge and retrospective model; the three judges differ in size, not
 provenance. \emph{No human preference study.} We cannot say whether any judge's taste matches viewers';
 one author's eye agrees with the dissenting judges on one topic, which is an anecdote. \emph{Position
-bias remains.} Balancing the order cancels the second-slot preference in expectation but does not
-remove it: under the balanced design the second-shown reel was still picked 58\% of the time, so
-small margins in pairwise verdicts carry little information. \emph{Null results at $n=4$.} The
+bias remains.} Judging from the disadvantaged slot discards the saturated votes but halves the sample;
+under the balanced ablation design the second-shown reel was still picked 58\% of the time, so small
+margins in pairwise verdicts carry little information. \emph{Null results at $n=4$.} The
 ablation's ``lessons change nothing the judge sees'' and ``rules on are judged slightly worse'' are
 within what position alone produces; they rule out large effects, not small ones. \emph{What rules can
 see.} A rule checks program text. It cannot know that a topic requires naming an alliance or stating
