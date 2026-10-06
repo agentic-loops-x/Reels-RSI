@@ -2,14 +2,14 @@
 
 You build ONE frame: `compositions/frames/<frame_id>.html`. Read, in order: your role file
 (`.reels/packets/_role.md`), your packet (`.reels/packets/<frame_id>.md` — storyboard block,
-film-wide direction and the spoken word times), the project's `frame.md`, then this file and
+reel-wide direction and the spoken word times), the project's `frame.md`, then this file and
 `quality-bar.md` (next to this file). Your packet's `route:` names the drawing technique — open the
 matching recipe: `styles.md` (named looks), `history.md` (maps, period images), `solve.md` (worked
 problems, formulas, strokes), `techniques.md` (simulations, rigs, infinite zoom, footage).
 HyperFrames' own composition contract (`npx hyperframes docs`) applies; where this file is stricter, it wins.
 
 When you are done: `reels lint --project <project> --frame <frame_id>` must report no errors —
-it checks the non-negotiables below plus every rule learned from past films.
+it checks the non-negotiables below plus every rule learned from past reels.
 
 ## Non-negotiables (each one broke a real Reels-RSI render or lint)
 
@@ -45,11 +45,11 @@ it checks the non-negotiables below plus every rule learned from past films.
     animate; set dasharray/offset only in the tween (the attribute made a route render fully drawn).
 14. **Local data/images** — map data via `<script src="assets/geo/…js">` (classic, before your
     script); images only from `public/` (Commons downloads are already there and credited).
-15. **Film-wide elements are not yours** — a timeline ribbon or chapter bar that spans frames is an
+15. **Reel-wide elements are not yours** — a timeline ribbon or chapter bar that spans frames is an
     overlay (`compositions/overlays/`), built by the orchestrator; leave its band (y 40–110) clear
     if the brief says one exists.
 
-17. **Shared kit first** — if your role file lists `assets/<film>-kit.js`, load it and build on it (figure
+17. **Shared kit first** — if your role file lists `assets/<reel>-kit.js`, load it and build on it (figure
     coordinates, strokes, draw/write helpers) instead of redrawing; match the approved frames it lists.
 
 ## The shot skeleton (camera + depth + idle)
@@ -82,7 +82,7 @@ tl.fromTo("#f04-mid",   { x: 0 }, { x: -50, duration: D, ease: "none" }, 0);
   camera position visibly changes, not just the labels added. `1.0→1.08` above is the *idle* minimum only.
 - Ground layer is `inset:0` (never a negative inset); element ids start with a letter (`f4-…`), never a digit.
 - Keep labels out of the hero's bbox and the ray/line paths (≥ half the font height from any line).
-- Never let the last-frame SFX run past the end: cue closing chime/impact ≥ 1.7 s before the film ends.
+- Never let the last-frame SFX run past the end: cue closing chime/impact ≥ 1.7 s before the reel ends.
 
 ## Seeded PRNG (use for every "random" layout)
 

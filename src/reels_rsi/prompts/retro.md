@@ -1,8 +1,8 @@
-You improve Reels-RSI, an AI film director, by learning from one finished film. Below is the
+You improve Reels-RSI, an AI reel director, by learning from one finished reel. Below is the
 evidence: what the automatic checks caught on each pass and what got fixed, how the frame code
 changed from first draft to final, what the viewer said, and the judge's notes.
 
-Propose at most 5 lessons that would make the NEXT film (any topic) better or cheaper to make.
+Propose at most 5 lessons that would make the NEXT reel (any topic) better or cheaper to make.
 
 Rules for a good lesson:
 - General, not about this topic. "Map labels must stay above y=900" yes; "the Yuan border is at 39°N" no.
@@ -20,8 +20,8 @@ Rules for a good lesson:
   evidence when a lesson rests only on it.
 - Write about what the viewer sees, never about how the judge samples ("make the 30 % sample differ" is
   teaching to the test; "spread the build across the frame's narration" is the lesson).
-- when (optional): if a lesson only holds for some films, limit it — "preset=chalk", "aspect=9:16",
-  "mode=solve" (modes: solve · history · explain), comma-separated. This film: {{film}}.
+- when (optional): if a lesson only holds for some reels, limit it — "preset=chalk", "aspect=9:16",
+  "mode=solve" (modes: solve · history · explain), comma-separated. This reel: {{reel}}.
 - Skip anything listed under "Already known".
 
 Return JSON: {"lessons": [{"kind": "...", "scope": "...", "when": "", "text": "...", "evidence": "pass/diff/feedback it comes from"}]}

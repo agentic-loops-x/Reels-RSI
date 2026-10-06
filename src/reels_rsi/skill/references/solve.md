@@ -1,15 +1,15 @@
 # Solve mode — 题目讲解 (math · physics · chemistry · 语文 · English), 小学到高中
 
-Read for any "讲这道题 / 解题视频 / 知识点讲解 / 古诗讲解 / 笔顺" request. The film is a worked example
+Read for any "讲这道题 / 解题视频 / 知识点讲解 / 古诗讲解 / 笔顺" request. The reel is a worked example
 on a blackboard (preset `chalk`), or a notebook page (`notebook`) for younger viewers, or ink
 (`ink`) for 古诗文. KaTeX formulas and stroke-order animation below were rendered and checked in a
 Reels-RSI snapshot test.
 
-## Correctness first (stricter than science films)
+## Correctness first (stricter than science reels)
 
 1. **Solve it in code before writing a word of script.** Arithmetic/algebra: a Python one-liner;
    equations, geometry, physics: `uvx --with sympy python -c "…"`. Put the computation and the
-   answer in BRIEF.md `## Notes`. The film's numbers come only from there.
+   answer in BRIEF.md `## Notes`. The reel's numbers come only from there.
 2. **Use the method the grade is taught.** 鸡兔同笼 for 小学 = 假设法 / 画图法, not 二元一次方程;
    初中 physics = 受力分析 + 公式, not calculus. Write the grade in BRIEF.md `audience`.
 3. **Show the check.** The last step substitutes the answer back into the problem (头 23+12=35 ✓,
@@ -21,20 +21,20 @@ Reels-RSI snapshot test.
 1. Transcribe the problem text exactly and describe the figure: which points, which segments are
    drawn, what is shaded, which angle is marked right. Keep the photo in `capture/problem-photo.jpg`.
 2. **Restate it at the plan gate** ("我读到的题目是…，图中连了 CM 和 AD，阴影是 △AMN，对吗？") — a
-   misread letter or segment ruins the whole film.
+   misread letter or segment ruins the whole reel.
 3. Build the figure from the **given lengths** in problem coordinates, never from the photo's pixel
    proportions (textbook figures are not to scale). Keep the textbook orientation so students recognise it.
 
 ## The chalk kit (`assets/chalk-kit.js`, copied by `reels new --preset chalk`)
 
-Reusable helpers distilled from the first solve films: board, chalk strokes, draw-on and "writing",
+Reusable helpers distilled from the first solve reels: board, chalk strokes, draw-on and "writing",
 `coords()` (problem units → screen), `meet()` / `foot()` (intersections and feet of heights — never
 eyeball them), `region()` fills, `label()` / `text({halo})` (readable on coloured regions), `box()`,
-`tick()`, `rightMark()`, `brace()`, `dust()`. Put the film's own points and figure in
-`assets/<film>-kit.js` on top of it; every frame loads both. Layout rules that cost review rounds:
+`tick()`, `rightMark()`, `brace()`, `dust()`. Put the reel's own points and figure in
+`assets/<reel>-kit.js` on top of it; every frame loads both. Layout rules that cost review rounds:
 labels inside a thin region go at its widest part; marks on text ride on the text element.
 
-## Shape of a problem film (45–90 s; 9:16 suits 抖音/视频号 study accounts)
+## Shape of a problem reel (45–90 s; 9:16 suits 抖音/视频号 study accounts)
 
 | Beat | Screen | Narration |
 |---|---|---|
@@ -105,7 +105,7 @@ zh-CN-XiaoxiaoNeural (warm, teacher-like) or zh-CN-YunxiNeural; `--rate +0%` for
 Say numbers the way a teacher does ("三十五个头"). SFX: `tick` per written step, `chime` on the
 check mark, nothing louder.
 
-## Board legibility and step focus (R1/R3/R5 on solve films)
+## Board legibility and step focus (R1/R3/R5 on solve reels)
 
 - Size every SVG to the packet canvas (`ChalkKit.board()` reads it from the frame root; your own SVGs must too).
 - Grid/figure ≥ 50 % of the frame and its size/position changes per scene (zoom on the rows being worked);

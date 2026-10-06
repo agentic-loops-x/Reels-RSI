@@ -1,26 +1,26 @@
 # Self-improvement in Reels-RSI
 
 "Recursive self-improvement" in 2026 practice means an agent improving its own prompts, skills,
-memory and tools — not its weights. Reels-RSI applies that to one craft, making films, and keeps it
+memory and tools — not its weights. Reels-RSI applies that to one craft, making reels, and keeps it
 **measurable** (every change is scored) and **gated** (you approve what sticks).
 
 ## Why video is a good fit
 
-Making a film is already a loop: draft → look → find problems → fix. A director model makes the
-same classes of mistakes across films (an origin that drifts, a border drawn the wrong way round,
+Making a reel is already a loop: draft → look → find problems → fix. A director model makes the
+same classes of mistakes across reels (an origin that drifts, a border drawn the wrong way round,
 text under the captions). Each fix is cheap to observe — the checks log it and the code diff shows it —
 so the loop has a natural training signal without any labelling.
 
 ## The four layers
 
-### L0 — in-film review
+### L0 — in-reel review
 `reels finalize` runs HyperFrames' check (lint, runtime errors, layout overlap, contrast) and every
 Reels-RSI rule, then logs the pass to `<project>/.reels/runs.jsonl` and snapshots the code to
 `.reels/history/NNN/`. `reels score` adds a deterministic score (render ok, errors, warnings,
 duration vs target, shot length) and, when a judge model is configured, a vision judge that scores
 every frame on the quality bar's R1–R6 from 30/60/92 % samples. `composite = 0.6·judge + 0.4·deterministic`.
 
-### L1 — cross-film memory
+### L1 — cross-reel memory
 `reels retro <project>` builds `evidence.md`:
 - issues per pass, marked NEW / FIXED;
 - **the diff between the pass that had an issue and the pass that fixed it**, so every lesson has its cause next to it;
@@ -34,7 +34,7 @@ injected into `reels packets` (every frame worker reads them) and `reels lessons
 never exported.
 
 A lesson can carry a `when` (`preset=chalk`, `aspect=9:16`, `mode=solve`): it then reaches only the
-films it holds for. Without it, the first benchmark film — a 16:9 deep-space science film — was handed
+reels it holds for. Without it, the first benchmark reel — a 16:9 deep-space science reel — was handed
 "draw chalk boxes" and "use the lower half of a 9:16 canvas" (`reels lessons when <id> "<cond>"`).
 The judge's and the retro model's words are evidence, not facts: in release testing a judge misread a
 downscaled sheet as "wrong aspect" and the retro model turned that into a false lesson — the human gate
@@ -46,7 +46,7 @@ A rule is a folder: `rule.py` (a `check(doc)` over the frame's HTML/JS text) + `
 refuses a rule that fails its own examples. Rules run on every finalize, so a lesson stops depending
 on the model remembering it — the most model-independent form of improvement.
 
-The 12 built-in rules each come from a real mistake while building the first films:
+The 12 built-in rules each come from a real mistake while building the first reels:
 dasharray-attr · svgorigin-one-sided · negative-zindex · nondeterminism · repeat-fromto ·
 chained-no-position · round-cap-mask · polygon-winding · cjk-font · caption-band ·
 timeline-registration · unpinned-cdn.
@@ -58,11 +58,11 @@ given harness, model and skill directory, then scores them. `reels evolve`:
 1. baseline = current skill on the train topics
 2. an agent reads the baseline's judge notes and findings plus the lesson inbox and makes ≤ 3 edits
    to a **copy** of the skill, explaining each in `CHANGES.md`
-3. the copy makes the same train topics. Per topic the judge sees **both films blind**, order swapped
+3. the copy makes the same train topics. Per topic the judge sees **both reels blind**, order swapped
    between 3 votes, and picks the better one (`reels compare`). The candidate must win most of the
-   votes, render at least as many films and lose no topic by more than 10 composite points
+   votes, render at least as many reels and lose no topic by more than 10 composite points
 4. both versions make the holdout topics; the candidate must win at least half the votes there
-5. `report.md` (per topic: votes, the judge's reasons, a side-by-side image of both films) +
+5. `report.md` (per topic: votes, the judge's reasons, a side-by-side image of both reels) +
    `skill.patch`; nothing changes until `reels evolve apply <id>`
 
 Why pairwise: the same skill making the same topic twice can differ by more than a few composite
@@ -73,7 +73,7 @@ the first or second image. A quota or login stop pauses a round instead of faili
 
 ### The first real round (2026-10-06)
 
-Claude Code (sonnet) directed all 16 films; `claude-cli:sonnet` judged; a Pro subscription's quota
+Claude Code (sonnet) directed all 16 reels; `claude-cli:sonnet` judged; a Pro subscription's quota
 paused the round once for about two hours and `--resume` picked it up.
 
 | | baseline | candidate |
@@ -84,7 +84,7 @@ paused the round once for about two hours and `--resume` picked it up.
 | holdout, blind pairwise votes | 4 | **8** |
 
 The proposer made three edits: checkable minimums for hero size and camera moves, "mechanism
-recipes" (show travel and effect, don't label them), and board legibility for solve films. It also
+recipes" (show travel and effect, don't label them), and board legibility for solve reels. It also
 traced a broken 16:9 blackboard to a hard-coded canvas in `chalk-kit.js` — a code bug, fixed by hand.
 
 <img src="assets/evolve-seasons.jpg" width="880" alt="en-seasons: baseline (left) vs candidate (right)">
@@ -92,7 +92,7 @@ traced a broken 16:9 blackboard to a hard-coded canvas in `chalk-kit.js` — a c
 <sub>*Why do we have seasons?* — baseline skill (left) vs evolved skill (right), same topic, same model.</sub>
 
 What it shows: the absolute scores did not move, while side by side the judge preferred the new
-skill 11 to 1 on train — the reason the verdict is pairwise. The caveats: one film per topic; every
+skill 11 to 1 on train — the reason the verdict is pairwise. The caveats: one reel per topic; every
 holdout topic was a 2–1 split; and on 静夜思 a human might prefer the baseline's quieter mood (the
 new "hero ≥ half the frame" minimum suits science better than poetry). That judgment is why
 `evolve apply` is left to a person.
@@ -104,7 +104,7 @@ new "hero ≥ half the frame" minimum suits science better than poetry). That ju
 | judge-pleasing ("reward hacking") | holdout topics the proposer never sees · deterministic score is 40 % · blind A/B (`reels compare`) · human apply |
 | skill bloat / drift | ≤ 3 edits per round, ≤ ~60 lines, CHANGES.md with evidence, patch reviewed before apply |
 | noisy single runs | blind pairwise votes instead of absolute score deltas · per-topic regression limit · the side-by-side images in the report for your own eye |
-| cost | bench defaults to 30 s films and draft quality; `--dry-run` everywhere; `--yes` required |
+| cost | bench defaults to 30 s reels and draft quality; `--dry-run` everywhere; `--yes` required |
 | unsafe agent actions | headless sessions run with full tool permissions — run bench/evolve in a container or a throwaway user |
 
 ## Community self-improvement

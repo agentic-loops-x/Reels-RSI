@@ -1,5 +1,5 @@
 # Reels-RSI Bench — the fixed topics every skill version and every model is scored on.
-# Short films (30 s) keep a full run affordable. `train` guides evolution; `holdout` is only used
+# Short reels (30 s) keep a full run affordable. `train` guides evolution; `holdout` is only used
 # to confirm a change generalizes — evolve never sees holdout notes.
 
 [[topic]]

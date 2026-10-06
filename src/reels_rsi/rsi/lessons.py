@@ -1,7 +1,7 @@
-"""Lessons: what one film teaches the next.
+"""Lessons: what one reel teaches the next.
 
     ~/.reels/lessons/inbox/<id>.md      proposed (by `reels retro`, an agent, or you)
-    ~/.reels/lessons/accepted/<id>.md   injected into every future film (`lessons digest`)
+    ~/.reels/lessons/accepted/<id>.md   injected into every future reel (`lessons digest`)
     ~/.reels/lessons/rejected/<id>.md   kept so the same idea is not proposed again
 
 kinds:  doc   a sentence the director / frame workers must read      → digest
@@ -9,9 +9,9 @@ kinds:  doc   a sentence the director / frame workers must read      → digest
         taste a preference of yours ("字幕再大一点", "少用霓虹色")    → digest, "Your taste" section
         kit   a reusable component worth extracting                   → digest (as a pointer)
 scopes: director · frame · history · solve · script · style · all
-when:   optional conditions, all must hold for the film: "preset=chalk", "aspect=9:16", "mode=solve",
-        comma-separated ("preset=chalk, aspect=9:16"). No `when` = every film. history/solve scopes
-        reach a film's frame workers only when the film is in that mode.
+when:   optional conditions, all must hold for the reel: "preset=chalk", "aspect=9:16", "mode=solve",
+        comma-separated ("preset=chalk, aspect=9:16"). No `when` = every reel. history/solve scopes
+        reach a reel's frame workers only when the reel is in that mode.
 
 Nothing is accepted silently: `lessons accept` is the human gate (or `evolve`, which only
 accepts what wins on the benchmark).
@@ -95,11 +95,11 @@ def parse_when(when):
     return out
 
 
-def applies(meta, film):
-    """Does a lesson apply to this film? film = {"preset", "aspect", "mode"} or None (= show everything)."""
-    if film is None:
+def applies(meta, reel):
+    """Does a lesson apply to this reel? reel = {"preset", "aspect", "mode"} or None (= show everything)."""
+    if reel is None:
         return True
-    return all(str(film.get(k, "")) == v for k, v in parse_when(meta.get("when", "")).items())
+    return all(str(reel.get(k, "")) == v for k, v in parse_when(meta.get("when", "")).items())
 
 
 def add(text, kind="doc", scope="all", source="", evidence="", force=False, when=""):
@@ -124,25 +124,25 @@ def add(text, kind="doc", scope="all", source="", evidence="", force=False, when
     return path
 
 
-def in_scope(lesson_scope, role, film):
+def in_scope(lesson_scope, role, reel):
     if role == "all" or lesson_scope in (role, "all"):
         return True
-    mode = (film or {}).get("mode")
-    if lesson_scope in ("history", "solve"):            # mode lessons: the director always (unless the film says otherwise),
-        return film is None and role == "director" or (film is not None and lesson_scope == mode)   # workers in that mode
+    mode = (reel or {}).get("mode")
+    if lesson_scope in ("history", "solve"):            # mode lessons: the director always (unless the reel says otherwise),
+        return reel is None and role == "director" or (reel is not None and lesson_scope == mode)   # workers in that mode
     return role == "director" and lesson_scope in ("script", "style")
 
 
-def digest(scope="director", film=None):
-    """The accepted lessons a role must read — compact markdown, empty string if none. With `film`
-    ({"preset", "aspect", "mode"}), only the lessons that apply to that film."""
+def digest(scope="director", reel=None):
+    """The accepted lessons a role must read — compact markdown, empty string if none. With `reel`
+    ({"preset", "aspect", "mode"}), only the lessons that apply to that reel."""
     items = [(m, b) for st, p, m, b in all_lessons("accepted")
-             if in_scope(m.get("scope"), scope, film) and applies(m, film)]
+             if in_scope(m.get("scope"), scope, reel) and applies(m, reel)]
     taste = [b for m, b in items if m.get("kind") == "taste"]
     docs = [(m, b) for m, b in items if m.get("kind") in ("doc", "kit")]
     if not taste and not docs:
         return ""
-    out = ["\n## Learned from past films (Reels-RSI lessons — follow them)\n"]
+    out = ["\n## Learned from past reels (Reels-RSI lessons — follow them)\n"]
     out += [f"- [{m.get('scope')}] {b}" for m, b in docs]
     if taste:
         out += ["\n## Your viewer's taste\n"] + [f"- {b}" for b in taste]
@@ -156,7 +156,7 @@ def set_when(lid, when):
     else:
         meta.pop("when", None)
     write(p, meta, body)
-    print(f"✓ {meta['id']}: " + (f"when {meta['when']}" if when else "applies to every film"))
+    print(f"✓ {meta['id']}: " + (f"when {meta['when']}" if when else "applies to every reel"))
 
 
 def accept(lid, rule_dir=None):
@@ -229,20 +229,20 @@ def feedback(project, text, approve=False, frame=None):
 
 
 def cmd_lessons(argv):
-    ap = argparse.ArgumentParser(prog="reels lessons", description="Manage what past films taught Reels-RSI.")
+    ap = argparse.ArgumentParser(prog="reels lessons", description="Manage what past reels taught Reels-RSI.")
     sub = ap.add_subparsers(dest="cmd", required=True)
     ls = sub.add_parser("list"); ls.add_argument("--state", default="all", choices=["inbox", "accepted", "rejected", "all"])
     sh = sub.add_parser("show"); sh.add_argument("id")
     ad = sub.add_parser("add"); ad.add_argument("text"); ad.add_argument("--kind", default="doc", choices=KINDS)
     ad.add_argument("--scope", default="all", choices=SCOPES); ad.add_argument("--source", default="")
     ad.add_argument("--evidence", default=""); ad.add_argument("--force", action="store_true")
-    ad.add_argument("--when", default="", help='only for some films: "preset=chalk", "aspect=9:16", "mode=solve"')
-    wh = sub.add_parser("when", help="limit a lesson to some films (empty = every film)")
+    ad.add_argument("--when", default="", help='only for some reels: "preset=chalk", "aspect=9:16", "mode=solve"')
+    wh = sub.add_parser("when", help="limit a lesson to some reels (empty = every reel)")
     wh.add_argument("id"); wh.add_argument("conditions", nargs="?", default="")
     ac = sub.add_parser("accept"); ac.add_argument("ids", nargs="+"); ac.add_argument("--rule-dir", default=None)
     rj = sub.add_parser("reject"); rj.add_argument("ids", nargs="+"); rj.add_argument("--reason", default="")
     dg = sub.add_parser("digest"); dg.add_argument("--scope", default="director", choices=SCOPES)
-    dg.add_argument("--project", default=None, help="only the lessons that apply to this film (preset, aspect, mode)")
+    dg.add_argument("--project", default=None, help="only the lessons that apply to this reel (preset, aspect, mode)")
     ex = sub.add_parser("export"); ex.add_argument("out")
     a = ap.parse_args(argv)
     if a.cmd == "list":
@@ -266,18 +266,18 @@ def cmd_lessons(argv):
         for i in a.ids:
             reject(i, a.reason)
     elif a.cmd == "digest":
-        film = None
+        reel = None
         if a.project:
-            from reels_rsi.project import film_context
-            film = film_context(a.project)
-        print(digest(a.scope, film) or "(no accepted lessons for this scope)")
+            from reels_rsi.project import reel_context
+            reel = reel_context(a.project)
+        print(digest(a.scope, reel) or "(no accepted lessons for this scope)")
     elif a.cmd == "export":
         export(a.out)
 
 
 def cmd_feedback(argv):
     ap = argparse.ArgumentParser(prog="reels feedback",
-                                 description="Record what the viewer said about a film (fuel for retro and taste).")
+                                 description="Record what the viewer said about a reel (fuel for retro and taste).")
     ap.add_argument("text")
     ap.add_argument("--project", default=".")
     ap.add_argument("--approve", action="store_true", help="the viewer approved (plan / look-dev / final)")

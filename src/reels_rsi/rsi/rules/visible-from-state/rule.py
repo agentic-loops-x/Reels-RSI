@@ -4,7 +4,7 @@ RULE = {
     "id": "visible-from-state",
     "severity": "warning",
     "kinds": ["frame", "overlay", "kit"],
-    "lesson": "fromTo renders its from-state at build time: a tween that starts visible (opacity > 0) and fades to 0 later in the timeline shows the element before its cue (stray chalk-dust specks in a release-test film).",
+    "lesson": "fromTo renders its from-state at build time: a tween that starts visible (opacity > 0) and fades to 0 later in the timeline shows the element before its cue (stray chalk-dust specks in a release-test reel).",
     "fix": "Add immediateRender: false to the to-vars (the element then keeps its markup opacity, e.g. 0, until the tween starts).",
 }
 

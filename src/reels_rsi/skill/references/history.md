@@ -1,13 +1,13 @@
 # History mode — 历史简介 / 朝代速览 / 战役 / 人物 / 文明史
 
-Read for any history, culture, biography, war, empire or "N years of X" film. Everything here
+Read for any history, culture, biography, war, empire or "N years of X" reel. Everything here
 was built and rendered in a Reels-RSI smoke test (maps, routes, timeline overlay, Commons images).
 
 ## Pick the format
 
 | Format | Example | Structure | Preset | Signature visual |
 |---|---|---|---|---|
-| 速览 sweep | 中华五千年 · 250 years of US history | era → era, one iconic image each, a timeline overlay advancing the whole film | `notebook` (line art) · `ink` | the drawing that unfolds + the year ruler |
+| 速览 sweep | 中华五千年 · 250 years of US history | era → era, one iconic image each, a timeline overlay advancing the whole reel | `notebook` (line art) · `ink` | the drawing that unfolds + the year ruler |
 | 事件 event | 赤壁之战 · Battle of Austerlitz | setup (situation map) → forces → turning point → outcome → legacy | `atlas` | maps at changing zoom, armies as arrows, the decisive moment |
 | 路线 route | 丝绸之路 · 郑和下西洋 · Magellan | origin → stops in order → consequences | `atlas` | a gold route drawing across the map, cities popping in |
 | 人物 biography | 苏轼的一生 · Napoleon | birth → turning points (3–5) → death → why remembered | `ink` / `atlas` | period portrait plate + a life timeline + places on a map |
@@ -16,7 +16,7 @@ was built and rendered in a Reels-RSI smoke test (maps, routes, timeline overlay
 Wordless or music-led variants ("sand animation of 250 years", "origami history of humanity")
 drop SCRIPT.md, use `music:` with a mood, and lean on year labels as the only text.
 
-## Accuracy rules (stricter than science films)
+## Accuracy rules (stricter than science reels)
 
 - Every year, number, name and place in SCRIPT.md is verified (2 sources for contested facts);
   sources go in BRIEF.md `## Notes`. Casualty/army figures are "约" with the standard account.
@@ -24,7 +24,7 @@ drop SCRIPT.md, use `music:` with a mood, and lean on year labels as the only te
   or in narration. Never present a modern border as a historical one.
 - Real people are shown via period images (public domain), silhouettes, or objects — never an
   invented "portrait" of a real person.
-- Dates: 公元前 = 前221年 on screen; mono digits; one dating style per film.
+- Dates: 公元前 = 前221年 on screen; mono digits; one dating style per reel.
 
 ## Maps (d3-geo + Natural Earth)
 
@@ -75,15 +75,15 @@ const [x, y] = proj([108.9, 34.3]);   // 长安 → screen point for a pin/label
 - **Filters at map scale** — SVG displacement/blur filters are in user units, so inside a world zoomed
   5–6× they grow 5–6× and shred small silhouettes (riders became a smudge). Give small figures on a
   zoomed map a weaker map-scale filter (displacement ≈ 1) and space them generously.
-- **One shared kit per film** — put the projection, city coordinates, territory polygon, brush/seal
-  helpers in `assets/<film>-kit.js` and load it in every frame, so all map frames line up.
+- **One shared kit per reel** — put the projection, city coordinates, territory polygon, brush/seal
+  helpers in `assets/<reel>-kit.js` and load it in every frame, so all map frames line up.
 
-## Timeline that spans the whole film (overlay)
+## Timeline that spans the whole reel (overlay)
 
 Frames each have their own clock, so a year ruler that keeps advancing across frames is an
 **overlay**: `compositions/overlays/timeline.html`, root `data-composition-id="overlay-timeline"`,
 registered at `window.__timelines["overlay-timeline"]`. `reels finalize` mounts every overlay for the
-whole film under the captions. Overlays see global time — get frame
+whole reel under the captions. Overlays see global time — get frame
 windows from `reels times --project . --list` and key the playhead
 to them (e.g. jump/ease to 前221 when frame 3 starts). Keep it in the top band (y 40–110), with
 contrast against every frame it crosses (a translucent backing strip if frames vary light/dark).

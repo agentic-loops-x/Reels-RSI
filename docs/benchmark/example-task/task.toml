@@ -1,5 +1,5 @@
 # RRBench example task (see docs/benchmark.md §3). Format: Terminal-Bench-style — instruction + tests
-# on the final artifact + oracle + mutants. Kept at 16:9 / 30 s so it runs on Reels-RSI's bench films.
+# on the final artifact + oracle + mutants. Kept at 16:9 / 30 s so it runs on Reels-RSI's bench reels.
 id = "solve-chicken-rabbit"
 genre = "solve"
 language = "zh"

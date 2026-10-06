@@ -17,7 +17,7 @@ def test_full_round_with_a_quota_pause(monkeypatch, isolated_home):
         if "-cand" in str(cwd) and "en-seasons" in prompt and state["quota_once"]:
             state["quota_once"] = False
             return {"ok": False, "tail": "You've hit your session limit", "seconds": 1, "cost_usd": None, "turns": 1}
-        return {"ok": True, "tail": "film done", "seconds": 1, "cost_usd": None, "turns": 1}
+        return {"ok": True, "tail": "reel done", "seconds": 1, "cost_usd": None, "turns": 1}
 
     def fake_score_row(row, proj, judge):
         row.update(status="scored", composite=70.0, det=95.0, judge=60.0, rendered=True, notes=["n"], top_issues=[], findings=[])

@@ -1,9 +1,9 @@
-"""Mount film-wide overlay compositions (a timeline ribbon, chapter titles, a corner logo …).
+"""Mount reel-wide overlay compositions (a timeline ribbon, chapter titles, a corner logo …).
 
 Frames are separate sub-compositions that each get their own local clock; anything that must
 persist ACROSS frames (a year ruler that keeps advancing, a chapter bar, a map inset) lives in
-compositions/overlays/<name>.html and is mounted here on the root timeline for the whole film.
-Overlay compositions see GLOBAL time (0 → film end), so they can key off frame start times —
+compositions/overlays/<name>.html and is mounted here on the root timeline for the whole reel.
+Overlay compositions see GLOBAL time (0 → reel end), so they can key off frame start times —
 `reels times --project . --list` prints them.
 
 Run after assemble-index (reels finalize does it). Idempotent: re-running replaces the block.

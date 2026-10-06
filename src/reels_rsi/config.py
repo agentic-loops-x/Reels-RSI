@@ -2,13 +2,13 @@
 
 ~/.reels/config.toml (user) and ./reels.toml (project, wins) — both optional:
 
-  [agent]                 # the harness that directs films headlessly (make / bench / evolve)
+  [agent]                 # the harness that directs reels headlessly (make / bench / evolve)
   harness = "claude"      # claude | codex | gemini | opencode
   model = "opus"          # passed to the harness as-is (opus, sonnet, gpt-5.1, gemini-2.5-pro, deepseek/deepseek-chat …)
 
   [roles]                 # direct model calls (provider:model, see reels_rsi/llm.py)
   judge = "claude-cli:sonnet"   # scores contact sheets (needs vision)
-  retro = "claude-cli:sonnet"   # turns a film's history into proposed lessons
+  retro = "claude-cli:sonnet"   # turns a reel's history into proposed lessons
 
 Environment overrides: REELS_JUDGE, REELS_RETRO, REELS_HARNESS, REELS_MODEL.
 """

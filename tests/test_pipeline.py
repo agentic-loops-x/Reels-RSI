@@ -56,7 +56,7 @@ def test_srt_shift_and_timestamps():
 
 
 def fake_project(tmp_path, passes):
-    p = tmp_path / "film"
+    p = tmp_path / "reel"
     (p / "compositions/frames").mkdir(parents=True)
     (p / "STORYBOARD.md").write_text(STORYBOARD)
     for n, (html, rules) in enumerate(passes, 1):
@@ -95,7 +95,7 @@ def test_require_project_fails_fast(tmp_path):
 
 
 def test_placeholders_keep_unbuilt_frames_on_the_timeline(tmp_path):
-    p = tmp_path / "film"
+    p = tmp_path / "reel"
     (p / "compositions/frames").mkdir(parents=True)
     (p / "STORYBOARD.md").write_text(STORYBOARD)
     (p / "compositions/frames/01-hook.html").write_text("<template>real</template>")
@@ -117,17 +117,17 @@ def test_chalk_preset_ships_its_kit(tmp_path):
 
 
 def test_packets_list_kit_and_approved_frames(tmp_path):
-    p = tmp_path / "film"
+    p = tmp_path / "reel"
     (p / "compositions/frames").mkdir(parents=True)
     (p / "assets").mkdir()
-    (p / "assets/film-kit.js").write_text("window.FilmKit = {};")
+    (p / "assets/reel-kit.js").write_text("window.ReelKit = {};")
     sb = STORYBOARD.replace("- src: compositions/frames/01-hook.html", "- status: animated\n- src: compositions/frames/01-hook.html")
     (p / "STORYBOARD.md").write_text(sb)
     (p / "hyperframes.json").write_text("{}")
     (p / "compositions/frames/01-hook.html").write_text("<template>real</template>")
     project.cmd_packets(["--project", str(p)])
     role = (p / ".reels/packets/_role.md").read_text()
-    assert "film-kit.js" in role and "01-hook.html" in role and "02-flood.html" not in role
+    assert "reel-kit.js" in role and "01-hook.html" in role and "02-flood.html" not in role
     assert "y > 1600" in role                       # 9:16 caption band from the canvas
 
 
@@ -135,9 +135,9 @@ def test_judge_layout_and_mode():
     from reels_rsi.rsi import score
     assert score.layout_for(1080, 1920)[1] == 2 and score.layout_for(1920, 1080)[1] == 4
     sb = "- route: solve/geometry · svg\n- route: solve/formula\n- route: kinetic-type\n"
-    assert score.film_mode(sb) == "solve"
+    assert score.reel_mode(sb) == "solve"
     assert "Guiding the eye" in score.rubric("solve") and "Camera & life" in score.rubric("explain")
-    assert score.film_mode("- route: science/sim\n") == "explain"
+    assert score.reel_mode("- route: science/sim\n") == "explain"
 
 
 def test_bench_infra_errors_are_not_scores():
@@ -157,7 +157,7 @@ def test_judge_sheet_grouping():
     assert [len(g) for g in score.group_rows(list(range(8)), 4)] == [4, 4]
 
 
-def test_films_from_before_the_rename_are_migrated(tmp_path):
+def test_reels_from_before_the_rename_are_migrated(tmp_path):
     from reels_rsi.rsi import runlog
     from reels_rsi.project import is_placeholder
     old = tmp_path / ".evofilm"

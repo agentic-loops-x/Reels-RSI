@@ -43,7 +43,7 @@ def hf(project, args, capture=False, check=True):
 
 
 def require_project(path, need=("hyperframes.json", "STORYBOARD.md")):
-    """Fail fast outside a film project instead of creating stray folders (seen in release testing)."""
+    """Fail fast outside a reel project instead of creating stray folders (seen in release testing)."""
     project = Path(path).resolve()
     missing = [n for n in need if not (project / n).exists()]
     if missing:
@@ -78,7 +78,7 @@ def copy_preset_kit(preset, target):
 
 
 def cmd_new(argv):
-    ap = argparse.ArgumentParser(prog="reels new", description="Scaffold a film project.")
+    ap = argparse.ArgumentParser(prog="reels new", description="Scaffold a reel project.")
     ap.add_argument("dir")
     ap.add_argument("--preset", default="deepspace")
     ap.add_argument("--title", default="")
@@ -130,7 +130,7 @@ def canvas(storyboard):
     return {"9:16": "1080x1920", "1:1": "1080x1080", "16:9": "1920x1080"}.get(fmt, fmt if "x" in fmt else "1920x1080")
 
 
-def film_mode(storyboard):
+def reel_mode(storyboard):
     """solve · history · explain — from the frames' routes (solve/…, map / history/…)."""
     routes = re.findall(r"^-\s+route:\s*(\S+)", storyboard, re.M)
     if routes and sum(r.startswith("solve") for r in routes) * 2 >= len(routes):
@@ -140,7 +140,7 @@ def film_mode(storyboard):
     return "explain"
 
 
-def film_context(project):
+def reel_context(project):
     """What a lesson's `when` is matched against: preset, aspect, mode."""
     project = Path(project)
     sb = (project / "STORYBOARD.md").read_text("utf-8") if (project / "STORYBOARD.md").exists() else ""
@@ -149,7 +149,7 @@ def film_context(project):
     preset = json.loads(meta.read_text("utf-8")).get("preset", "") if meta.exists() else ""
     w, h = map(int, canvas(sb).split("x"))
     aspect = "9:16" if h > w else "1:1" if h == w else "16:9"
-    return {"preset": preset, "aspect": aspect, "mode": film_mode(sb)}
+    return {"preset": preset, "aspect": aspect, "mode": reel_mode(sb)}
 
 
 def band_top(storyboard):
@@ -172,7 +172,7 @@ def cmd_packets(argv):
     out.mkdir(parents=True, exist_ok=True)
     skill = paths.skill_dir()
     from reels_rsi.rsi import lessons
-    digest = lessons.digest(scope="frame", film=film_context(project))
+    digest = lessons.digest(scope="frame", reel=reel_context(project))
     kits = sorted(p.relative_to(project) for p in project.glob("assets/*.js") if not p.name.startswith(("hanzi",)))
     refs = [fid for num, fid, block in split_frames(sb)
             if fid and re.search(r"^-\s+status:\s*animated", block, re.M)
@@ -209,7 +209,7 @@ Reply with one line describing the hero visual.
         (out / f"{fid}.md").write_text(
             f"# Frame packet: {fid}\n\n- Project: {project}\n- Canvas: {canvas(sb)}\n"
             f"- Design tokens: {project / 'frame.md'}\n\n"
-            + (f"## Video direction (film-wide)\n\n{direction.group(1).strip()}\n\n" if direction else "")
+            + (f"## Video direction (reel-wide)\n\n{direction.group(1).strip()}\n\n" if direction else "")
             + f"## Your storyboard block\n\n{block}\n\n"
             + (f"## Spoken words (seconds from frame start)\n\n{timing}\n" if timing else ""), "utf-8")
         n += 1
@@ -399,7 +399,7 @@ def shift_srt(text, offset, start_idx):
 
 
 def cmd_concat(argv):
-    ap = argparse.ArgumentParser(prog="reels concat", description="Join rendered chapter projects into one film.")
+    ap = argparse.ArgumentParser(prog="reels concat", description="Join rendered chapter projects into one reel.")
     ap.add_argument("output")
     ap.add_argument("chapters", nargs="+")
     a = ap.parse_args(argv)

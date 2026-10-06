@@ -7,7 +7,7 @@
 
 A run = one headless agent session per topic (agents.py), then `score` on the result. Runs live in
 ~/.reels/bench/runs/<run-id>/ with summary.json; `report` turns them into a leaderboard.
-Each film is a real agent session with full tool permissions — run it on a machine/container you
+Each reel is a real agent session with full tool permissions — run it on a machine/container you
 are happy to let an agent work in (`--yes` acknowledges this).
 """
 
@@ -45,7 +45,7 @@ def style_for(genre):
 
 def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge=None, label=None,
         quality="draft", dry_run=False, rid=None, resume=None):
-    """Make and score one film per topic. `rid` names the run (evolve does, to find it again);
+    """Make and score one reel per topic. `rid` names the run (evolve does, to find it again);
     `resume` continues an incomplete run: scored topics are kept, the rest are made again."""
     if resume:
         prev = load(resume)
@@ -57,7 +57,7 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
         chosen = [t for t in topics() if t["id"] in plan["topics"] and t["id"] not in done]
         plan["resumed"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         print(f"↻ resuming {resume}: {len(done)} scored, {len(chosen)} to make", flush=True)
-        for t in chosen:                       # a half-made film from the failed attempt would confuse the agent
+        for t in chosen:                       # a half-made reel from the failed attempt would confuse the agent
             shutil.rmtree(root / t["id"], ignore_errors=True)
     else:
         h, m = config.harness()
@@ -78,7 +78,7 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
         return None
     root.mkdir(parents=True, exist_ok=bool(resume))
     env = {**os.environ, "REELS_SKILL_DIR": str(skill)}
-    progress = root / "summary.json"          # written as we go: a crash never loses the films already made
+    progress = root / "summary.json"          # written as we go: a crash never loses the reels already made
     progress.write_text(json.dumps({**plan, "rows": rows, "mean": mean(rows), "complete": False,
                                     "missing": [t["id"] for t in chosen]}, ensure_ascii=False, indent=2), "utf-8")
     for t in chosen:
@@ -113,7 +113,7 @@ def run(split="train", ids=None, harness=None, model=None, skill_dir=None, judge
 def score_row(row, proj, judge):
     try:
         s = scoring.score(proj, judge, use_judge=bool(judge)) if (proj / "index.html").exists() else None
-    except Exception as e:  # noqa: BLE001 — a scoring crash must not lose the film or the run
+    except Exception as e:  # noqa: BLE001 — a scoring crash must not lose the reel or the run
         row.update(status="score-error", error=f"{type(e).__name__}: {e}"[:300], composite=None, det=None, judge=None,
                    rendered=(proj / "renders" / "video.mp4").exists(), notes=[], top_issues=[])
         print(f"  ✗ scoring failed: {row['error']} — rescore later with `reels bench rescore`", flush=True)
@@ -144,7 +144,7 @@ def save(root, summary, topic_ids):
     return summary
 
 
-# Failures of the environment, not of the film: quota, login, network, provider outages.
+# Failures of the environment, not of the reel: quota, login, network, provider outages.
 INFRA = re.compile(r"session limit|usage limit|rate.?limit|quota|credit balance|Failed to authenticate|"
                    r"OAuth|not logged in|overloaded|ECONNRESET|ETIMEDOUT|network error|503 Service|529", re.I)
 INFRA_STOP = re.compile(r"limit|quota|credit|authenticate|OAuth|logged in", re.I)
@@ -159,7 +159,7 @@ def infra_error(tail):
 
 
 def rescore(rid, judge=None):
-    """Score the films a run already made again — after a scoring crash, or to re-judge with another
+    """Score the reels a run already made again — after a scoring crash, or to re-judge with another
     judge (then compare only runs scored by the same judge). Agent infra errors stay unscored."""
     summary = load(rid)
     root = runs_root() / rid
@@ -245,7 +245,7 @@ def cmd_bench(argv):
     r.add_argument("--dry-run", action="store_true")
     r.add_argument("--resume", default=None, metavar="RUN_ID", help="continue an incomplete run (after a quota/login stop)")
     rp = sub.add_parser("report"); rp.add_argument("--md", default=None)
-    rs = sub.add_parser("rescore", help="score an existing run's films again (no new films)")
+    rs = sub.add_parser("rescore", help="score an existing run's reels again (no new reels)")
     rs.add_argument("run_id"); rs.add_argument("--judge", default=None)
     a = ap.parse_args(argv)
     if a.cmd == "topics":

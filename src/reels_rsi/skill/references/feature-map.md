@@ -6,7 +6,7 @@ Survey (2026-10-05) of the public indexes: claudevideo.org (1,235 videos), aweso
 Category mix: motion graphics 352 · explainers 195 · product/ads 181 · interactive 171 ·
 stories 124 · 3D scenes 85 · art 73 · music/production 54.
 
-Status: ✅ built & verified in a render · 📘 documented recipe (agent implements per film) ·
+Status: ✅ built & verified in a render · 📘 documented recipe (agent implements per reel) ·
 ↪ routed to an official HyperFrames workflow · ⛔ out of scope (why)
 
 ## Genres
@@ -30,7 +30,7 @@ Status: ✅ built & verified in a render · 📘 documented recipe (agent implem
 | Real 3D (Three.js), camera flights, planets, molecules | ✅ (smoke render) |
 | Procedural particles / flows / star fields (Canvas proxy) | ✅ |
 | Maps: projections, borders, routes, pins, zoom | ✅ `reels geo` + d3 (smoke render) |
-| Film-wide timeline / chapter bar | ✅ overlays (smoke render) |
+| Reel-wide timeline / chapter bar | ✅ overlays (smoke render) |
 | Period images with credits + Ken Burns | ✅ `reels commons` (download + CREDITS.md) |
 | Hand-drawn line art, ink wash, atlas, deep-space presets | ✅ 4 presets |
 | Paper-collage (Vox), paper-cut/origami, sand, watercolor, oil (Kuwahara), halftone, pixel, blueprint, isometric, engraving, kinetic type, one-take | 📘 styles.md |
@@ -65,7 +65,7 @@ Status: ✅ built & verified in a render · 📘 documented recipe (agent implem
 |---|---|
 | Run log of every finalize/render (findings, snapshots of the code per pass) | ✅ `.reels/runs.jsonl` + `history/` |
 | Static rules compiled from past mistakes, each proven on a bad + good example | ✅ 12 built-in, `reels rules new` for more |
-| Retro: fix diffs + feedback → proposed lessons → human accept → injected into the next film | ✅ `retro` · `lessons` · `packets` digest |
+| Retro: fix diffs + feedback → proposed lessons → human accept → injected into the next reel | ✅ `retro` · `lessons` · `packets` digest |
 | Vision judge on R1–R6, deterministic score, blind A/B | ✅ code; judge needs a model (claude-cli / any API) |
-| Reels-RSI Bench (8 topics, train/holdout) + leaderboard across models | ✅ code; a full run costs ~8 films |
+| Reels-RSI Bench (8 topics, train/holdout) + leaderboard across models | ✅ code; a full run costs ~8 reels |
 | Benchmark-gated rewrite of the skill (evolve) | ✅ code [untested end-to-end: needs bench budget] |

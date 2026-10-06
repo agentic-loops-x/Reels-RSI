@@ -4,19 +4,19 @@
     reels evolve apply <evolve-id>      copy an accepted candidate over the installed skill (backup kept)
 
 One round:
-  1. baseline   the current skill makes the train films (reuse --baseline, or run it now)
+  1. baseline   the current skill makes the train reels (reuse --baseline, or run it now)
   2. propose    an agent reads the baseline's judge notes, findings and the lesson inbox, and edits a
                 COPY of the skill (≤ 3 focused edits + CHANGES.md)                — prompts/propose.md
-  3. evaluate   the candidate makes the same train topics. Per topic the judge sees both films blind,
+  3. evaluate   the candidate makes the same train topics. Per topic the judge sees both reels blind,
                 order swapped between 3 votes (`score.compare`). The candidate must win most of the
-                votes, render at least as many films and lose no topic by more than 10 composite points.
+                votes, render at least as many reels and lose no topic by more than 10 composite points.
                 Absolute 1–5 scores from one judge are noisy; "which of these two is better" is not.
   4. confirm    both versions make the holdout topics; the candidate must win at least half the votes
                 there (guards against overfitting the train topics)
-  5. report     report.md (per topic: votes, the judge's reasons, a side-by-side image of both films)
+  5. report     report.md (per topic: votes, the judge's reasons, a side-by-side image of both reels)
                 + skill.patch. Nothing changes until you run `evolve apply` — the human gate.
 
-Cost: one round = 4 + 4 + 4 + 4 films, plus ~40 judge calls. A quota/login stop pauses the round;
+Cost: one round = 4 + 4 + 4 + 4 reels, plus ~40 judge calls. A quota/login stop pauses the round;
 `reels evolve --resume <id>` continues it. `--dry-run` prints the plan without running anything.
 """
 
@@ -91,7 +91,7 @@ def pairwise(root, st, tag, base, cand, n=3):
             continue
         pb, pc = bench.runs_root() / base["id"] / t, bench.runs_root() / cand["id"] / t
         rb, rc = rows_b[t].get("rendered"), r.get("rendered")
-        if not (rb and rc):                      # a film that never rendered loses every vote
+        if not (rb and rc):                      # a reel that never rendered loses every vote
             cache[t] = {"base": n if rb else 0, "cand": n if rc else 0, "why": ["only one version rendered"]}
         else:
             print(f"▶ pairwise {tag}/{t} …", flush=True)
@@ -134,16 +134,16 @@ def cmd_evolve(argv):
     current = paths.skill_dir()
     if a.dry_run:
         print(f"evolve {eid}: harness {harness}/{model} · judge {a.judge or config.role('judge')} · skill {current}")
-        print(f"  1 baseline  {'reuse ' + a.baseline if a.baseline else 'bench run --split train (' + str(len(bench.topics('train'))) + ' films)'}")
+        print(f"  1 baseline  {'reuse ' + a.baseline if a.baseline else 'bench run --split train (' + str(len(bench.topics('train'))) + ' reels)'}")
         print(f"  2 propose   ≤{a.max_edits} edits to a copy of the skill (prompts/propose.md)")
         print("  3 evaluate  candidate on train; blind pairwise per topic (3 votes, order swapped) — accept if it wins")
         print("              most votes, no topic −10 composite, renders ≥")
-        print(f"  4 confirm   holdout ({len(bench.topics('holdout'))} films × 2 versions, candidate wins ≥ half the votes)" if not a.skip_holdout else "  4 confirm   skipped")
+        print(f"  4 confirm   holdout ({len(bench.topics('holdout'))} reels × 2 versions, candidate wins ≥ half the votes)" if not a.skip_holdout else "  4 confirm   skipped")
         print("  5 report    report.md + skill.patch → `reels evolve apply <id>`")
         print("  a quota/login stop saves the round: `reels evolve --resume <id>` continues it")
         return
     if not a.yes:
-        sys.exit("✗ evolve runs many full-permission agent sessions (≈ 16 films per round) — rerun with --yes, or --dry-run")
+        sys.exit("✗ evolve runs many full-permission agent sessions (≈ 16 reels per round) — rerun with --yes, or --dry-run")
     root = evolve_root() / eid
     root.mkdir(parents=True)
     st = {"id": eid, "harness": harness, "model": model, "judge": a.judge or config.role("judge"), "margin": a.margin,
@@ -162,7 +162,7 @@ def stopped(root, what, summary=None):
     """Quota / login / network stopped the round: keep everything, tell the user how to continue."""
     missing = ", ".join((summary or {}).get("missing", []))
     sys.exit(f"⏸ evolve paused at {what}" + (f" (not scored yet: {missing})" if missing else "") +
-             f" — the films made so far are kept.\n  When the quota resets / login works: reels evolve --resume {root.name}")
+             f" — the reels made so far are kept.\n  When the quota resets / login works: reels evolve --resume {root.name}")
 
 
 def ensure_run(root, st, key, split, skill):

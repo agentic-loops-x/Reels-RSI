@@ -1,7 +1,7 @@
 # Quality bar — what separates a polished explainer from an animated slide deck
 
 Read before Step 4 (look-dev) and again at Step 7 (review). Every rule here came from comparing a
-first Reels-RSI film against the viral Opus-made explainers: the framework was never the bottleneck —
+first Reels-RSI reel against the viral Opus-made explainers: the framework was never the bottleneck —
 **the drawing, the camera and the sound were.**
 
 ## The five gaps (and the fix for each)
@@ -61,7 +61,7 @@ Test: name what each movement means in one sentence. If you can't, cut it.
 
 - Voice is king: music bed under narration (assembler ducks it automatically); SFX volume 0.2–0.4.
 - Cue SFX in the storyboard as `- sfx: whoosh@0.0, pop@2.3, chime@6.1` (seconds from frame start,
-  aligned to the visual beat and the spoken word). Typical film: 1–3 SFX per frame.
+  aligned to the visual beat and the spoken word). Typical reel: 1–3 SFX per frame.
 - Library: whoosh · whoosh-soft · pop · tick · click · chime · swell · impact · sparkle.
 
 ## Review rubric (Step 7) — score every frame 1–5, fix anything below 4
@@ -72,10 +72,10 @@ Look at the contact sheet (30% / 60% / 92% samples per frame) and the frame's co
 |---|---|---|
 | R1 | Hero richness | the hero visual is detailed, fills ~half the frame, would look good as a still |
 | R2 | Mechanism shown | the narration's cause→effect is visibly happening, not just labelled |
-| R3 | Camera & life | the three samples differ by camera position, not only by added elements; holds idle. **Solve films:** guiding the eye instead — the spoken step is singled out, earlier steps dim; a still board is fine |
+| R3 | Camera & life | the three samples differ by camera position, not only by added elements; holds idle. **Solve reels:** guiding the eye instead — the spoken step is singled out, earlier steps dim; a still board is fine |
 | R4 | Pacing | reveals land on their spoken words; nothing front-loaded; no dead second >1.5 s |
 | R5 | Composition | 3 depth layers, clear hierarchy, nothing in the caption band, nothing clipped |
-| R6 | Consistency | palette/type from frame.md; the frame belongs to the same film as its neighbours |
+| R6 | Consistency | palette/type from frame.md; the frame belongs to the same reel as its neighbours |
 
-A film is done when every frame scores ≥ 4 on all six, `check` passes with 0 errors / 0 warnings,
+A reel is done when every frame scores ≥ 4 on all six, `check` passes with 0 errors / 0 warnings,
 and the rendered MP4 has audible voice + music (mean volume around -20 to -26 dB).

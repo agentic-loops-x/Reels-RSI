@@ -2,7 +2,7 @@
 
 Three ways:
   1. Dedicated cover (best): write compositions/cover.html — a normal single-frame sub-composition
-     (id "cover", 1920×1080 or 1080×1920) with a big title, the film's hero visual and no captions.
+     (id "cover", 1920×1080 or 1080×1920) with a big title, the reel's hero visual and no captions.
      `reels cover --project . --composition` snapshots it alone via a temporary preview index.
   2. One frame alone, caption-free: `reels cover --project . --frame 08 [--at <frame-local s>]`
      (default 92 % into the frame — its landed state). The best cover when there is no cover.html.

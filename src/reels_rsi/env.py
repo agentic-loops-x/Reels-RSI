@@ -1,4 +1,4 @@
-"""setup · doctor · install · make — getting from zero to a film."""
+"""setup · doctor · install · make — getting from zero to a reel."""
 
 import argparse
 import os
@@ -80,7 +80,7 @@ def cmd_doctor(argv):
         t = root / "reels"
         if t.exists() or t.is_symlink():
             print(f"  ✓ skill    installed for {name}: {t}")
-    print("agents (harnesses that can direct a film):")
+    print("agents (harnesses that can direct a reel):")
     for h in ("claude", "codex", "gemini", "opencode"):
         note = ""
         if h == "claude" and shutil.which(h):
@@ -140,7 +140,7 @@ def cmd_install(argv):
 
 
 def cmd_make(argv):
-    ap = argparse.ArgumentParser(prog="reels make", description="One sentence in, a rendered film out (headless agent).")
+    ap = argparse.ArgumentParser(prog="reels make", description="One sentence in, a rendered reel out (headless agent).")
     ap.add_argument("topic")
     ap.add_argument("--dir", default=None, help="project directory (default videos/<slug>)")
     ap.add_argument("--length", type=int, default=60)
@@ -153,7 +153,7 @@ def cmd_make(argv):
     a = ap.parse_args(argv)
     h, m = config.harness()
     harness, model = a.harness or h, a.model or m
-    slug = re.sub(r"[^\w]+", "-", a.topic.lower()).strip("-_")[:40] or f"film-{os.getpid()}"   # keeps 中文
+    slug = re.sub(r"[^\w]+", "-", a.topic.lower()).strip("-_")[:40] or f"reel-{os.getpid()}"   # keeps 中文
     proj = Path(a.dir or f"videos/{slug}").resolve()
     if not a.yes:
         if not sys.stdin.isatty():

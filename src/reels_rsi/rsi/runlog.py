@@ -1,4 +1,4 @@
-"""The raw material of self-improvement: what happened on every pass over a film.
+"""The raw material of self-improvement: what happened on every pass over a reel.
 
 <project>/.reels/runs.jsonl      one JSON line per finalize / render / feedback / score event
 <project>/.reels/history/NNN/    the frame + overlay HTML, STORYBOARD.md and SCRIPT.md as they
@@ -16,7 +16,7 @@ from reels_rsi.project import HF_SECTIONS, hf_findings, is_placeholder
 
 def state(project) -> Path:
     d = Path(project) / ".reels"
-    old = Path(project) / ".evofilm"                      # films made before the rename
+    old = Path(project) / ".evofilm"                      # reels made before the rename
     if not d.exists() and old.is_dir():
         old.rename(d)
     d.mkdir(parents=True, exist_ok=True)

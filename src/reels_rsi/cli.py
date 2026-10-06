@@ -12,9 +12,9 @@ COMMANDS = {
         ("install", "reels_rsi.env", "cmd_install", "add the skill to Claude Code / Codex / other agents"),
         ("doctor", "reels_rsi.env", "cmd_doctor", "check the environment, agents and models"),
         ("config", "reels_rsi.config", "cmd_config", "choose models: agent harness, judge, retro"),
-        ("make", "reels_rsi.env", "cmd_make", "one sentence → rendered film, via any agent CLI"),
+        ("make", "reels_rsi.env", "cmd_make", "one sentence → rendered reel, via any agent CLI"),
     ],
-    "film": [
+    "reel": [
         ("new", "reels_rsi.project", "cmd_new", "scaffold a project from a preset"),
         ("voice", "reels_rsi.pipeline.tts", "main", "narration + word timings + music bed"),
         ("packets", "reels_rsi.project", "cmd_packets", "per-frame briefs for parallel frame workers"),
@@ -22,10 +22,10 @@ COMMANDS = {
         ("render", "reels_rsi.project", "cmd_render", "render the MP4"),
         ("cover", "reels_rsi.pipeline.cover", "main", "cover / thumbnail"),
         ("srt", "reels_rsi.pipeline.srt", "main", "export subtitles (zh / en / bilingual)"),
-        ("concat", "reels_rsi.project", "cmd_concat", "join chapter projects into one long film"),
+        ("concat", "reels_rsi.project", "cmd_concat", "join chapter projects into one long reel"),
     ],
     "assets": [
-        ("fonts", "reels_rsi.pipeline.fonts", "main", "subset CJK fonts to the film's characters"),
+        ("fonts", "reels_rsi.pipeline.fonts", "main", "subset CJK fonts to the reel's characters"),
         ("captions", "reels_rsi.pipeline.captions_cjk", "main", "karaoke captions (CJK-aware, bilingual)"),
         ("music", "reels_rsi.pipeline.music", "main", "procedural cut-aware music bed"),
         ("sfx", "reels_rsi.pipeline.sfx", "main", "procedural SFX library / storyboard cues"),
@@ -41,10 +41,10 @@ COMMANDS = {
         ("lint", "reels_rsi.rsi.lint", "cmd_lint", "check frames against every learned rule"),
         ("rules", "reels_rsi.rsi.lint", "cmd_rules", "list / test / scaffold rules"),
         ("feedback", "reels_rsi.rsi.lessons", "cmd_feedback", "record what the viewer said"),
-        ("retro", "reels_rsi.rsi.retro", "cmd_retro", "turn a film's history into proposed lessons"),
+        ("retro", "reels_rsi.rsi.retro", "cmd_retro", "turn a reel's history into proposed lessons"),
         ("lessons", "reels_rsi.rsi.lessons", "cmd_lessons", "review, accept, reject, export lessons"),
         ("score", "reels_rsi.rsi.score", "cmd_score", "deterministic checks + vision judge (R1–R6)"),
-        ("compare", "reels_rsi.rsi.score", "cmd_compare", "blind A/B between two versions of a film"),
+        ("compare", "reels_rsi.rsi.score", "cmd_compare", "blind A/B between two versions of a reel"),
         ("bench", "reels_rsi.rsi.bench", "cmd_bench", "Reels-RSI Bench: fixed topics, any model, a leaderboard"),
         ("evolve", "reels_rsi.rsi.evolve", "cmd_evolve", "benchmark-gated rewrite of the skill itself"),
     ],
@@ -53,7 +53,7 @@ TABLE = {name: (mod, fn) for group in COMMANDS.values() for name, mod, fn, _ in 
 
 
 def usage():
-    out = [f"reels {__version__} — an AI film director that evolves with every film\n",
+    out = [f"reels {__version__} — an AI reel director that evolves with every reel\n",
            "usage: reels <command> [args]   ·   reels <command> --help\n"]
     for group, items in COMMANDS.items():
         out.append(f"{group}:")

@@ -1,8 +1,8 @@
-"""Retro: turn one film's history into lessons for every film after it.
+"""Retro: turn one reel's history into lessons for every reel after it.
 
     reels retro <project>                  write .reels/retro/evidence.md and propose lessons with the
                                               retro model (config roles.retro) into ~/.reels/lessons/inbox/
-    reels retro <project> --evidence-only  just the evidence — the agent directing the film reads it and
+    reels retro <project> --evidence-only  just the evidence — the agent directing the reel reads it and
                                               files lessons itself with `reels lessons add`
 
 Evidence = what the checks caught on each finalize pass (and what got fixed between passes), how
@@ -97,10 +97,10 @@ def evidence(project):
 
 
 def propose(project, spec, ev_path):
-    from reels_rsi.project import film_context
-    film = film_context(project)
+    from reels_rsi.project import reel_context
+    reel = reel_context(project)
     prompt = agents.render_prompt("retro", evidence=ev_path.read_text("utf-8"),
-                                  film=", ".join(f"{k}={v}" for k, v in film.items()))
+                                  reel=", ".join(f"{k}={v}" for k, v in reel.items()))
     j = llm.complete_json(spec, prompt, max_tokens=4000)
     added = []
     for item in j.get("lessons", [])[:8]:
@@ -125,7 +125,7 @@ def valid_when(when):
 
 
 def cmd_retro(argv):
-    ap = argparse.ArgumentParser(prog="reels retro", description="Distil a film's history into proposed lessons.")
+    ap = argparse.ArgumentParser(prog="reels retro", description="Distil a reel's history into proposed lessons.")
     ap.add_argument("project", nargs="?", default=".")
     ap.add_argument("--evidence-only", action="store_true")
     ap.add_argument("--model", default=None, help="provider:model (default: config roles.retro)")

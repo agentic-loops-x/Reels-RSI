@@ -89,7 +89,7 @@ Only the 4-space-indented block is spoken. Frames without narration are simply l
 (clauses split at ，。？！；：——). `reels captions` shows each group's English under it and
 `reels srt` writes zh / en / zh-en SRTs.
 
-**English films:** write SCRIPT.md in English; `reels voice` detects it (voice en-US-AndrewNeural by
+**English reels:** write SCRIPT.md in English; `reels voice` detects it (voice en-US-AndrewNeural by
 default) and the stock caption builder is used.
 
 **Music mood** comes from the storyboard frontmatter `music:` — keywords map to ambient

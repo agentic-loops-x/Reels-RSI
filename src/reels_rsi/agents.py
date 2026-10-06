@@ -1,6 +1,6 @@
-"""Headless agent harnesses: hand the skill to any agent CLI and let it direct a film.
+"""Headless agent harnesses: hand the skill to any agent CLI and let it direct a reel.
 
-Reels-RSI does not reimplement an agent. Directing a film means reading files, writing HTML,
+Reels-RSI does not reimplement an agent. Directing a reel means reading files, writing HTML,
 running commands and looking at snapshots — Claude Code, Codex CLI, Gemini CLI and OpenCode all
 do that already, each with its own model menu (OpenCode reaches DeepSeek, Qwen, Kimi, GLM and
 local models). We pass them the same prompt and the same skill folder.

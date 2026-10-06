@@ -1,11 +1,11 @@
-"""Score a film: deterministic signals + a vision judge on the quality-bar rubric (R1–R6).
+"""Score a reel: deterministic signals + a vision judge on the quality-bar rubric (R1–R6).
 
     reels score <project> [--judge provider:model] [--no-judge]
     reels compare <projectA> <projectB> [--judge …]      blind pairwise preference (3 votes, order swapped)
 
 composite = 0.6 · judge + 0.4 · deterministic   (deterministic only when no judge is available)
 
-The judge never sees which skill version, model or run produced a film. Scores land in
+The judge never sees which skill version, model or run produced a reel. Scores land in
 <project>/.reels/score.json and the run log — `bench` aggregates them, `evolve` compares them.
 """
 
@@ -26,14 +26,14 @@ R2 Mechanism shown — the narration's cause→effect is visibly happening, not 
 R3 Camera & life — the three samples differ by camera position/motion, not only by added elements
 R4 Pacing — the build-up is spread across the frame (30% sample is not empty, 92% is not identical to 60%)
 R5 Composition — depth layers, clear hierarchy, nothing colliding with the captions, nothing clipped
-R6 Consistency — palette/type coherent with the rest of the film"""
+R6 Consistency — palette/type coherent with the rest of the reel"""
 # A worked problem is a teacher at a board: a still board is right, and "camera" means guiding the eye.
 R3_SOLVE = ("R3 Guiding the eye — the step being spoken is singled out (highlight, colour, pointer, zoom on the "
             "region); earlier steps dim; each sample shows a clearly different step. A static board is fine")
 
 
-def film_mode(storyboard):
-    from reels_rsi.project import film_mode as mode
+def reel_mode(storyboard):
+    from reels_rsi.project import reel_mode as mode
     return mode(storyboard)
 
 
@@ -43,7 +43,7 @@ def rubric(mode):
 
 def layout_for(w, h):
     """Tile size and frames per sheet so a sheet stays near 4:3 — vision models downscale any image to
-    ~1.5k px, and a 9:16 film stacked four deep shrank each frame to ~200 px ("everything is tiny")."""
+    ~1.5k px, and a 9:16 reel stacked four deep shrank each frame to ~200 px ("everything is tiny")."""
     if h > w:
         return "scale=-2:640", 2          # 360×640 tiles → 1080×1280 sheet
     if h == w:
@@ -160,14 +160,14 @@ def judge(project, spec):
         sb = (Path(project) / "STORYBOARD.md").read_text("utf-8")
         from reels_rsi.project import band_top, canvas
         w, h = canvas(sb).split("x")
-        mode = film_mode(sb)
+        mode = reel_mode(sb)
         kind = ("a worked-problem lesson on a board (judge it as teaching: clarity of each step beats spectacle)"
                 if mode == "solve" else "a narrated explainer")
-        prompt = f"""You are a strict film critic scoring {kind}, made with code (HTML/SVG/canvas).
+        prompt = f"""You are a strict reel critic scoring {kind}, made with code (HTML/SVG/canvas).
 Canvas {w}×{h} ({"portrait 9:16 — judge the layout for a phone screen" if int(h) > int(w) else "landscape"}).
 Captions are burned in the band below y={band_top(sb)} (the bottom 16.67 %); that band is reserved for them,
 so content stopping above it is correct, not wasted space.
-Each row of each image is ONE frame of the film: three tiles, each the full {w}×{h} canvas scaled down,
+Each row of each image is ONE frame of the reel: three tiles, each the full {w}×{h} canvas scaled down,
 sampled at 30%, 60% and 92% of its duration (left → right).
 {layout}
 
@@ -178,7 +178,7 @@ Score every frame 1–5 on each criterion (5 = excellent, 3 = acceptable, 1 = br
 {rubric(mode)}
 
 Return JSON: {{"frames": [{{"id": "<frame id>", "R1": n, "R2": n, "R3": n, "R4": n, "R5": n, "R6": n, "note": "<the one fix that would raise this frame most>"}}],
-"top_issues": ["<the 3 most important problems across the film, concrete>"]}}"""
+"top_issues": ["<the 3 most important problems across the reel, concrete>"]}}"""
         return llm.complete_json(spec, prompt, images=[s for s, _ in sheets], max_tokens=6000)
 
 
@@ -188,7 +188,7 @@ def judge_score(j):
 
 
 def ensure_records(project):
-    """Films made before Reels-RSI (or by hand) have no run log yet — measure them once."""
+    """Reels made before Reels-RSI (or by hand) have no run log yet — measure them once."""
     runs = runlog.read(project)
     if not any(r.get("event") == "finalize" for r in runs) and (project / "index.html").exists():
         from reels_rsi.project import hf_check
@@ -236,7 +236,7 @@ def print_score(res):
 
 
 def compare(a, b, spec, votes=3, detail=False):
-    """Blind pairwise: which of two films on the same topic is better? Each vote sees both films'
+    """Blind pairwise: which of two reels on the same topic is better? Each vote sees both reels'
     sample sheets with the order swapped every vote (position bias cancels); the judge is never told
     which version is which. Returns {"A": wins, "B": wins} (+ "why": [...] with detail=True).
     Relative judgments are far steadier than absolute 1–5 scores from the same judge."""
@@ -247,19 +247,19 @@ def compare(a, b, spec, votes=3, detail=False):
         for v in range(votes):
             x, y = ("A", "B") if v % 2 == 0 else ("B", "A")
             ix, iy = [s for s, _ in sheets[x]], [s for s, _ in sheets[y]]
-            prompt = f"""Two narrated explainer films on the same topic, made independently. You see stills only.
-Film X = images 1–{len(ix)}; film Y = images {len(ix) + 1}–{len(ix) + len(iy)}. In each image every row is one
-frame of the film, sampled at 30%, 60% and 92% of its duration (left → right). Captions sit in the bottom band.
+            prompt = f"""Two narrated explainer reels on the same topic, made independently. You see stills only.
+Reel X = images 1–{len(ix)}; reel Y = images {len(ix) + 1}–{len(ix) + len(iy)}. In each image every row is one
+frame of the reel, sampled at 30%, 60% and 92% of its duration (left → right). Captions sit in the bottom band.
 
-Film X — what each frame shows and says:
+Reel X — what each frame shows and says:
 {digest[x]}
 
-Film Y — what each frame shows and says:
+Reel Y — what each frame shows and says:
 {digest[y]}
 
-Which film is better overall for a viewer who wants to understand the topic? Weigh:
+Which reel is better overall for a viewer who wants to understand the topic? Weigh:
 {RUBRIC}
-Judge the films, not their length or number of frames.
+Judge the reels, not their length or number of frames.
 Return JSON: {{"winner": "X" or "Y", "why": "one concrete sentence"}}"""
             j = llm.complete_json(spec, prompt, images=ix + iy)
             pick = x if str(j.get("winner", "")).strip().upper().startswith("X") else y
@@ -269,7 +269,7 @@ Return JSON: {{"winner": "X" or "Y", "why": "one concrete sentence"}}"""
 
 
 def side_by_side(a, b, out):
-    """One image for a human: film A's frames (left) next to film B's (right), for the evolve report."""
+    """One image for a human: reel A's frames (left) next to reel B's (right), for the evolve report."""
     def height(img):
         r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=height",
                             "-of", "csv=p=0", str(img)], capture_output=True, text=True)
@@ -290,7 +290,7 @@ def side_by_side(a, b, out):
 
 
 def cmd_score(argv):
-    ap = argparse.ArgumentParser(prog="reels score", description="Score a finalized/rendered film.")
+    ap = argparse.ArgumentParser(prog="reels score", description="Score a finalized/rendered reel.")
     ap.add_argument("project", nargs="?", default=".")
     ap.add_argument("--judge", default=None, help="provider:model (default: config roles.judge or auto-detect)")
     ap.add_argument("--no-judge", action="store_true")
@@ -303,7 +303,7 @@ def cmd_score(argv):
 
 
 def cmd_compare(argv):
-    ap = argparse.ArgumentParser(prog="reels compare", description="Blind pairwise comparison of two versions of a film.")
+    ap = argparse.ArgumentParser(prog="reels compare", description="Blind pairwise comparison of two versions of a reel.")
     ap.add_argument("a")
     ap.add_argument("b")
     ap.add_argument("--judge", default=None)

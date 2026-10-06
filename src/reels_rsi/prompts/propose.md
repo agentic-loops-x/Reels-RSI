@@ -1,5 +1,5 @@
 You are improving the Reels-RSI skill — the instructions an AI agent follows to direct
-code-rendered explainer films. A benchmark of films was just made with the current skill, and
+code-rendered explainer reels. A benchmark of reels was just made with the current skill, and
 scored. Your job: edit the skill so the next benchmark scores higher.
 
 Skill to edit (a copy — edit freely): {{candidate}}
@@ -7,7 +7,7 @@ Benchmark results, judge notes and check findings for the current skill:
 
 {{baseline}}
 
-Lessons waiting in the inbox (proposed after past films, not yet accepted):
+Lessons waiting in the inbox (proposed after past reels, not yet accepted):
 
 {{inbox}}
 

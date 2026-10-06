@@ -1,4 +1,4 @@
-"""Build the mutant films for this task from a passing output folder; each must FAIL its target test.
+"""Build the mutant reels for this task from a passing output folder; each must FAIL its target test.
 
     python make_mutants.py <passing-output-dir> <mutants-dir>
 """

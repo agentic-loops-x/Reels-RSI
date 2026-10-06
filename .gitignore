@@ -7,5 +7,5 @@ build/
 *.egg-info/
 .pytest_cache/
 .DS_Store
-# films made inside the repo
+# reels made inside the repo
 videos/

@@ -1,9 +1,9 @@
 ---
 name: reels
-description: "Reels-RSI — an AI film director that evolves with every film. Turns a topic into a narrated, captioned, scored video rendered from code (HyperFrames: SVG/Canvas/Three.js/maps): 科普讲解、历史简介/朝代/战役/人物、题目讲解（小学到高中数学/物理/化学/语文，板书+公式+笔顺）、故事短片. Chinese-first (TTS word timing, CJK/bilingual captions, font subsetting), English too. Learns from every film: checks compiled from past mistakes, lessons, a benchmark. Use whenever the user asks for a video/视频/短片/讲解视频/历史视频/解题视频, 'like the viral AI-made explainers', or types /reels."
+description: "Reels-RSI — an AI reel director that evolves with every reel. Turns a topic into a narrated, captioned, scored video rendered from code (HyperFrames: SVG/Canvas/Three.js/maps): 科普讲解、历史简介/朝代/战役/人物、题目讲解（小学到高中数学/物理/化学/语文，板书+公式+笔顺）、故事短片. Chinese-first (TTS word timing, CJK/bilingual captions, font subsetting), English too. Learns from every reel: checks compiled from past mistakes, lessons, a benchmark. Use whenever the user asks for a video/视频/短片/讲解视频/历史视频/解题视频, 'like the viral AI-made explainers', or types /reels."
 ---
 
-# Reels-RSI — direct a film, then learn from it
+# Reels-RSI — direct a reel, then learn from it
 
 You are the director. Every frame is a HyperFrames HTML composition rendered frame by frame by
 headless Chrome — code, not a video model. All deterministic steps are `reels <command>`
@@ -12,8 +12,8 @@ commands; sub-agents are optional.
 
 **First run:** `reels doctor` — if fonts/SFX are missing run `reels setup`.
 **Every run:** read `references/quality-bar.md` (defines done), and run
-`reels lessons digest` — those are lessons from past films; follow them. Once the project exists,
-`reels lessons digest --project <dir>` narrows them to this film's preset, aspect and mode
+`reels lessons digest` — those are lessons from past reels; follow them. Once the project exists,
+`reels lessons digest --project <dir>` narrows them to this reel's preset, aspect and mode
 (frame packets already carry the narrowed frame lessons).
 
 ## Route by genre
@@ -74,7 +74,7 @@ storyboard, builds the music bed on the real cuts. Re-voice one frame: `--only 3
 
 Write `## Video direction` once in STORYBOARD.md (palette roles, named style, motion grammar, rhythm,
 negative list). Per frame, a time-coded shot list cued to the spoken word times: one camera move per
-frame, a rich hero (quality-bar.md). Film-wide elements (year ruler, chapter bar) → an overlay
+frame, a rich hero (quality-bar.md). Reel-wide elements (year ruler, chapter bar) → an overlay
 (`compositions/overlays/<name>.html`, history.md).
 
 ## Step 6 — Build frames
@@ -96,7 +96,7 @@ Without sub-agents, build them yourself in order from the same packets. Mark eac
 reels finalize .
 ```
 fonts → captions → music → SFX → assemble → overlays → transitions → HyperFrames check (lint,
-runtime, layout, contrast) → **Reels-RSI rules** (mistakes earlier films made) → SRT → snapshots.
+runtime, layout, contrast) → **Reels-RSI rules** (mistakes earlier reels made) → SRT → snapshots.
 Every pass is logged in `.reels/`. Fix every error and warning in the frame files (never the
 generated index). Score each frame on R1–R6 from the contact sheet (`reels score .` adds a vision
 judge when one is configured); anything < 4 → fix → finalize again. ≥ 1 round, ≤ 3.

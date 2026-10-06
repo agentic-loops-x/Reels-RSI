@@ -14,6 +14,6 @@ Copyright HeyGen, licensed under the Apache License, Version 2.0:
 Third-party material fetched at run time, not distributed in this repository:
   - Noto Serif SC / Noto Sans SC, Instrument Serif, Archivo — SIL Open Font License 1.1 (Google Fonts)
   - Natural Earth vector data — public domain
-  - hanzi-writer-data — Arphic Public License (credited in each film's CREDITS.md)
-  - Wikimedia Commons images — per-file licenses (credited in each film's CREDITS.md)
+  - hanzi-writer-data — Arphic Public License (credited in each reel's CREDITS.md)
+  - Wikimedia Commons images — per-file licenses (credited in each reel's CREDITS.md)
   - edge-tts — uses Microsoft Edge's online text-to-speech service (unofficial endpoint)

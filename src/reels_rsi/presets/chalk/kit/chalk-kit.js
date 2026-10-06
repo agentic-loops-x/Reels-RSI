@@ -1,8 +1,8 @@
-/* chalk-kit.js — Reels-RSI's blackboard toolkit (preset `chalk`), distilled from the first solve films.
+/* chalk-kit.js — Reels-RSI's blackboard toolkit (preset `chalk`), distilled from the first solve reels.
    Copied into every new chalk project as assets/chalk-kit.js — load it before your frame script:
      <script src="assets/chalk-kit.js"></script>   →   window.ChalkKit
-   Everything is deterministic (seeded PRNG) and seek-safe. Put film-specific geometry in your own
-   assets/<film>-kit.js on top of it (one kit per film, so every frame lines up).
+   Everything is deterministic (seeded PRNG) and seek-safe. Put reel-specific geometry in your own
+   assets/<reel>-kit.js on top of it (one kit per reel, so every frame lines up).
 
    const K = ChalkKit, C = K.C;
    const U = K.coords(270, 135, 1180);              // 1 unit = 270 px, origin at (135,1180), y up

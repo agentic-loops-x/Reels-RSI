@@ -56,7 +56,7 @@ def test_user_rule_replaces_builtin_of_same_name(isolated_home):
     assert dirs == [isolated_home / "rules" / "caption-band"]
 
 
-def test_when_limits_lessons_to_matching_films():
+def test_when_limits_lessons_to_matching_reels():
     a = lessons.add("Draw chalk boxes from four straight segments", "doc", "frame", when="preset=chalk")
     b = lessons.add("Keep every label at least 28 px tall on screen", "doc", "frame")
     c = lessons.add("Restate a photographed problem at the plan gate", "doc", "solve")
@@ -66,6 +66,6 @@ def test_when_limits_lessons_to_matching_films():
     chalk = lessons.digest("frame", {"preset": "chalk", "aspect": "9:16", "mode": "solve"})
     assert "chalk boxes" not in deep and "28 px" in deep and "photographed" not in deep
     assert "chalk boxes" in chalk and "photographed" in chalk
-    assert "chalk boxes" in lessons.digest("frame")          # no film → everything (CLI view)
+    assert "chalk boxes" in lessons.digest("frame")          # no reel → everything (CLI view)
     with pytest.raises(SystemExit):
         lessons.parse_when("colour=red")

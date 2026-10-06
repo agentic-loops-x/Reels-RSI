@@ -69,7 +69,7 @@ from a timeline proxy, but only if everything it paints is a pure function of t 
 ### Oil-painting look (Kuwahara)
 For a Three.js or Canvas scene, add a post pass. Simplest: render the scene to a canvas, then a
 second WebGL quad with a 4-sector Kuwahara fragment shader (radius 4–6px) — this is what made the
-Austerlitz film read as a painting. Keep geometry simple; the filter adds the craft.
+Austerlitz reel read as a painting. Keep geometry simple; the filter adds the craft.
 
 ### Halftone / risograph
 Canvas: sample a source (an image in `public/` or your own drawn canvas) into a grid; draw a dot

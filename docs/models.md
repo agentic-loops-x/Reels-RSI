@@ -6,13 +6,13 @@ Reels-RSI has three roles. Each can be a different model.
 |---|---|---|---|
 | **director** | research, script, storyboard, frame code, review fixes | strong coding + tool use + some vision | the agent you run it in, or `reels config set agent.harness/agent.model` for headless `make`/`bench` |
 | **judge** | scores frames R1–R6 from samples | vision | `reels config set roles.judge provider:model` |
-| **retro** | turns a film's history into lessons | good reasoning, text only | `reels config set roles.retro provider:model` |
+| **retro** | turns a reel's history into lessons | good reasoning, text only | `reels config set roles.retro provider:model` |
 
 ## Harnesses (director)
 
 | Harness | Models it reaches | Status |
 |---|---|---|
-| Claude Code (`claude`) | Opus / Sonnet / Haiku | ✅ films made with it |
+| Claude Code (`claude`) | Opus / Sonnet / Haiku | ✅ reels made with it |
 | Codex CLI (`codex`) | GPT-5.x / codex models | untested |
 | Gemini CLI (`gemini`) | Gemini 2.5 / 3 | untested |
 | OpenCode (`opencode`) | DeepSeek, Qwen, Kimi, GLM, OpenRouter, Ollama, … | untested |

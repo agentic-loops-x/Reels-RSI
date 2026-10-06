@@ -44,7 +44,7 @@ components:
     description: "Depth layers; drift at different parallax rates."
   seal-stamp:
     background: "{colors.seal} square/round seal with paper-white carved characters, slightly rough edge"
-    description: "The one accent: a dynasty name, a key year, the film's mark. Stamps in with a small press (scale 1.08→1)."
+    description: "The one accent: a dynasty name, a key year, the reel's mark. Stamps in with a small press (scale 1.08→1)."
   vertical-title:
     typography: "{typography.headline} with writing-mode: vertical-rl"
     description: "Classical vertical title column; strokes or characters reveal top to bottom."

@@ -1,4 +1,4 @@
-"""RRBench outcome tests for one task — they read the final film only, never the project or the agent's log.
+"""RRBench outcome tests for one task — they read the final reel only, never the project or the agent's log.
 
     RRB_OUTPUT=/path/to/output  pytest docs/benchmark/example-task/tests -q
 

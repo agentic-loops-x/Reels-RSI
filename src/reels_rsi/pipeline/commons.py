@@ -1,6 +1,6 @@
 """Find and download freely licensed historical images from Wikimedia Commons.
 
-History films live on real artifacts: period paintings, portraits, maps, manuscripts, photos.
+History reels live on real artifacts: period paintings, portraits, maps, manuscripts, photos.
 Code draws diagrams well and people badly — a public-domain portrait with a slow Ken Burns move
 and code layers on top (labels, lines, highlights) beats a clip-art figure.
 
