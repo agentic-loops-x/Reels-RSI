@@ -26,7 +26,7 @@ from pathlib import Path
 
 from reels_rsi import config, langs, llm
 
-SKIP = {"renders", "snapshots", ".reels", "node_modules", ".hyperframes"}
+SKIP = {"renders", "snapshots", ".reels", "node_modules"}      # .hyperframes holds the preset's caption skin — keep it
 REGEN = {"audio_meta.json", "caption_groups.json", "caption-overrides.json", "index.html"}
 SRC_CHARS = r"[぀-ヿ㐀-鿿가-힣！-～]"
 FEMALE_NAMES = ("Xiaoxiao", "Xiaoyi", "Xiaohan", "Ava", "Emma", "Aria", "Jenny", "Nanami", "SunHi", "Dalia",
@@ -96,6 +96,8 @@ Translate:
    word order of {lang_name} differs, use notation instead (e.g. "S△AMN = S△ANB × ½"). Short, the
    conventional notation of {lang_name} school maths (units as cm², "S△ABC" stays). Keep every symbol,
    letter and number; translate only words. Never longer than needed — they must fit where the original sat.
+   Never translate a string to nothing: a measure word or unit (份 "part", 块 "piece" …) carries meaning —
+   use the closest word of {lang_name} even if it would usually be left out.
 
 Narration (frame → original text, with the time it is spoken in and a length budget for {lang_name}):
 {lines}
@@ -139,6 +141,13 @@ def translate(lines, strings, lang, audience, spec, seconds):
     j = llm.complete_json(spec, prompt, max_tokens=8000)
     out = {"lines": {int(k): v for k, v in (j.get("lines") or {}).items()},
            "strings": match_keys(j.get("strings") or {}, list(strings))}
+    emptied = [o for o, v in out["strings"].items() if re.search(SRC_CHARS, o) and not re.sub(r"[\s=:：+×÷()\d.]", "", v)]
+    if emptied:      # a word that vanished (份 → "") breaks "5 份 = 3 cm²" — ask once more for just these
+        fix = llm.complete_json(spec, PROMPT.format(lang=lang, lang_name=langs.get(lang)["name"], audience=audience or "general",
+                                                    lines="(none — only the strings below)",
+                                                    strings="\n".join(f"- {s}   [line: {strings.get(s, '')}]" for s in emptied))
+                                + "\nEvery one of these MUST contain a word.", max_tokens=2000)
+        out["strings"].update({k: v for k, v in match_keys(fix.get("strings") or {}, emptied).items() if v.strip()})
     skipped = [o for o in strings if o not in out["strings"]]
     if skipped:
         print("  ⚠ no translation for on-screen: " + " · ".join(skipped[:8]))

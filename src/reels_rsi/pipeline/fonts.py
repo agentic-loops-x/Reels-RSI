@@ -98,6 +98,17 @@ def main(argv=None):
             for src, dst in faces.items():
                 subset(paths.fonts() / src, out / dst)
     faces = FACE_CSS
+    # Mixed-language reels: Hangul in a non-Korean reel gets Korean glyphs under the same family names,
+    # limited by unicode-range, so "Noto Sans SC" renders 한국어 too instead of tofu.
+    from reels_rsi import langs
+    hangul = "".join(sorted(set(langs.HANGUL.findall(text))))
+    if hangul and lang != "ko":
+        kr = source_fonts("ko")
+        subset(kr["serif"], out / "NotoSerifKR-Fallback.woff2", hangul)
+        subset(kr["sans"], out / "NotoSansKR-Fallback.woff2", hangul)
+        rng = "U+1100-11FF, U+3130-318F, U+AC00-D7A3"
+        faces += (f'@font-face {{ font-family: "Noto Serif SC"; src: url("assets/fonts/NotoSerifKR-Fallback.woff2") format("woff2"); font-weight: 200 900; unicode-range: {rng}; }}\n'
+                  f'@font-face {{ font-family: "Noto Sans SC"; src: url("assets/fonts/NotoSansKR-Fallback.woff2") format("woff2"); font-weight: 100 900; unicode-range: {rng}; }}\n')
     fam = {"ja": "JP", "ko": "KR"}.get(lang)
     if fam:
         faces += (f'@font-face {{ font-family: "Noto Serif {fam}"; src: url("assets/fonts/NotoSerifSC-Subset.woff2") format("woff2"); font-weight: 200 900; }}\n'
