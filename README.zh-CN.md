@@ -5,7 +5,7 @@
 一句话进去，一部带配音、字幕、配乐的讲解视频出来。画面全部由代码渲染，任何模型都能当导演，
 而且**每拍一部，它就变强一点**。
 
-[English](README.md) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
+[English](README.md) · [📄 论文](paper/README.md) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
 
 https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6
@@ -213,13 +213,31 @@ reels.nosync/
 4. `rsi/lessons.py` 和 `rsi/rules/visible-from-state/`：一条经验和一条规则长什么样。
 5. `rsi/bench.py` 和 `rsi/evolve.py`：技能怎么改写自己。
 
+## 论文
+
+**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos**（Agentic Loops X，预印本，2026 年 10 月）——
+[PDF](paper/versions/v7/main.pdf) · [源码、数据与各版本](paper/README.md) · arXiv：*已提交，编号待定*。
+
+论文的核心观点：讲解视频是一段由渲染器变成画面的**程序**，而这正是自我改进可以被审计的前提——经验会编译成带单元测试的规则，
+可以回头跑在它出现之前做的每一部片子上；技能改写只有在盲比评审对未见过的题目更偏好新版本时才会保留。论文报告了 111 部片子的实验：
+一次现场研究、两轮技能进化、2×2 记忆消融、更弱的导演模型、48 部片子的学习曲线和评审可靠性研究——包括发现第一轮进化的"胜利"其实是我们自己投票设计里的位置偏差。
+
+```bibtex
+@misc{reelsrsi2026,
+  title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
+  author = {{Agentic Loops X}},
+  year   = {2026},
+  note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
+}
+```
+
 ## 已验证 / 待验证
 
 | 状态 | 内容 |
 |---|---|
 | ✅ 已在真实片子上验证 | 4 部片子跑通完整流水线（其中 2 部是发布验证期间用 Reels-RSI 从零制作的，包括一道拍照的真实几何题）、横竖屏、中文配音/字幕/字体、英文和中英双语的配音 → 字幕 → SRT、地图、全片时间轴、公版图片、公式和笔顺、黑板工具包、从 git 干净安装、81 个单元测试 |
 | ✅ 自我改进，已验证 | 每轮的日志和代码快照；视觉评审（`claude-cli:sonnet`，一部片子约 30 秒）；模型根据真实的"出错 → 修复"记录自动提经验；经验批准后注入制作包（无人值守的基准测试片子也收到了，并按风格/画幅过滤）；一条经验编译成规则，在旧片子里找出 3 处潜在 bug；基准测试：无人值守的 Claude Code（sonnet）凭一句话做出 28.5 秒科普片，检查 0 错误，综合分 76.8，还自己登记了 3 条经验 |
-| ✅ 技能进化，实跑一轮 | 无人值守拍了 16 部片子，盲比结果：进化后的技能在训练集 11:1、验证集 8:4 胜出（[详情](docs/rsi.md#the-first-real-round-2026-10-06)），还顺带找出了黑板工具包的一个代码 bug |
+| ✅ 技能进化，实跑两轮 | 两轮共 32 部无人值守片子，盲比评审。第一轮表面上是训练集 11:1、验证集 8:4，但复评（170 次评审、三个评审模型）发现大部分差距来自评审偏爱后出现的那部片子；`compare` 现在两种顺序各占一半，门槛按每个题目处于劣势位置时的结果判定。第二轮在修正后的门槛下通过（训练集 4:0，验证集 2:2），但有意没有应用——这正是设计里留给人的那一道关。第一轮还顺带找出了黑板工具包的一个代码 bug（[详情](docs/rsi.md#the-first-real-round-2026-10-06)，[论文第 5 节](paper/README.md)） |
 | 🧪 已实现，还没实跑 | 基准测试之外的 `make` |
 | ❔ 未测试 | Codex / Gemini / OpenCode 作为导演、非 Anthropic 的评审模型接真实 API（已用模拟服务器测过）、ElevenLabs 配音、AI 生图图层 |
 

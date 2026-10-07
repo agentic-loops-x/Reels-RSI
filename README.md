@@ -7,7 +7,7 @@
 One sentence in → a narrated, captioned, scored explainer reel out — rendered from code, directed by
 *any* model, and a little smarter after every reel it makes.
 
-[中文说明](README.zh-CN.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
+[中文说明](README.zh-CN.md) · [📄 Paper](paper/README.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
 
 https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6
@@ -199,13 +199,34 @@ docs/                 rsi.md · models.md · comparison.md · release-checklist.
 Reading order for contributors: `cli.py` → `skill/SKILL.md` → `cmd_finalize` in `project.py` →
 `rsi/lessons.py` and `rsi/rules/visible-from-state/` → `rsi/bench.py`, `rsi/evolve.py`.
 
+## Paper
+
+**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos** (Agentic Loops X, preprint, October 2026) —
+[PDF](paper/versions/v7/main.pdf) · [source, data and versions](paper/README.md) · arXiv: *submitted, ID pending*.
+
+The paper makes the case that an explainer video is a *program* a renderer turns into frames, and
+that this is what makes self-improvement auditable: lessons compile into unit-tested rules that can be
+run over every reel made before them, and a benchmark-gated step rewrites the director's playbook only
+when blind pairwise judgments on held-out topics prefer it. It reports 111 reels: a field study, two
+playbook evolutions, a 2×2 memory ablation, a weaker director, a 48-reel learning curve and a judge-reliability
+study — including the finding that the first evolve verdict was a position bias in our own vote design.
+
+```bibtex
+@misc{reelsrsi2026,
+  title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
+  author = {{Agentic Loops X}},
+  year   = {2026},
+  note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
+}
+```
+
 ## Status — what is verified
 
 | | |
 |---|---|
 | ✅ verified on real reels | full pipeline on 4 reels (two made from scratch with Reels-RSI during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, English and bilingual 中英 voice → captions → SRT, maps, overlays, Commons, KaTeX + stroke order, chalk kit, clean install from git, 81 unit tests |
 | ✅ self-improvement, verified | run log + code snapshots on every pass · vision judge (`claude-cli:sonnet`, ~30 s per reel) · model retro proposing lessons from a real bug→fix history · lessons accepted and injected into packets — including a headless benchmark reel, filtered by `when` · a lesson compiled into a rule that found 3 latent bugs in older reels · `bench`: a headless Claude Code (sonnet) session made a 28.5 s science reel from one sentence (0 check errors, composite 76.8) and filed its own lessons |
-| ✅ evolve, one real round | 16 headless reels, blind pairwise verdict: the evolved skill won 11–1 on train and 8–4 on holdout ([details](docs/rsi.md#the-first-real-round-2026-10-06)) — and surfaced a code bug in the blackboard kit |
+| ✅ evolve, two real rounds | 32 headless reels, blind pairwise verdicts. Round 1 read 11–1 on train and 8–4 on holdout, but re-judging (170 calls, three judge models) showed most of that margin was the judge's preference for the second-shown reel; `compare` now shows each order equally often and the gate judges every topic from the slot shown first. Round 2 under the corrected gate was accepted (4–0 train, 2–2 holdout) and deliberately left unapplied — the human gate the design calls for. Round 1 also surfaced a code bug in the blackboard kit ([details](docs/rsi.md#the-first-real-round-2026-10-06), [paper §5](paper/README.md)) |
 | 🧪 implemented, not yet run | `make` outside bench |
 | ❔ untested | Codex / Gemini / OpenCode harnesses, non-Anthropic judges against real APIs (tested against a mock server), ElevenLabs voices, image-generation layers |
 

@@ -2,6 +2,7 @@
 
 ## Unreleased — release testing
 
+- Paper: *Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos* ([paper/](paper/README.md), v7) — arXiv bundle (`paper/arxiv/build.sh`, verified with pdflatex), `CITATION.cff`, paper section in both READMEs; the README's evolve row now states the position-bias correction and round 2.
 - The benchmark design (RRBench) moved to its own project, [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) — a referee must not share code with a player. `reels bench` stays as Reels-RSI's internal benchmark for `evolve`.
 - Renamed TakeLoop → EvoFilm → Reels-RSI (package `reels-rsi`, command `reels`, skill `/reels`, state in `~/.reels`; an existing `~/.evofilm` and per-reel `.evofilm/` are moved automatically).
 - From two from-scratch reels (相遇问题, a textbook 燕尾模型 problem from a photo): 13 tool fixes —
