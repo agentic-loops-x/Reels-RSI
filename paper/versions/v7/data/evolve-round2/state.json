@@ -6,7 +6,7 @@
   "margin": 3.0,
   "max_edits": 3,
   "skip_holdout": false,
-  "current": "/Users/simonlin/Desktop/code/vedio/reels-rsi.nosync/src/reels_rsi/skill",
+  "current": "/Users/simonlin/code/vedio/reels-rsi.nosync/src/reels_rsi/skill",
   "runs": {
     "base": "evolve-20261007-045637-base",
     "cand": "evolve-20261007-045637-cand",

@@ -1,5 +1,7 @@
 # arXiv submission — what to paste into the form
 
+**Status (2026-10-10):** submitted as `submit/8197411`; arXiv Support put it on hold because page 1 listed only the organisation. v8 adds the author name. Fix: dashboard → Update on that submission → Add Files → upload the new `reels-rsi-arxiv.tar.gz` → set Authors to `Wei Lin (Agentic Loops X)` → check the processed PDF → Submit.
+
 Build the bundle first (`bash paper/arxiv/build.sh --verify`; the `--verify` step needs Docker and
 compiles the bundle with pdflatex the way arXiv does). Upload `paper/arxiv/reels-rsi-arxiv.tar.gz` at
 https://arxiv.org/submit (Start new submission → upload the .tar.gz as the source).
@@ -7,7 +9,7 @@ https://arxiv.org/submit (Start new submission → upload the .tar.gz as the sou
 | field | value |
 |---|---|
 | Title | Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos |
-| Authors | Agentic Loops X |
+| Authors | Wei Lin (Agentic Loops X) |
 | Abstract | `paper/arxiv/stage/abstract.txt` (written by `build.sh`; 1 914 characters, limit 1 920) |
 | Comments | 19 pages, 4 figures, 9 tables. Code, rules, lessons, data and evolve reports: https://github.com/agentic-loops-x/Reels-RSI |
 | Primary category | cs.AI (Artificial Intelligence) |

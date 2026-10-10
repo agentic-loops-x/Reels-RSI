@@ -4,7 +4,7 @@
 4 votes per pair (2 per order) with claude-cli:sonnet. Results -> ~/.reels/evolve/ablation_pairwise.json"""
 import json, glob, os, sys, time
 from pathlib import Path
-sys.path.insert(0, "/Users/simonlin/Desktop/code/vedio/reels-rsi.nosync/src")
+sys.path.insert(0, "/Users/simonlin/code/vedio/reels-rsi.nosync/src")
 from reels_rsi.rsi import score
 HOMES = {"A": "~/.reels", "B": "~/.reels", "C": "~/.cache/reels-ablation-home", "D": "~/.cache/reels-ablation-home"}
 LABEL = {"A": "A-ruleson-lessonson", "B": "B-rulesoff-lessonson", "C": "C-ruleson-lessonsoff", "D": "D-rulesoff-lessonsoff"}

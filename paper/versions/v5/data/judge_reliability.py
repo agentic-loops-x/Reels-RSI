@@ -7,7 +7,7 @@ Results -> ~/.reels/evolve/20261006-001942/reliability.json (appended per step, 
 """
 import json, sys, time, traceback
 from pathlib import Path
-sys.path.insert(0, "/Users/simonlin/Desktop/code/vedio/reels-rsi.nosync/src")
+sys.path.insert(0, "/Users/simonlin/code/vedio/reels-rsi.nosync/src")
 from reels_rsi.rsi import score
 
 RUNS = Path.home() / ".reels/bench/runs"

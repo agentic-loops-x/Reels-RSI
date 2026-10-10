@@ -215,8 +215,8 @@ reels.nosync/
 
 ## 论文
 
-**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos**（Agentic Loops X，预印本，2026 年 10 月）——
-[PDF](paper/versions/v7/main.pdf) · [源码、数据与各版本](paper/README.md) · arXiv：*已提交，编号待定*。
+**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos**（Wei Lin，Agentic Loops X；预印本，2026 年 10 月）——
+[PDF](paper/versions/v8/main.pdf) · [源码、数据与各版本](paper/README.md) · arXiv：*已提交，编号待定*。
 
 论文的核心观点：讲解视频是一段由渲染器变成画面的**程序**，而这正是自我改进可以被审计的前提——经验会编译成带单元测试的规则，
 可以回头跑在它出现之前做的每一部片子上；技能改写只有在盲比评审对未见过的题目更偏好新版本时才会保留。论文报告了 111 部片子的实验：
@@ -225,7 +225,7 @@ reels.nosync/
 ```bibtex
 @misc{reelsrsi2026,
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
-  author = {{Agentic Loops X}},
+  author = {Lin, Wei},
   year   = {2026},
   note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }

@@ -1,0 +1,35 @@
+--- a/references/frame-worker.md
++++ b/references/frame-worker.md
+@@ -84,6 +84,20 @@
+ - Keep labels out of the hero's bbox and the ray/line paths (≥ half the font height from any line).
+ - Never let the last-frame SFX run past the end: cue closing chime/impact ≥ 1.7 s before the reel ends.
+ 
++## Hero build recipes (flat dots/rings/icons are the #1 low score)
++
++- **Size from the final camera state**: draw the hero so that after the push (centre + (x − centre)·S) it spans ≥ 55 % of
++  the width. Thin rings/bands/arrows get ≥ 60 px stroke, a gradient fill and a soft glow (blur copy at ≤ 0.35 alpha).
++  Icons in a crowd (ships, troops, drops) are ≥ 110 px, varied in size/rotation/bob, and cover the whole free area.
++- **Perspective, not a flat diagram**: a cone, ring, fleet or cloud deck is drawn with a vanishing point — rows shrink and
++  fade with distance, a near layer overlaps a far one (silhouette horizon, shore, mist), and the axis/source is visible.
++- **The camera keeps going to the last word**: pick start and end framings that differ (push toward the subject, then a
++  pull-out or pan for the reveal); never return to the start framing, never let the scene idle for the final third.
++- **Reveals use soft masks**: feather ≥ 80 px (gradient mask), never a hard rectangle edge; an end state must agree with
++  the narration (a full circle stays full, a retreating army visibly retreats).
++- **Cause → effect as a sequence**: source lights/moves first, then the effect travels item to item (fire hops along chains,
++  a light dot rides the ray path) and ends by tinting the whole scene.
++
+ ## Seeded PRNG (use for every "random" layout)
+ 
+ ```js
+--- a/references/solve.md
++++ b/references/solve.md
+@@ -114,3 +114,9 @@
+   and thicker, brighter strokes (new feet in a contrasting colour at ≥ 2× stroke width). Count-ups (`35×2=70`) tick up.
+ - Finish writing each line ≥ 0.4 s before the next spoken step, so the viewer never reads a half-written
+   `24÷2=1` while the voice has moved on.
++- Counting figures (heads, feet, rabbits vs chickens): centre the grid in the free area (not the left third), heads ≥ 90 px,
++  legs ≥ 8 px thick and bright; the two kinds differ in more than tint (rabbits: long ears, pink feet, ≥ 1.2× size) and sit
++  in separate groups with ≥ 48 px labels. Light the row/feet being counted, dim the rest, and keep all rows growing until the
++  last spoken sum so the right two-thirds is never empty.
++- Answer/result box: one large box (≥ 600 px wide) in the empty zone, ≥ 80 px from every edge and from the text column; text
++  is measured at its final string, written before the voice moves on, never typed over other lines.

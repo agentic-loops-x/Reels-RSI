@@ -3,14 +3,18 @@ message: "If you use Reels-RSI, please cite the paper below."
 title: "Reels-RSI"
 type: software
 authors:
-  - name: "Agentic Loops X"
+  - family-names: "Lin"
+    given-names: "Wei"
+    affiliation: "Agentic Loops X"
 repository-code: "https://github.com/agentic-loops-x/Reels-RSI"
 license: Apache-2.0
 preferred-citation:
   type: unpublished
   title: "Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos"
   authors:
-    - name: "Agentic Loops X"
+    - family-names: "Lin"
+      given-names: "Wei"
+      affiliation: "Agentic Loops X"
   year: 2026
   month: 10
   url: "https://github.com/agentic-loops-x/Reels-RSI/tree/main/paper"

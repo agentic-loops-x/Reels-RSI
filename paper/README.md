@@ -1,6 +1,6 @@
 # Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos
 
-**Agentic Loops X** · preprint, October 2026 · [PDF (v7)](versions/v7/main.pdf) · arXiv: *submitted, identifier pending* ·
+**Wei Lin** (Agentic Loops X) · preprint, October 2026 · [PDF (v8)](versions/v8/main.pdf) · arXiv: *submitted, identifier pending* ·
 code, rules and lessons: the repository you are in.
 
 ## Abstract
@@ -45,7 +45,7 @@ subscription through the Claude Code CLI.
 |---|---|
 | `main.tex`, `refs.bib`, `figures/` | the paper's source (compile with `tectonic main.tex`; arXiv compiles it with pdflatex) |
 | `data/` | every number in the paper: judge-reliability votes, ablation and learning-curve rows, fact-coverage readings, the scripts that produced them ([data/README.md](data/README.md)) |
-| `versions/` | one frozen copy per iteration (`v1` … `v7`), each with PDF, source, figures and data; [versions/INDEX.md](versions/INDEX.md) says what changed |
+| `versions/` | one frozen copy per iteration (`v1` … `v8`), each with PDF, source, figures and data; [versions/INDEX.md](versions/INDEX.md) says what changed |
 | `arxiv/` | `build.sh` makes the arXiv source bundle (adds `\pdfoutput=1`, bundles `main.bbl` and only the figures used) and `--verify` compiles it with pdflatex in a TeX Live container; [SUBMISSION.md](arxiv/SUBMISSION.md) holds the form metadata |
 
 The reels themselves (videos, frame code, run logs) are not in the repository; the evolve reports and
@@ -56,7 +56,7 @@ side-by-side images are summarised in [docs/rsi.md](../docs/rsi.md).
 ```bibtex
 @misc{reelsrsi2026,
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
-  author = {{Agentic Loops X}},
+  author = {Lin, Wei},
   year   = {2026},
   note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }

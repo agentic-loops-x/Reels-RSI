@@ -201,8 +201,8 @@ Reading order for contributors: `cli.py` → `skill/SKILL.md` → `cmd_finalize`
 
 ## Paper
 
-**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos** (Agentic Loops X, preprint, October 2026) —
-[PDF](paper/versions/v7/main.pdf) · [source, data and versions](paper/README.md) · arXiv: *submitted, ID pending*.
+**Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos** (Wei Lin, Agentic Loops X; preprint, October 2026) —
+[PDF](paper/versions/v8/main.pdf) · [source, data and versions](paper/README.md) · arXiv: *submitted, ID pending*.
 
 The paper makes the case that an explainer video is a *program* a renderer turns into frames, and
 that this is what makes self-improvement auditable: lessons compile into unit-tested rules that can be
@@ -214,7 +214,7 @@ study — including the finding that the first evolve verdict was a position bia
 ```bibtex
 @misc{reelsrsi2026,
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
-  author = {{Agentic Loops X}},
+  author = {Lin, Wei},
   year   = {2026},
   note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }
