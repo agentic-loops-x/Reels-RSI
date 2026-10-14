@@ -5,7 +5,7 @@
 一句话进去，一部带配音、字幕、配乐的讲解视频出来。画面全部由代码渲染，任何模型都能当导演，
 而且**每拍一部，它就变强一点**。
 
-[English](README.md) · [📄 论文](paper/README.md) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
+[English](README.md) · [📄 论文（arXiv:2610.14495）](https://arxiv.org/abs/2610.14495) · [自我改进原理](docs/rsi.md) · [评测基准 ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench)（独立项目） · [模型选择](docs/models.md) · [与其他工具对比](docs/comparison.md)
 
 
 https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6
@@ -216,7 +216,7 @@ reels.nosync/
 ## 论文
 
 **Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos**（Wei Lin，Agentic Loops X；预印本，2026 年 10 月）——
-[PDF](paper/versions/v8/main.pdf) · [源码、数据与各版本](paper/README.md) · arXiv：*已提交，编号待定*。
+[PDF](paper/versions/v8/main.pdf) · [源码、数据与各版本](paper/README.md) · arXiv：[2610.14495](https://arxiv.org/abs/2610.14495)。
 
 论文的核心观点：讲解视频是一段由渲染器变成画面的**程序**，而这正是自我改进可以被审计的前提——经验会编译成带单元测试的规则，
 可以回头跑在它出现之前做的每一部片子上；技能改写只有在盲比评审对未见过的题目更偏好新版本时才会保留。论文报告了 111 部片子的实验：
@@ -227,7 +227,11 @@ reels.nosync/
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
   author = {Lin, Wei},
   year   = {2026},
-  note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
+  eprint        = {2610.14495},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url    = {https://arxiv.org/abs/2610.14495},
+  note   = {Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }
 ```
 

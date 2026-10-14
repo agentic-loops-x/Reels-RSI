@@ -1,6 +1,6 @@
 # Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos
 
-**Wei Lin** (Agentic Loops X) · preprint, October 2026 · [PDF (v8)](versions/v8/main.pdf) · arXiv: *submitted, identifier pending* ·
+**Wei Lin** (Agentic Loops X) · preprint, October 2026 · [PDF (v8)](versions/v8/main.pdf) · arXiv: [2610.14495](https://arxiv.org/abs/2610.14495) ·
 code, rules and lessons: the repository you are in.
 
 ## Abstract
@@ -58,9 +58,10 @@ side-by-side images are summarised in [docs/rsi.md](../docs/rsi.md).
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
   author = {Lin, Wei},
   year   = {2026},
-  note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
+  eprint        = {2610.14495},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url    = {https://arxiv.org/abs/2610.14495},
+  note   = {Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }
 ```
-
-The arXiv identifier will be added here, in the root README and in `CITATION.cff` once the submission
-is announced.

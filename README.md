@@ -7,7 +7,7 @@
 One sentence in → a narrated, captioned, scored explainer reel out — rendered from code, directed by
 *any* model, and a little smarter after every reel it makes.
 
-[中文说明](README.zh-CN.md) · [📄 Paper](paper/README.md) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
+[中文说明](README.zh-CN.md) · [📄 Paper (arXiv:2610.14495)](https://arxiv.org/abs/2610.14495) · [How the self-improvement works](docs/rsi.md) · [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) (separate benchmark) · [Models](docs/models.md) · [vs. other tools](docs/comparison.md)
 
 
 https://github.com/user-attachments/assets/8c486fa7-1f6f-40bf-a8aa-ecaf04a252b6
@@ -202,7 +202,7 @@ Reading order for contributors: `cli.py` → `skill/SKILL.md` → `cmd_finalize`
 ## Paper
 
 **Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos** (Wei Lin, Agentic Loops X; preprint, October 2026) —
-[PDF](paper/versions/v8/main.pdf) · [source, data and versions](paper/README.md) · arXiv: *submitted, ID pending*.
+[PDF](paper/versions/v8/main.pdf) · [source, data and versions](paper/README.md) · arXiv: [2610.14495](https://arxiv.org/abs/2610.14495).
 
 The paper makes the case that an explainer video is a *program* a renderer turns into frames, and
 that this is what makes self-improvement auditable: lessons compile into unit-tested rules that can be
@@ -216,7 +216,11 @@ study — including the finding that the first evolve verdict was a position bia
   title  = {Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos},
   author = {Lin, Wei},
   year   = {2026},
-  note   = {Preprint. Code and data: https://github.com/agentic-loops-x/Reels-RSI}
+  eprint        = {2610.14495},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  url    = {https://arxiv.org/abs/2610.14495},
+  note   = {Code and data: https://github.com/agentic-loops-x/Reels-RSI}
 }
 ```
 
