@@ -2,6 +2,25 @@
 
 ## Unreleased — release testing
 
+- 2026-10-13 · Speed and papers. `reels make --output video|web|both`: `web` delivers `renders/web/`, a static
+  page with the HyperFrames player (`reels web <project> [--serve --open]`, 0.1 s instead of a render).
+  `--rsi off` / `--rounds N` / `--fast`: make a reel without the memory (no lessons, no score loop, no retro,
+  one finalize round; `REELS_RSI=off` silences `lessons digest`). `reels paper <src> --project .` and
+  `reels make --paper <src>`: a paper or document (arXiv id/URL, PDF, PDF URL, .md/.txt/.html) becomes
+  `paper/SOURCE.md` (metadata, abstract, ordered section outline, figure/table captions, sentences with
+  numbers), `paper/fulltext.txt`, `assets/paper/` (raster figures, page renders for vector figures) and a
+  CREDITS line; new recipe `references/paper.md`; the skill routes 论文/文档 requests to it and knows fast
+  mode and web delivery. The `make` prompt is assembled from blocks (`agents.prompt_blocks`).
+- 2026-10-13 · Voice: Microsoft's legacy edge-tts host answers 403 since October 2026 (the first paper demo
+  died on it); `reels voice` now synthesizes through `api.msedgeservices.com` (edge-tts PR #491, the host
+  Edge itself uses; `REELS_EDGE_ENDPOINT=legacy` to undo) and, with `--provider auto`, falls back to macOS
+  `say` (`--provider say` to choose it) with word timings estimated from the character/word count, so a
+  headless run never dies on TTS. `reels doctor` checks poppler.
+- 2026-10-13 · `reels make --audience beginner|intermediate|expert` (小白 · 有基础 · 专业人士; aliases accepted): one
+  line in the prompt and a full contract table in `references/paper.md` (coverage, terms, equations, numbers,
+  analogy, visuals, pace, default length per level) plus a pre-render checklist for paper reels (main figure as a
+  plate, both numbers on every result frame, label sizes, moving mechanisms, claim → source table).
+
 - Paper: *Reels-RSI: Program-Level Self-Improvement for Code-Rendered Explainer Videos* ([paper/](paper/README.md), v7) — arXiv bundle (`paper/arxiv/build.sh`, verified with pdflatex), `CITATION.cff`, paper section in both READMEs; the README's evolve row now states the position-bias correction and round 2.
 - The benchmark design (RRBench) moved to its own project, [ExplainReel-Bench](https://github.com/agentic-loops-x/ExplainReel-Bench) — a referee must not share code with a player. `reels bench` stays as Reels-RSI's internal benchmark for `evolve`.
 - Renamed TakeLoop → EvoFilm → Reels-RSI (package `reels-rsi`, command `reels`, skill `/reels`, state in `~/.reels`; an existing `~/.evofilm` and per-reel `.evofilm/` are moved automatically).
@@ -40,3 +59,19 @@ First public release.
 - Self-improvement: run log + code history per pass, 12 rules with examples, retro → lessons →
   digest, score (deterministic + vision judge), compare, bench (8 topics), evolve (gated)
 - Models: harnesses claude/codex/gemini/opencode; judge/retro on 12 provider presets + custom
+- 2026-10-14 · Depth. Paper reels are built on the eight reviewer questions (problem · prior work · key idea · how ·
+  why · evidence · limits · so what) at every audience level; the core-idea block (idea → worked example on one
+  stage → formal → why) must be ≥ 45 % (expert) / 40 % of the reel; every storyboard frame carries `- beat:` and
+  `reels paper check --project .` fails the storyboard otherwise. Default paper lengths 90 / 150 / 210 s. arXiv
+  metadata falls back to the abs page when the API rate-limits (429); running page headers are no longer sections;
+  `Figure N |` captions are recognised.
+- 2026-10-14 · A figure is matched to its caption's page or the next one, never the page before — the first
+  raster image of a paper is usually the title-page logo (the expert Dream-RSI reel showed a Google logo as
+  "Figure 1"); title-page images are now listed as "probably a logo", not as figures.
+- 2026-10-14 · "Why is the expert reel harder to follow than the beginner one?" The levels now nest instead of
+  replacing each other: the expert reel carries the intermediate explanation (the idea in words anchored to the
+  nearest concept the field knows, the walkthrough of one central mechanism on one stage) and adds a precision
+  layer on top. Notation goes on screen, never into the voice (`reels paper check` fails a script that reads
+  isolated letters / Greek aloud: > 0.6 per 100 characters or ≥ 4 in a frame); every `example` frame is
+  purpose → action → what we see; ≤ 2 new quantities and ~12 s per core frame (warned); secondary mechanisms
+  are named with their purpose only; expert narration back to the default rate; default expert length 270 s.

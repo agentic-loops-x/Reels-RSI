@@ -6,6 +6,11 @@ Providers (--provider auto picks the first available):
   edge        free Microsoft Edge TTS, native WordBoundary timings. Default voice zh-CN-YunxiNeural.
               Good Chinese voices: zh-CN-YunxiNeural (male, lively) · zh-CN-XiaoxiaoNeural (female, warm)
               · zh-CN-YunjianNeural (male, deep) · zh-CN-XiaoyiNeural (female, bright).
+              Since October 2026 the legacy host answers 403; synthesis goes through api.msedgeservices.com
+              (edge-tts PR #491) unless REELS_EDGE_ENDPOINT=legacy.
+  say         macOS `say` (Tingting / Samantha / Kyoko / Yuna …), offline. No word timings from the OS —
+              they are estimated from the character/word count over the measured duration, so karaoke
+              captions are close, not exact. `auto` falls back to it when edge fails and `say` exists.
 
 Music bed (--bgm):
   auto   a user track in <project>/assets/music/ (mp3/wav/m4a) if present, else `reels music`
@@ -77,15 +82,36 @@ def attach_punct(words, source):
 DEFAULT_VOICE = {code: spec["voice"] for code, spec in LANGS_MOD.LANGS.items()}
 
 
+EDGE_WSS = "wss://api.msedgeservices.com/tts/cognitiveservices/websocket/v1?Ocp-Apim-Subscription-Key={token}"
+
+
+class EdgeFailed(RuntimeError):
+    pass
+
+
+def edge_compat():
+    """Point edge-tts at the host Microsoft Edge itself uses. The legacy speech.platform.bing.com
+    endpoint has refused synthesis with HTTP 403 since October 2026 (rany2/edge-tts#490, fix in #491);
+    api.msedgeservices.com accepts the same token as Ocp-Apim-Subscription-Key. A released edge-tts
+    that already points there is left alone; REELS_EDGE_ENDPOINT=legacy keeps the old host."""
+    import edge_tts.communicate as comm
+    import edge_tts.constants as const
+    if os.environ.get("REELS_EDGE_ENDPOINT") == "legacy" or "msedgeservices" in const.WSS_URL:
+        return False
+    url = EDGE_WSS.format(token=const.TRUSTED_CLIENT_TOKEN)
+    const.WSS_URL = comm.WSS_URL = url
+    return True
+
+
 async def edge_synth(text, voice, rate, mp3, lang="zh", attempts=4):
-    """edge-tts with retries — the service drops connections now and then."""
+    """edge-tts with retries — the service drops connections now and then. Raises EdgeFailed."""
+    edge_compat()
     for i in range(attempts):
         try:
             return await _edge_once(text, voice, rate, mp3, lang)
         except Exception as e:  # aiohttp / websocket / service errors
             if i == attempts - 1:
-                sys.exit(f"✗ edge-tts failed after {attempts} tries ({type(e).__name__}: {str(e)[:160]}) — "
-                         "check the network (speech.platform.bing.com) and rerun; finished frames are kept with --only")
+                raise EdgeFailed(f"edge-tts failed after {attempts} tries ({type(e).__name__}: {str(e)[:160]})") from e
             wait = 2 ** i * 2
             print(f"  ⚠ edge-tts {type(e).__name__} — retry in {wait}s", flush=True)
             await asyncio.sleep(wait)
@@ -130,6 +156,47 @@ def elevenlabs_synth(text, voice, mp3):
             continue  # attach_punct re-adds punctuation from the source text
         words.append({"text": ch, "start": round(s, 3), "end": round(e, 3)})
     return words
+
+
+SAY_VOICE = {"zh": "Tingting", "en": "Samantha", "ja": "Kyoko", "ko": "Yuna", "es": "Mónica", "fr": "Thomas"}
+
+
+def estimate_words(text, duration, lang="zh", lead=0.05):
+    """Word timings when the engine gives none: every character (CJK) or word (spaced languages) gets an
+    equal share of the measured duration, and punctuation after a unit adds a pause share."""
+    cjk = LANGS_MOD.get(lang)["captions"] == "cjk"
+    units = []
+    if cjk:
+        for i, ch in enumerate(text):
+            if ch in PUNCT or ch.isspace():
+                continue
+            pause = 0.6 if i + 1 < len(text) and text[i + 1] in PUNCT else 0.0
+            units.append((ch, 1.0 + pause))
+    else:
+        for m in re.finditer(r"[^\s]+", text):
+            word = m.group(0).strip(PUNCT + "'\"()[]")
+            if word:
+                units.append((word, 1.0 + (0.6 if m.group(0)[-1] in PUNCT else 0.0)))
+    total = sum(w for _, w in units) or 1.0
+    span = max(duration - lead, 0.1)
+    words, t = [], lead
+    for u, w in units:
+        d = span * w / total
+        words.append({"text": u, "start": round(t, 3), "end": round(t + d / (1.6 if w > 1 else 1), 3)})
+        t += d
+    return words
+
+
+def say_synth(text, voice, mp3, lang="zh"):
+    """macOS `say` → mp3 + estimated word timings (offline fallback)."""
+    aiff = Path(mp3).with_suffix(".aiff")
+    v = voice or SAY_VOICE.get(lang, "Samantha")
+    r = subprocess.run(["say", "-v", v, "-o", str(aiff), text], capture_output=True, text=True)
+    if r.returncode:                                   # that voice is not installed — the system default then
+        subprocess.run(["say", "-o", str(aiff), text], check=True)
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(aiff), "-codec:a", "libmp3lame", "-q:a", "2", str(mp3)], check=True)
+    aiff.unlink()
+    return estimate_words(text, probe(mp3), lang)
 
 
 def pick_provider(name):
@@ -185,7 +252,7 @@ def probe(path):
 async def _main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", default=".")
-    ap.add_argument("--provider", default="auto", choices=["auto", "edge", "elevenlabs"])
+    ap.add_argument("--provider", default="auto", choices=["auto", "edge", "elevenlabs", "say"])
     ap.add_argument("--voice", default=None)
     ap.add_argument("--rate", default="+0%", help="edge only, e.g. +8%%")
     ap.add_argument("--bgm", default="auto")
@@ -199,6 +266,8 @@ async def _main(argv=None):
     from reels_rsi.project import require_project
     project = require_project(a.project, need=("SCRIPT.md", "STORYBOARD.md"))
     provider = pick_provider(a.provider)
+    if provider == "say" and not shutil.which("say"):
+        sys.exit("✗ --provider say needs macOS `say`")
     voice_dir = project / "assets" / "voice"
     voice_dir.mkdir(parents=True, exist_ok=True)
     meta_path = project / "audio_meta.json"
@@ -221,10 +290,22 @@ async def _main(argv=None):
         mp3, wav = voice_dir / f"{frame:02d}.mp3", voice_dir / f"{frame:02d}.wav"
 
         async def synth(rate):
+            nonlocal provider
             if provider == "elevenlabs":
                 w = elevenlabs_synth(text, a.voice, mp3)
+            elif provider == "say":
+                w = say_synth(text, a.voice, mp3, lang)
             else:
-                w = await edge_synth(text, a.voice, rate, mp3, lang)
+                try:
+                    w = await edge_synth(text, a.voice, rate, mp3, lang)
+                except EdgeFailed as e:
+                    if a.provider != "auto" or not shutil.which("say") or a.fit:
+                        sys.exit(f"✗ {e} — check the network (api.msedgeservices.com) and rerun; finished frames "
+                                 "are kept with --only; on macOS `--provider say` is the offline fallback")
+                    print(f"  ⚠ {e}\n  ⚠ falling back to macOS `say` ({SAY_VOICE.get(lang, 'Samantha')}; word timings "
+                          "estimated) — rerun `reels voice` with edge later for the real voice", flush=True)
+                    provider = "say"
+                    w = say_synth(text, None, mp3, lang)
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(mp3), "-ar", "44100", "-ac", "1",
                             str(wav)], check=True)
             mp3.unlink()

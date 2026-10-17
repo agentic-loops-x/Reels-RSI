@@ -192,7 +192,7 @@ def make_prompt(t, proj, skill, quality):
     code = t.get("language") or langs.detect(t["prompt"])
     return agents.render_prompt("make", skill=skill, topic=t["prompt"], length=t.get("length", 30),
                                 aspect=t.get("aspect", "16:9"), style=style_for(t.get("genre")), dir=proj, quality=quality,
-                                language=f"{code} ({langs.get(code)['name']})")
+                                language=f"{code} ({langs.get(code)['name']})", **agents.prompt_blocks(proj, quality))
 
 
 def mean(rows):

@@ -55,7 +55,18 @@ Or with no agent session open (headless, any harness/model):
 ```bash
 reels make "为什么铁船不会沉？初中物理讲解" --length 60 --harness claude --model sonnet
 reels make "Why do we have seasons?" --harness opencode --model deepseek/deepseek-chat   # untested harness
+reels make --paper 1706.03762 "用大白话讲清楚" --lang zh         # a paper (arXiv id/URL, PDF, .md) → explainer
+reels make "…" --output web --rsi off                            # fastest: a browser-playable page, one review round
 ```
+
+**Speed dials.** `--output web` skips the MP4 render and delivers `renders/web/` — a static page with the
+HyperFrames player (`reels web <project> --serve --open` shows it; `--output both` makes both).
+`--rsi off` makes the reel without the memory: no lessons injected, no judge/score loop, no retro, one
+finalize round (`--rounds N` to set it; the compiled rules still run — they cost nothing). `--fast` is both
+plus standard render quality.
+
+**Explain a paper.** `reels make --paper <arXiv | PDF | URL | .md> --audience beginner|intermediate|expert` — see
+[Explain a paper](#explain-a-paper) below: eight reviewer questions, nested audience levels, a storyboard gate.
 
 ## What you can make
 
@@ -64,6 +75,7 @@ reels make "Why do we have seasons?" --harness opencode --model deepseek/deepsee
 | <img src="docs/assets/ex-history.jpg" width="420"> | **History** — 朝代速览 · 战役 · 人物 · 路线. Ink, atlas and notebook styles; d3-geo maps with historical-accuracy rules (winding order, period rivers and coasts), a reel-wide timeline overlay, Wikimedia Commons images with automatic credits. |
 | <img src="docs/assets/ex-solve.jpg" width="420"> | **Solve** — 题目讲解 from 小学 to 高中: blackboard preset, KaTeX formulas (mhchem for chemistry), stroke-order animation (`reels hanzi`), answers verified in code before a word is scripted, and the check shown on screen. |
 | <img src="docs/assets/ex-science.jpg" width="420"> | **Science** — 科普讲解: Three.js / Canvas / SVG, deep-space and notebook styles, procedural particles, a scored review loop against a six-point rubric. |
+| <img src="docs/assets/ex-paper.jpg" width="420"> | **Papers** — 论文讲解: an arXiv link or a PDF in, a reel that answers the eight questions a reviewer asks, at a chosen depth (小白 · 有基础 · 专业人士); every claim traced to a line of the paper, the paper's own figures as plates, a storyboard gate (`reels paper check`). See [Explain a paper](#explain-a-paper). |
 
 **One reel, six languages.** `reels dub <reel> --lang ja` translates the narration and every word on
 screen, then voices each line fitted to the original timing, so the same frames stay in step. A real
@@ -74,6 +86,66 @@ textbook geometry problem photographed in Chinese, dubbed into 中文 · English
 <img src="docs/assets/gallery.jpg" width="880" alt="Frames from reels made with Reels-RSI: the Yuan dynasty map, the Red Cliffs fire attack, the Silk Road, the seasons, the rainbow ring, 静夜思">
 
 Also: wordless story shorts, long reels in chapters (`reels concat`), "make it look like this reference" (`reels analyze`), covers and SRT export.
+
+## Explain a paper
+
+```bash
+reels make --paper https://arxiv.org/abs/2609.14858 --audience beginner --lang zh        # 小白
+reels make --paper 2609.14858 --audience expert --lang zh --output both                  # 专业人士 · MP4 + web page
+reels make --paper paper.pdf "focus on the ablation" --audience intermediate --lang en
+reels paper <src> --project .        # ingest only, inside a project (also .md / .txt / .html / a PDF URL)
+reels paper check --project .        # does the storyboard answer the eight reviewer questions deeply enough?
+```
+
+**Ingest.** `reels paper` turns an arXiv id/URL, a PDF, a PDF URL or a text/HTML document into
+`paper/SOURCE.md` — title, authors, year, a citation line, the abstract, the section outline in order, every
+figure and table caption mapped to the image that was extracted for it, the sentences that carry numbers —
+plus `paper/fulltext.txt`, `assets/paper/` (raster figures; a page render where the figure is vector) and a
+credit line. Sources are cached in `~/.reels/papers/`. The director scripts from those files only: BRIEF.md
+carries a claim → source-line table, and nothing without a line is spoken.
+
+**The eight reviewer questions** are the backbone of every paper reel, at every level — what changes with the
+audience is depth and language, never which questions get answered:
+
+1. What problem, and why does it matter? · 2. What did people do before, and why is that not enough? ·
+3. What is the key idea — what is new? · 4. How does it work (one worked example, then the formal statement)? ·
+5. Why does it work — what makes it possible, what are the assumptions? · 6. What is the evidence, and is it fair? ·
+7. What does it not do? · 8. So what — should you care?
+
+**Audience levels nest** (`--audience`, default `intermediate`): **beginner · 小白** walks the same mechanism
+inside one everyday analogy, no notation, 1–2 numbers said as comparisons; **intermediate · 有基础** walks one
+concrete instance on one stage and shows the one equation the idea lives in; **expert · 专业人士** contains the
+intermediate explanation and adds a precision layer — the nearest known concept in the field as the anchor,
+the equations with every symbol tied to the example, assumptions, the ablation behind the central choice,
+baselines and where the comparison is weak. 先讲懂，再讲严: precision is added after understanding, never
+instead of it. Defaults: 90 / 150 / 270 s.
+
+**The gate.** Every storyboard frame carries a `beat:` (problem · prior · insight · example · formal · why ·
+evidence · result · limit · verdict); `reels paper check` fails the storyboard before a word is voiced when a
+question is unanswered, the core-idea block (idea → worked example → formal → why) is under 45 % (expert) /
+40 % of the reel, the example is not one continuous walkthrough, or the narration reads notation aloud
+(isolated letters and Greek: symbols belong on the screen next to the object, not in the voice).
+
+**Examples** — *Dream-RSI: Recursive Self-Improvement through Evolving Worlds* (Zheng et al., 2026,
+[arXiv:2609.14858](https://arxiv.org/abs/2609.14858)), directed headless by Claude Code (sonnet) with
+`--rsi off`:
+
+| Level | Length | Frames | Core-idea block | Notation spoken | What it does |
+|---|---|---|---|---|---|
+| beginner | 96 s | 12 | 53 % | 0 / 100 chars | one analogy (走迷宫 → 画地图 → 在地图上试走法) carried through; the discovery tree drawn next to the maze with real node scores; both result bars labelled |
+| expert | 287 s | 25 | 49 % | 0 / 100 chars | the idea anchored to world models; a six-node recorded tree walked for three rounds with real scores; the replay rule and objective as equations tied to that tree; assumptions, the ablation (1.90 vs 1.59), four result tables, limits, verdict |
+
+<img src="docs/assets/paper-dream-rsi-beginner.jpg" width="880" alt="Dream-RSI explained for beginners: 12 frames — the maze, the map, the replay, the results">
+
+<sub>beginner · 小白 — 12 frames sampled evenly</sub>
+
+<img src="docs/assets/paper-dream-rsi-expert.jpg" width="880" alt="Dream-RSI explained for experts: 20 of 25 frames — the recorded tree, the replay walkthrough, the equations, the ablation, the results">
+
+<sub>expert · 专业人士 — 20 of 25 frames sampled evenly</sub>
+
+Known limits: the director is a model, so the length target is sometimes missed by 10–20 %, a frame is
+occasionally thin, and a figure crop can need a hand adjustment; scanned PDFs need OCR first; PDF text and
+figures need poppler (`reels doctor` checks it).
 
 ## How it works
 
@@ -231,7 +303,8 @@ study — including the finding that the first evolve verdict was a position bia
 | ✅ verified on real reels | full pipeline on 4 reels (two made from scratch with Reels-RSI during release testing, incl. a real textbook geometry problem from a photo), 9:16 and 16:9, Chinese TTS/captions/fonts, English and bilingual 中英 voice → captions → SRT, maps, overlays, Commons, KaTeX + stroke order, chalk kit, clean install from git, 81 unit tests |
 | ✅ self-improvement, verified | run log + code snapshots on every pass · vision judge (`claude-cli:sonnet`, ~30 s per reel) · model retro proposing lessons from a real bug→fix history · lessons accepted and injected into packets — including a headless benchmark reel, filtered by `when` · a lesson compiled into a rule that found 3 latent bugs in older reels · `bench`: a headless Claude Code (sonnet) session made a 28.5 s science reel from one sentence (0 check errors, composite 76.8) and filed its own lessons |
 | ✅ evolve, two real rounds | 32 headless reels, blind pairwise verdicts. Round 1 read 11–1 on train and 8–4 on holdout, but re-judging (170 calls, three judge models) showed most of that margin was the judge's preference for the second-shown reel; `compare` now shows each order equally often and the gate judges every topic from the slot shown first. Round 2 under the corrected gate was accepted (4–0 train, 2–2 holdout) and deliberately left unapplied — the human gate the design calls for. Round 1 also surfaced a code bug in the blackboard kit ([details](docs/rsi.md#the-first-real-round-2026-10-06), [paper §5](paper/README.md)) |
-| 🧪 implemented, not yet run | `make` outside bench |
+| ✅ `make` outside bench | a paper reel from one command: `reels make --paper 1706.03762 "用大白话讲清楚…" --lang zh --output both --rsi off --model sonnet` → 9 frames, 79.6 s, MP4 + web page, every claim traced to a line of the paper; then beginner / expert pairs on two papers (1706.03762, 2609.14858) (2026-10-13; a first attempt died on Microsoft's edge-tts 403, which `reels voice` now routes around) |
+| ✅ paper mode | `reels paper` on 3 arXiv papers and the repo's own PDF; `reels paper check` gating the storyboard; beginner / expert reels of 1706.03762 and 2609.14858 made headless (sonnet) — the Dream-RSI pair above (2026-10-14) |
 | ❔ untested | Codex / Gemini / OpenCode harnesses, non-Anthropic judges against real APIs (tested against a mock server), ElevenLabs voices, image-generation layers |
 
 ## Credits & licenses

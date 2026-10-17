@@ -133,6 +133,18 @@ def parse_cues(storyboard):
     return cues
 
 
+def frame_spans(storyboard):
+    """{frame number: (start_s, duration_s)} from the storyboard's `- duration:` lines, in frame order."""
+    from reels_rsi.project import split_frames
+    spans, t = {}, 0.0
+    for num, fid, block in split_frames(storyboard):
+        m = re.search(r"^-\s+duration:\s*([\d.]+)", block, re.M)
+        d = float(m.group(1)) if m else 0.0
+        spans[num] = (round(t, 3), d)
+        t += d
+    return spans
+
+
 def cmd_cues(project):
     project = Path(project).resolve()
     meta_path = project / "audio_meta.json"
@@ -144,6 +156,8 @@ def cmd_cues(project):
     LIB = paths.sfx_lib()
     if not LIB.exists():
         cmd_library()
+    spans = frame_spans((project / "STORYBOARD.md").read_text("utf-8"))
+    total = sum(d for _, d in spans.values())
     out = []
     for frame, name, offset, vol in cues:
         src = LIB / f"{name}.wav"
@@ -152,8 +166,15 @@ def cmd_cues(project):
             continue
         dst = project / "assets" / "sfx" / src.name
         shutil.copyfile(src, dst)
-        out.append({"frame": frame, "file": f"assets/sfx/{src.name}", "offset_s": offset,
-                    "duration_s": round(sf.info(dst).duration, 3), "volume": vol})
+        dur = round(sf.info(dst).duration, 3)
+        start = spans.get(frame, (None, 0))[0]
+        if start is not None and total and start + offset + dur > total + 0.01:
+            # a cue that would run past the end of the reel (a closing chime cued late in the last frame) is
+            # pulled back so it finishes with the reel — HyperFrames refuses clips past the root duration
+            new = round(max(0.0, total - dur - start), 2)
+            print(f"  ⚠ sfx {name}@{offset}s in frame {frame} would end {start + offset + dur - total:.2f}s past the reel — moved to @{new}s")
+            offset = new
+        out.append({"frame": frame, "file": f"assets/sfx/{src.name}", "offset_s": offset, "duration_s": dur, "volume": vol})
     meta["sfx"] = out
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), "utf-8")
     print(f"✓ sfx cues: {len(out)} → audio_meta.json")

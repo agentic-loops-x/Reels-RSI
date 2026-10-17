@@ -19,6 +19,7 @@ accepts what wins on the benchmark).
 
 import argparse
 import json
+import os
 import re
 import shutil
 import sys
@@ -135,7 +136,10 @@ def in_scope(lesson_scope, role, reel):
 
 def digest(scope="director", reel=None):
     """The accepted lessons a role must read — compact markdown, empty string if none. With `reel`
-    ({"preset", "aspect", "mode"}), only the lessons that apply to that reel."""
+    ({"preset", "aspect", "mode"}), only the lessons that apply to that reel.
+    REELS_RSI=off (`reels make --rsi off`) injects nothing: the reel is made without the memory."""
+    if os.environ.get("REELS_RSI", "").lower() == "off":
+        return ""
     items = [(m, b) for st, p, m, b in all_lessons("accepted")
              if in_scope(m.get("scope"), scope, reel) and applies(m, reel)]
     taste = [b for m, b in items if m.get("kind") == "taste"]

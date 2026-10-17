@@ -40,7 +40,8 @@ def test_wheel_ships_the_skill(tmp_path):
         pytest.skip("uv not installed")
     subprocess.run(["uv", "build", "-q", "--out-dir", str(tmp_path)], cwd=root, check=True)
     names = zipfile.ZipFile(next(tmp_path.glob("*.whl"))).namelist()
-    for need in ("reels_rsi/skill/SKILL.md", "reels_rsi/skill/references/solve.md", "reels_rsi/presets/chalk/kit/chalk-kit.js",
+    for need in ("reels_rsi/skill/SKILL.md", "reels_rsi/skill/references/solve.md", "reels_rsi/skill/references/paper.md",
+                 "reels_rsi/pipeline/paper.py", "reels_rsi/pipeline/web.py", "reels_rsi/presets/chalk/kit/chalk-kit.js",
                  "reels_rsi/rsi/rules/visible-from-state/bad.js", "reels_rsi/vendor/hyperframes/lib/transitions.json",
                  "reels_rsi/bench/topics.toml", "reels_rsi/prompts/retro.md"):
         assert need in names, need
@@ -49,7 +50,41 @@ def test_wheel_ships_the_skill(tmp_path):
 
 def test_make_and_bench_prompts_fill_every_placeholder():
     from pathlib import Path
+    from reels_rsi import agents
     from reels_rsi.rsi import bench
     for t in bench.topics():
         text = bench.make_prompt(t, Path("/tmp/x"), Path("/tmp/skill"), "draft")
-        assert "{{" not in text and "language:" in text
+        assert "{{" not in text and "language:" in text and "reels render /tmp/x" in text and "reels retro" in text
+    for rsi in (True, False):
+        for output in ("video", "web", "both"):
+            for paper in (None, "1706.03762"):
+                blocks = agents.prompt_blocks(Path("/tmp/x"), "high", rsi, None, output, paper, "Attention", skill=Path("/tmp/skill"))
+                text = agents.render_prompt("make", skill="/tmp/skill", topic="t", length=60, aspect="16:9", style="s",
+                                            dir="/tmp/x", quality="high", language="zh", **blocks)
+                assert "{{" not in text
+                assert ("reels web /tmp/x" in text) == (output in ("web", "both"))
+                assert ("reels render /tmp/x" in text) == (output in ("video", "both"))
+                assert ("reels retro" in text) == rsi and ("Fast mode" in text) == (not rsi)
+                assert ("reels paper 1706.03762 --project /tmp/x" in text) == bool(paper)
+                assert "references/paper.md" in text and "audience: intermediate (有基础" in text
+    for name, key in (("小白", "beginner"), ("Expert", "expert"), ("有基础", "intermediate"), ("pro", "expert")):
+        assert agents.audience_of(name) == key
+        blocks = agents.prompt_blocks(Path("/tmp/x"), audience=name, skill=Path("/tmp/skill"))
+        assert blocks["audience"].startswith(key + " (")
+    with pytest.raises(SystemExit):
+        agents.audience_of("kids")
+
+
+def test_make_requires_a_topic_or_a_paper():
+    r = subprocess.run([sys.executable, "-m", "reels_rsi", "make", "--yes"], capture_output=True, text=True)
+    assert r.returncode != 0 and "--paper" in r.stderr
+
+
+def test_rsi_off_silences_the_lesson_digest(isolated_home, monkeypatch):
+    from reels_rsi.rsi import lessons
+    lessons.add("map labels stay above y=900", kind="doc", scope="frame")
+    lid = lessons.all_lessons("inbox")[0][2]["id"]
+    lessons.accept(lid)
+    assert "map labels" in lessons.digest("frame")
+    monkeypatch.setenv("REELS_RSI", "off")
+    assert lessons.digest("frame") == ""

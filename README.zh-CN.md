@@ -49,7 +49,23 @@ reels doctor     # 检查环境，看每个角色用的是哪个模型
 /reels 做一个 90 秒的视频：元朝是怎么灭亡的
 /reels 小学奥数：鸡兔同笼，头 35 脚 94，用画图法讲解，竖屏
 /reels 古诗《静夜思》逐句讲解，水墨风
+/reels 用大白话讲讲这篇论文 https://arxiv.org/abs/1706.03762
 ```
+
+不开智能体会话、一条命令出片（任意 harness / 模型）：
+
+```bash
+reels make "为什么铁船不会沉？初中物理讲解" --length 60 --model sonnet
+reels make --paper 1706.03762 "用大白话讲清楚" --lang zh      # 论文（arXiv 号/链接、PDF、.md）→ 通俗讲解视频
+reels make "…" --output web --rsi off                         # 最快：出一个浏览器可播放的网页，只审一轮
+```
+
+**两个提速开关。** `--output web` 跳过渲染 MP4，直接交付 `renders/web/`——一个带 HyperFrames 播放器的静态网页
+（`reels web <项目> --serve --open` 打开看；`--output both` 两样都要）。`--rsi off` 关掉自我改进：不注入 lessons、
+不跑评分/judge 循环、不做 retro，finalize 只审一轮（`--rounds N` 可调；编译好的 rules 零成本，照常跑）。`--fast`
+= 两者都开 + 标准渲染质量。
+
+**讲论文。** `reels make --paper <arXiv | PDF | 链接 | .md> --audience beginner|intermediate|expert`——见下文[讲论文](#讲论文)：八个评审问题、嵌套的三档受众、分镜门槛。
 
 ## 能做什么
 
@@ -58,6 +74,7 @@ reels doctor     # 检查环境，看每个角色用的是哪个模型
 | 历史 | 朝代速览、战役、人物、路线；水墨、古地图、手账三种风格；地图有古今地理校验；维基共享资源图片自动署名 |
 | 解题 | 板书风格；KaTeX 公式（化学方程式用 mhchem）；笔顺动画（`reels hanzi`）；先验算再写稿，片中演示验算 |
 | 科普 | Three.js / Canvas / SVG；深空和手账风格；按 6 项评分表审片 |
+| 论文 | 丢进一个 arXiv 链接或 PDF，出一部按「评审一篇工作的八个问题」讲解的片子，深度可选（小白 · 有基础 · 专业人士）；每句话对得上原文的一行，论文原图做插图，分镜有门槛（`reels paper check`）。见[讲论文](#讲论文) |
 | 其他 | 无台词故事短片、分章节长片、「照这个视频的风格做」、封面、SRT 字幕 |
 
 **一部片子，六种语言。** `reels dub <片子> --lang ja` 会翻译旁白和画面上的每个字，并按原片每一句的时长配音，画面无需改动就能对上。下面是一道拍照的真实课本几何题，从中文配成 中文 · English · 日本語 · 한국어 · Español · Français：
@@ -65,6 +82,56 @@ reels doctor     # 检查环境，看每个角色用的是哪个模型
 <img src="docs/assets/dub-languages.jpg" width="880" alt="同一节几何课的同一个画面，六种语言">
 
 <img src="docs/assets/gallery.jpg" width="880" alt="用 Reels-RSI 做的片子：元朝地图、赤壁火攻、丝绸之路、四季、彩虹、静夜思">
+
+## 讲论文
+
+```bash
+reels make --paper https://arxiv.org/abs/2609.14858 --audience beginner --lang zh        # 小白
+reels make --paper 2609.14858 --audience expert --lang zh --output both                  # 专业人士 · MP4 + 网页
+reels make --paper paper.pdf "重点讲消融实验" --audience intermediate
+reels paper <来源> --project .       # 只摄入，不出片（也支持 .md / .txt / .html / PDF 链接）
+reels paper check --project .        # 分镜是否把八个评审问题答够了深度？
+```
+
+**摄入。** `reels paper` 把 arXiv 号/链接、PDF、PDF 链接或文本/网页变成 `paper/SOURCE.md`——标题、作者、年份、
+引用行、摘要、按顺序的章节提纲、每条图表标题和为它抽出的图片的对应关系、带数字的原句——外加 `paper/fulltext.txt`、
+`assets/paper/`（位图插图；矢量图则渲染所在页）和一条署名。来源缓存在 `~/.reels/papers/`。导演只从这些文件写稿：
+BRIEF.md 里有一张「每句话 → 原文行」表，对不上原文的话不许说。
+
+**八个评审问题**是每部论文片的骨架，每一档都要全答，受众只改变深度和语言：
+
+1. 解决什么问题，为什么重要？ · 2. 之前的人怎么做，为什么不够？ · 3. 核心想法是什么，新在哪？ ·
+4. 具体怎么做（走一个例子，再给形式化）？ · 5. 为什么有效，靠什么假设？ · 6. 证据是什么，比较公平吗？ ·
+7. 做不到什么？ · 8. 所以呢——值不值得关注？
+
+**三档受众是嵌套的**（`--audience`，默认 `intermediate`）：**小白**在一个生活类比里走同样的机制，不用记号，
+一两个数字用比较的方式说；**有基础**在同一个舞台上走一个具体实例，给出想法所在的那一个公式；**专业人士**包含
+有基础版的全部讲解，再叠一层精确性——用领域内最近的已知概念做锚、公式里每个符号都对回例子、假设、支撑核心
+设计的消融、baseline 和比较偏弱的地方。先讲懂，再讲严：精确性加在理解之后，不替代理解。默认时长 90 / 150 / 270 秒。
+
+**门槛。** 每一帧分镜带 `beat:` 标签（problem · prior · insight · example · formal · why · evidence · result ·
+limit · verdict）；`reels paper check` 在配音之前就拦下分镜：有问题没答、核心原理块（想法 → 走例子 → 形式化 →
+为什么有效）不足全片 45 %（专业）/ 40 %、例子不是连续的一段、或旁白把记号念出来（孤立字母和希腊字母——
+符号该放在画面上的对象旁边，而不是念给人听）。
+
+**例子**——《Dream-RSI: Recursive Self-Improvement through Evolving Worlds》（Zheng 等，2026，
+[arXiv:2609.14858](https://arxiv.org/abs/2609.14858)），Claude Code（sonnet）无人值守导演，`--rsi off`：
+
+| 受众 | 时长 | 帧数 | 核心原理块 | 旁白符号 | 讲了什么 |
+|---|---|---|---|---|---|
+| 小白 | 96 秒 | 12 | 53 % | 0 / 百字 | 一个类比贯穿（走迷宫 → 画地图 → 在地图上试走法）；迷宫旁画出发现树和真实节点分数；结果两根柱都标数 |
+| 专业人士 | 287 秒 | 25 | 49 % | 0 / 百字 | 想法锚到世界模型；一棵六节点记录树走三轮、分数是真的；回放规则和目标函数用公式对回这棵树；假设、消融（1.90 对 1.59）、四张结果表、局限、判断 |
+
+<img src="docs/assets/paper-dream-rsi-beginner.jpg" width="880" alt="小白版 Dream-RSI：12 帧——迷宫、地图、回放、结果">
+
+<sub>小白版 · 12 帧均匀采样</sub>
+
+<img src="docs/assets/paper-dream-rsi-expert.jpg" width="880" alt="专业版 Dream-RSI：25 帧中的 20 帧——记录树、回放走例子、公式、消融、结果">
+
+<sub>专业版 · 25 帧中的 20 帧均匀采样</sub>
+
+已知局限：导演是模型，时长有时偏离目标 10–20 %，偶有一帧偏空，插图裁切偶尔要手调；扫描版 PDF 需先 OCR；
+读 PDF 文字和图需要 poppler（`reels doctor` 会检查）。
 
 ## 自我改进的四层
 
@@ -242,7 +309,7 @@ reels.nosync/
 | ✅ 已在真实片子上验证 | 4 部片子跑通完整流水线（其中 2 部是发布验证期间用 Reels-RSI 从零制作的，包括一道拍照的真实几何题）、横竖屏、中文配音/字幕/字体、英文和中英双语的配音 → 字幕 → SRT、地图、全片时间轴、公版图片、公式和笔顺、黑板工具包、从 git 干净安装、81 个单元测试 |
 | ✅ 自我改进，已验证 | 每轮的日志和代码快照；视觉评审（`claude-cli:sonnet`，一部片子约 30 秒）；模型根据真实的"出错 → 修复"记录自动提经验；经验批准后注入制作包（无人值守的基准测试片子也收到了，并按风格/画幅过滤）；一条经验编译成规则，在旧片子里找出 3 处潜在 bug；基准测试：无人值守的 Claude Code（sonnet）凭一句话做出 28.5 秒科普片，检查 0 错误，综合分 76.8，还自己登记了 3 条经验 |
 | ✅ 技能进化，实跑两轮 | 两轮共 32 部无人值守片子，盲比评审。第一轮表面上是训练集 11:1、验证集 8:4，但复评（170 次评审、三个评审模型）发现大部分差距来自评审偏爱后出现的那部片子；`compare` 现在两种顺序各占一半，门槛按每个题目处于劣势位置时的结果判定。第二轮在修正后的门槛下通过（训练集 4:0，验证集 2:2），但有意没有应用——这正是设计里留给人的那一道关。第一轮还顺带找出了黑板工具包的一个代码 bug（[详情](docs/rsi.md#the-first-real-round-2026-10-06)，[论文第 5 节](paper/README.md)） |
-| 🧪 已实现，还没实跑 | 基准测试之外的 `make` |
+| ✅ 基准测试之外的 `make`、论文模式 | 一条命令出论文讲解片（`reels make --paper …`，sonnet 无人值守）：1706.03762 和 2609.14858 各做了小白版和专业版，上文的 Dream-RSI 两部就是（2026-10-14）；`reels paper` 在 3 篇 arXiv 论文和本仓库自己的 PDF 上验证；`reels paper check` 把关分镜 |
 | ❔ 未测试 | Codex / Gemini / OpenCode 作为导演、非 Anthropic 的评审模型接真实 API（已用模拟服务器测过）、ElevenLabs 配音、AI 生图图层 |
 
 许可证 Apache-2.0。署名与第三方许可见 [NOTICE](NOTICE)。配音用的是微软 Edge 的在线 TTS，属于非官方接口；商用请改用 ElevenLabs 等有授权的 TTS。

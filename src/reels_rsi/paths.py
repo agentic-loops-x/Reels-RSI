@@ -58,3 +58,10 @@ def lessons(state: str = "accepted") -> Path:
 
 def user_rules() -> Path:
     return home() / "rules"
+
+
+def papers() -> Path:
+    """Ingested papers / documents (`reels paper`): the download, text, figures and digest, once per source."""
+    p = home() / "papers"
+    p.mkdir(parents=True, exist_ok=True)
+    return p

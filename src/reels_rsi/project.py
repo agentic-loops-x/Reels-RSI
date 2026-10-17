@@ -333,6 +333,8 @@ def hf_check(project) -> dict:
 def hf_findings(report):
     for sec in HF_SECTIONS:
         for f in (report.get(sec) or {}).get("findings", []):
+            if f.get("code") == "composition_file_too_large" and Path(f.get("sourceFile") or f.get("file") or "").name == "index.html":
+                continue      # the assembled index is ours (one clip per frame, voice, captions, sfx) — not a frame to shrink
             if f.get("severity") in ("error", "warning"):
                 yield sec, f
 

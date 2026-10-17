@@ -23,6 +23,7 @@ commands; sub-agents are optional.
 | 科普/讲解 (explain an idea or process) | script-and-storyboard.md | `deepspace` 物理/天文/科技 · `notebook` 生活/生物/地理 |
 | 历史/人物/战役/朝代/文明 | history.md | `ink` 中国史/诗词 · `atlas` 世界史/航线 · `notebook` 线稿速览 |
 | 题目讲解 / 知识点 / 古诗 / 笔顺 | solve.md | `chalk` 板书 · `notebook` 低龄 · `ink` 古诗文 |
+| 论文 / 文档讲解 (a PDF, an arXiv link, a report → 通俗解释) | paper.md (`reels paper <src> --project .`) | `deepspace` ML/物理/CS · `notebook` 生物/经济/医学 · `chalk` 推导 |
 | 故事短片 / 无台词 | techniques.md, styles.md | any; `music:` only, no SCRIPT.md |
 | "照着这个视频的风格做" | `reels analyze <video>` first, then the matching row | — |
 | > 3 min | chapters, each its own project → `reels concat` | — |
@@ -36,7 +37,13 @@ Ask only what the request leaves open, in one message, each with a recommended d
 XiaoxiaoNeural 女声温暖 · YunjianNeural 浑厚 · en-US-AndrewNeural; ElevenLabs if `ELEVENLABS_API_KEY`)
 · 语言 (中文 · English · 日本語 · 한국어 — narration, on-screen text and captions all in it; `reels voice` detects it from SCRIPT.md, default voices in `reels_rsi/langs.py`) · 字幕 (same language · 中英双语 · none) · 音乐 (user track in `assets/music/`, else a mood) · 审阅 (**yes**: plan → look-dev → final).
 "直接做 / don't ask" ⇒ take every default, state them in one line, no gates.
+"快一点 / fast / 不要迭代" ⇒ **fast mode**: skip `reels lessons digest` and `reels score`, one finalize round
+(fix errors only), no retro — the same as `reels make --rsi off`. "要网页 / a page, not a video" ⇒ deliver
+`reels web` (Step 8) instead of the render; both is fine too.
 A photo of a problem (练习册拍照) → solve.md "Problem from a photo": transcribe it and restate it at the plan gate.
+A paper or document (PDF, arXiv id/link, .md) → paper.md: `reels paper <src> --project .` right after `reels new`,
+read `paper/SOURCE.md` before anything else. Ask (or infer) the **受众 audience**: 小白 beginner · 有基础 intermediate
+(default) · 专业人士 expert — paper.md "Audience levels" is the contract for terms, equations, numbers, analogy, pace.
 
 ## Step 1 — Research & facts
 
@@ -61,6 +68,9 @@ inside the project. Maps: `reels geo --project . --layers countries,coastline,ri
 frame `## Frame N — title` with `scene`, `voiceover`, `duration`, `transition_in`, `status: outline`,
 `src: compositions/frames/NN-name.html`, `route`, `sfx`, `keyMessage`). Details: script-and-storyboard.md.
 **Gate:** present thesis, frame list (see / hear / route), length, style, voice, music — wait.
+Paper reels: tag every frame `- beat:` (paper.md's eight reviewer questions) and run `reels paper check --project .`
+before the gate — it fails when a question is unanswered or the core-idea block (idea → worked example → formal → why)
+is under 40–45 % of the reel; fix the storyboard, not the threshold.
 
 ## Step 4 — Voice, timing, music
 
@@ -99,8 +109,8 @@ fonts → captions → music → SFX → assemble → overlays → transitions �
 runtime, layout, contrast) → **Reels-RSI rules** (mistakes earlier reels made) → SRT → snapshots.
 Every pass is logged in `.reels/`. Fix every error and warning in the frame files (never the
 generated index). Score each frame on R1–R6 from the contact sheet (`reels score .` adds a vision
-judge when one is configured); anything < 4 → fix → finalize again. ≥ 1 round, ≤ 3.
-Closer look: `reels times --project . --frame 04` → `reels hf --project . snapshot --at <t>`.
+judge when one is configured); anything < 4 → fix → finalize again. ≥ 1 round, ≤ 3 (fast mode: 1 round,
+errors only, no score). Closer look: `reels times --project . --frame 04` → `reels hf --project . snapshot --at <t>`.
 
 ## Step 8 — Render & deliver
 
@@ -108,9 +118,11 @@ Closer look: `reels times --project . --frame 04` → `reels hf --project . snap
 reels render . --quality high
 reels cover --project . --composition    # if compositions/cover.html exists
 reels cover --project . --frame 08       # else: the most telling frame alone, caption-free
+reels web .                              # a browser-playable page instead of (or next to) the MP4: renders/web/
 ```
 Deliver `renders/video.mp4`, `renders/cover.jpg`, `renders/subtitles*.srt`, `CREDITS.md` if any;
-duration; frame ids for edits; what was defaulted.
+duration; frame ids for edits; what was defaulted. A web delivery is `renders/web/` — seconds instead
+of a render; show it with `reels web . --serve --open` (a static folder: any file server, GitHub Pages; not file://).
 
 ## Step 9 — Learn (always, takes a minute)
 
