@@ -14,6 +14,7 @@ Built-in rules ship in the package; rules you (or `reels retro` → `lessons acc
 
 import argparse
 import importlib.util
+import os
 import json
 import re
 import sys
@@ -130,8 +131,11 @@ def load_rule(d):
 
 def load_rules():
     """Every rule that loads. A broken rule (e.g. a user rule with a syntax error) is reported and
-    skipped — one bad rule must never take the whole check down."""
+    skipped — one bad rule must never take the whole check down.
+    REELS_RULES=off disables every rule (ablation studies only — never set it when making a reel to keep)."""
     out = []
+    if os.environ.get("REELS_RULES", "").lower() == "off":
+        return out
     for d in rule_dirs():
         try:
             out.append(load_rule(d))
